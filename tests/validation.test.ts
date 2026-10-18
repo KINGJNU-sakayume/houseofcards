@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { politicalModel } from '../src/data/seeds/political-model';
 import { realityPack, seedPack } from '../src/data/reality';
 import type { RealityPack, SeedPack } from '../src/data/reality/schema';
 import { validateData } from '../src/data/reality/validate';
@@ -29,7 +30,7 @@ describe('spec §33 data validator', () => {
     expect(validateData(realityPack, seedPack, true).errors.join()).toContain('UNVERIFIED_ASSUMPTION');
     expect(validateData(realityPack, seedPack).warnings.join()).toContain('UNVERIFIED_ASSUMPTION');
     const { pack, seeds } = fixture();
-    expect(validateData(pack, seeds, true).errors).toEqual([]);
+    expect(validateData(pack, seeds, true, undefined, { ...politicalModel, governmentApprovalFallback: null }).errors).toEqual([]);
   });
   it('catches seat totals and fractional seats', () => {
     const { pack, seeds } = fixture();

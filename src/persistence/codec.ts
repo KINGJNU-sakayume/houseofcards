@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { politicsSchema } from './politics-schema';
 import type { GameState } from '../types/game';
 import { indexSchema, isoDate, leverValueSchema, REGION_IDS } from '../data/reality/schema';
 import { AGE_BANDS, DOMAIN_IDS, PROFILE_IDS } from '../types/simulation';
@@ -16,10 +17,10 @@ const positionSchema = z.strictObject({ draftValue: leverValueSchema, publishedV
   lastDirectionalValue: leverValueSchema.nullable(), lastDirectionalAt: isoDate.nullable(), reversalPenalty: indexSchema });
 const probability = z.number().int().min(0).max(1_000_000);
 const stateSchema = z.strictObject({
-  schemaVersion: z.literal(2), phase: z.literal('B1'), seed: z.number().int().min(0).max(0xffffffff),
+  schemaVersion: z.literal(2), phase: z.literal('B2'), seed: z.number().int().min(0).max(0xffffffff),
   rngState: z.record(z.string(), z.number().int().min(1).max(0xffffffff)),
   realityPackId: z.string(), realityPackAsOf: isoDate,
-  simulationStartDate: isoDate,
+  simulationStartDate: isoDate, politics: politicsSchema,
   platforms: z.array(z.strictObject({ partyId: z.string(), positions: z.record(z.string(), positionSchema) })).length(6),
   governmentPolicy: z.strictObject({ partyId: z.string(), levers: z.record(z.string(), z.strictObject({
     value: leverValueSchema, history: z.array(z.strictObject({ value: leverValueSchema, enactedAt: isoDate })).max(200),
@@ -33,10 +34,10 @@ const stateSchema = z.strictObject({
     partyAttachment: z.record(z.string(), probability), politicalAttention: indexSchema, turnoutTendency: indexSchema,
     tacticalVotingTendency: indexSchema, governmentEvaluationSensitivity: indexSchema,
   })).length(96),
-  rulesetId: z.literal('foundation_calendar_only'),
+  rulesetId: z.literal('parallel_46_open'),
   rulesetSnapshot: z.strictObject({
-    rulesetId: z.literal('foundation_calendar_only'), kind: z.literal('foundation'), label: z.string(),
-    status: z.literal('GAME_ASSUMPTION'),
+    rulesetId: z.literal('parallel_46_open'), kind: z.literal('opinion_only'), label: z.string(),
+    status: z.literal('GAME_ASSUMPTION'), listSeats: z.number().int().positive(), legalThresholdVoteShare: probability, electabilityKnee: probability,
     calendar: z.strictObject({ startDate: isoDate, lastWeeklyDate: isoDate, electionDate: isoDate }),
   }),
   date: isoDate, tick: z.number().int().min(1).max(78), status: z.enum(['active', 'phase_complete']),
@@ -45,8 +46,8 @@ const stateSchema = z.strictObject({
     priority: z.enum(['Important', 'Report', 'FYI']), read: z.boolean(),
   })).max(12),
   events: z.array(z.strictObject({ id: z.string(), date: isoDate,
-    type: z.enum(['SESSION_STARTED', 'WEEK_ADVANCED', 'MONTH_BOUNDARY', 'INBOX_READ', 'PLATFORM_DRAFTED', 'PLATFORM_PUBLISHED']), detail: z.string(),
-  })).max(MAX_COMMANDS + 20),
+    type: z.enum(['SESSION_STARTED', 'WEEK_ADVANCED', 'MONTH_BOUNDARY', 'INBOX_READ', 'PLATFORM_DRAFTED', 'PLATFORM_PUBLISHED', 'AI_PLATFORM_SHIFT', 'GOVERNMENT_ENACTED', 'POLL_PUBLISHED']), detail: z.string(),
+  })).max(MAX_COMMANDS + 200),
   commandLog: z.array(commandSchema).max(MAX_COMMANDS),
 });
 const envelopeSchema = z.strictObject({ format: z.literal('HOC_KOREA_SAVE'), version: z.literal(1), checksum: z.string().regex(/^[a-f0-9]{16}$/), state: stateSchema });
@@ -59,7 +60,10 @@ export function deserializeSave(text: string): GameState {
   try { raw = JSON.parse(text); } catch { throw new Error('올바른 JSON 파일이 아닙니다.'); }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' &&
     'schemaVersion' in raw.state && raw.state.schemaVersion === 1) {
-    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 B1(스키마 2)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 B2(스키마 2)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
+  }
+  if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'phase' in raw.state && raw.state.phase === 'B1') {
+    throw new Error('B1 개발 프리뷰 세이브는 B2 정치 모형과 호환되지 않습니다. 기존 JSON을 보관하고 새 B2 프리뷰를 시작하세요.');
   }
   const parsed = envelopeSchema.safeParse(raw);
   if (!parsed.success) throw new Error('지원하지 않는 세이브 버전이거나 파일 구조가 잘못되었습니다.');

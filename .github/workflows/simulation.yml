@@ -1,4 +1,4 @@
-name: B1 issue/cohort replay batch (not voter or election balance)
+name: B2 national political chain (not election balance)
 on:
   schedule:
     - cron: '15 18 * * *'

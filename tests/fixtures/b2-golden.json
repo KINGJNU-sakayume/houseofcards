@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 2,
+  "phase": "B2",
+  "modelVersion": "B2.1",
+  "seed": 42,
+  "initialHash": "743540557de1b07e",
+  "seasonEndHash": "792d5e3326991beb",
+  "publicationReversalHash": "7dbbde70e83bbcfc",
+  "publicationReversalCommands": [
+    {
+      "type": "SET_PLATFORM_DRAFT",
+      "leverId": "housing.rent-support",
+      "value": 4
+    },
+    {
+      "type": "PUBLISH_PLATFORM",
+      "leverId": "housing.rent-support"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "SET_PLATFORM_DRAFT",
+      "leverId": "housing.rent-support",
+      "value": 0
+    },
+    {
+      "type": "PUBLISH_PLATFORM",
+      "leverId": "housing.rent-support"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    }
+  ]
+}
