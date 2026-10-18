@@ -1,6 +1,8 @@
 # Codex Implementation Task — HOUSE OF CARDS: KOREA v1.0 rev2
 
-**CURRENT PHASE: A**   <!-- Change to B, C, D, E for each subsequent task. Run ONE phase per task. -->
+**STATUS: HISTORICAL — Phase A is complete and merged. Do not execute this prompt again; each later phase has its own prompt with its own `CURRENT PHASE`.**
+
+**CURRENT PHASE: A** (historical marker)   <!-- Original template: change to B, C, D, E for each subsequent task. -->
 
 ## 0. How to use this prompt
 
