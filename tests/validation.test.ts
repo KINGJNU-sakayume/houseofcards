@@ -9,8 +9,13 @@ function fixture() {
   const seeds: SeedPack = JSON.parse(JSON.stringify(seedPack));
   const meta = { status: 'REAL_FACT' as const, source: 'test-fixture-only', verifiedAt: '2026-10-18', asOf: '2026-10-18' };
   pack.completeness = 'BASELINE';
+  pack.facts = [];
+  delete pack.electionDate;
+  delete pack.regionAgeMarginals;
+  delete pack.calibrationTargets;
   pack.parties = [{ id: 'party-fixture', name: { ...meta, id: 'p-name', value: '테스트 정당' }, shortName: { ...meta, id: 'p-short', value: '테스트' } }];
   pack.governingPartyId = 'party-fixture';
+  seeds.partyAttachmentMasses['party-fixture'] = 1;
   pack.politicians = [{ id: 'real-fixture', partyId: 'party-fixture', name: { ...meta, id: 'person-name', value: '실존이름검사' } }];
   pack.assembly = { statutorySeats: { ...meta, id: 'total', value: 300 }, occupiedSeats: { ...meta, id: 'occupied', value: 299 }, vacancies: { ...meta, id: 'vacant', value: 1 } };
   pack.indicators = [{ ...meta, id: 'metric', value: 42 }];
@@ -18,10 +23,11 @@ function fixture() {
   return { pack, seeds };
 }
 describe('spec §33 data validator', () => {
-  it('ships an immutable honest foundation pack and validates a complete fixture', () => {
+  it('keeps B1 data immutable, blocks unresolved releases and validates a complete fixture', () => {
     expect(Object.isFrozen(realityPack.provinceRegions)).toBe(true);
-    expect(validateData(realityPack, seedPack, true).errors).toEqual([]);
-    expect(validateData(realityPack, seedPack).warnings[0]).toContain('FOUNDATION_ONLY');
+    expect(validateData(realityPack, seedPack).errors).toEqual([]);
+    expect(validateData(realityPack, seedPack, true).errors.join()).toContain('UNVERIFIED_ASSUMPTION');
+    expect(validateData(realityPack, seedPack).warnings.join()).toContain('UNVERIFIED_ASSUMPTION');
     const { pack, seeds } = fixture();
     expect(validateData(pack, seeds, true).errors).toEqual([]);
   });

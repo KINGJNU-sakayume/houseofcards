@@ -1,4 +1,4 @@
-name: Validate and deploy Phase A
+name: Validate B1 and gate release
 on:
   push:
     branches: [main]
@@ -25,18 +25,31 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm test
-      - run: npm run validate:data -- --release
+      - run: npm run validate:data
       - run: npm run sim -- --seeds 20
-      - run: npm run build:release
+      - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+  release:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # A separate, required gate exposes incomplete real-world data without
+      # suppressing core tests. UNVERIFIED_ASSUMPTION must still fail CI.
+      - run: npm run build:release
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           path: dist
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    needs: check
+    needs: [check, release]
     runs-on: ubuntu-latest
     permissions:
       pages: write

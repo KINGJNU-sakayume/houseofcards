@@ -1,0 +1,589 @@
+{
+  "id": "b1-seed-v2",
+  "realityPackId": "kr-b1-2026-10-18",
+  "fictionalPoliticians": [],
+  "issueConfigs": [
+    {
+      "id": "housing",
+      "severity": 7100,
+      "salience": 8300,
+      "structuralPressure": 16,
+      "inertia": 920,
+      "salienceInertia": 800,
+      "shockBound": 30,
+      "drivers": [
+        {
+          "id": "housing-supply",
+          "initial": 7200,
+          "weight": 4
+        },
+        {
+          "id": "financing-stress",
+          "initial": 6400,
+          "weight": 2
+        },
+        {
+          "id": "rental-stress",
+          "initial": 7800,
+          "weight": 4
+        }
+      ],
+      "crossDrivers": []
+    },
+    {
+      "id": "family",
+      "severity": 7900,
+      "salience": 6100,
+      "structuralPressure": 22,
+      "inertia": 965,
+      "salienceInertia": 800,
+      "shockBound": 30,
+      "drivers": [
+        {
+          "id": "family-housing-burden",
+          "initial": 7500,
+          "weight": 3
+        },
+        {
+          "id": "childcare-burden",
+          "initial": 7700,
+          "weight": 3
+        },
+        {
+          "id": "work-family-stress",
+          "initial": 8000,
+          "weight": 4
+        }
+      ],
+      "crossDrivers": [
+        {
+          "domain": "housing",
+          "coefficient": 70
+        }
+      ]
+    },
+    {
+      "id": "pension",
+      "severity": 7600,
+      "salience": 5400,
+      "structuralPressure": 25,
+      "inertia": 950,
+      "salienceInertia": 800,
+      "shockBound": 30,
+      "drivers": [
+        {
+          "id": "contribution-burden",
+          "initial": 6000,
+          "weight": 2
+        },
+        {
+          "id": "retirement-insecurity",
+          "initial": 6900,
+          "weight": 3
+        },
+        {
+          "id": "fiscal-risk",
+          "initial": 8300,
+          "weight": 5
+        }
+      ],
+      "crossDrivers": []
+    },
+    {
+      "id": "healthcare",
+      "severity": 6600,
+      "salience": 7000,
+      "structuralPressure": 15,
+      "inertia": 930,
+      "salienceInertia": 800,
+      "shockBound": 30,
+      "drivers": [
+        {
+          "id": "regional-access-gap",
+          "initial": 7000,
+          "weight": 4
+        },
+        {
+          "id": "workforce-shortage",
+          "initial": 7200,
+          "weight": 4
+        },
+        {
+          "id": "care-cost-pressure",
+          "initial": 5000,
+          "weight": 2
+        }
+      ],
+      "crossDrivers": []
+    },
+    {
+      "id": "industry-ai",
+      "severity": 5700,
+      "salience": 6500,
+      "structuralPressure": 10,
+      "inertia": 880,
+      "salienceInertia": 800,
+      "shockBound": 30,
+      "drivers": [
+        {
+          "id": "investment-gap",
+          "initial": 5200,
+          "weight": 4
+        },
+        {
+          "id": "infrastructure-gap",
+          "initial": 6000,
+          "weight": 3
+        },
+        {
+          "id": "energy-pressure",
+          "initial": 6200,
+          "weight": 3
+        },
+        {
+          "id": "research-gap",
+          "initial": 5500,
+          "weight": 2
+        },
+        {
+          "id": "global-demand-pressure",
+          "initial": 5700,
+          "weight": 1
+        }
+      ],
+      "crossDrivers": []
+    },
+    {
+      "id": "political-reform",
+      "severity": 6200,
+      "salience": 7300,
+      "structuralPressure": 5,
+      "inertia": 970,
+      "salienceInertia": 800,
+      "shockBound": 30,
+      "drivers": [
+        {
+          "id": "institutional-distrust",
+          "initial": 6600,
+          "weight": 6
+        },
+        {
+          "id": "representation-gap",
+          "initial": 5600,
+          "weight": 4
+        }
+      ],
+      "crossDrivers": []
+    }
+  ],
+  "cohortProfiles": [
+    {
+      "id": "housing-pressure",
+      "preferenceTags": {
+        "housing": 4,
+        "safety-net": 4,
+        "market": 2
+      },
+      "salience": {
+        "housing": 9500,
+        "family": 6000,
+        "pension": 3500,
+        "healthcare": 4500,
+        "industry-ai": 5000,
+        "political-reform": 5500
+      },
+      "politicalAttention": 5500,
+      "turnoutTendency": 6500,
+      "tacticalVotingTendency": 6000,
+      "governmentEvaluationSensitivity": 6500
+    },
+    {
+      "id": "family-work",
+      "preferenceTags": {
+        "labour": 4,
+        "safety-net": 3,
+        "science": 3
+      },
+      "salience": {
+        "housing": 7000,
+        "family": 9500,
+        "pension": 5000,
+        "healthcare": 6000,
+        "industry-ai": 7000,
+        "political-reform": 4500
+      },
+      "politicalAttention": 6000,
+      "turnoutTendency": 7200,
+      "tacticalVotingTendency": 6000,
+      "governmentEvaluationSensitivity": 6500
+    },
+    {
+      "id": "asset-retirement",
+      "preferenceTags": {
+        "market": 3,
+        "safety-net": 3,
+        "efficiency": 3
+      },
+      "salience": {
+        "housing": 4500,
+        "family": 3500,
+        "pension": 9500,
+        "healthcare": 9000,
+        "industry-ai": 4000,
+        "political-reform": 5000
+      },
+      "politicalAttention": 6500,
+      "turnoutTendency": 8000,
+      "tacticalVotingTendency": 6000,
+      "governmentEvaluationSensitivity": 6500
+    }
+  ],
+  "profileConditionals": [
+    {
+      "regionId": "seoul",
+      "ageBand": "18-29",
+      "masses": [
+        74,
+        23,
+        3
+      ]
+    },
+    {
+      "regionId": "seoul",
+      "ageBand": "30-44",
+      "masses": [
+        54,
+        40,
+        6
+      ]
+    },
+    {
+      "regionId": "seoul",
+      "ageBand": "45-59",
+      "masses": [
+        27,
+        48,
+        25
+      ]
+    },
+    {
+      "regionId": "seoul",
+      "ageBand": "60+",
+      "masses": [
+        12,
+        23,
+        65
+      ]
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "ageBand": "18-29",
+      "masses": [
+        74,
+        23,
+        3
+      ]
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "ageBand": "30-44",
+      "masses": [
+        54,
+        40,
+        6
+      ]
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "ageBand": "45-59",
+      "masses": [
+        27,
+        48,
+        25
+      ]
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "ageBand": "60+",
+      "masses": [
+        12,
+        23,
+        65
+      ]
+    },
+    {
+      "regionId": "chungcheong",
+      "ageBand": "18-29",
+      "masses": [
+        68,
+        29,
+        3
+      ]
+    },
+    {
+      "regionId": "chungcheong",
+      "ageBand": "30-44",
+      "masses": [
+        48,
+        46,
+        6
+      ]
+    },
+    {
+      "regionId": "chungcheong",
+      "ageBand": "45-59",
+      "masses": [
+        27,
+        48,
+        25
+      ]
+    },
+    {
+      "regionId": "chungcheong",
+      "ageBand": "60+",
+      "masses": [
+        12,
+        23,
+        65
+      ]
+    },
+    {
+      "regionId": "tk",
+      "ageBand": "18-29",
+      "masses": [
+        68,
+        29,
+        3
+      ]
+    },
+    {
+      "regionId": "tk",
+      "ageBand": "30-44",
+      "masses": [
+        48,
+        46,
+        6
+      ]
+    },
+    {
+      "regionId": "tk",
+      "ageBand": "45-59",
+      "masses": [
+        27,
+        48,
+        25
+      ]
+    },
+    {
+      "regionId": "tk",
+      "ageBand": "60+",
+      "masses": [
+        12,
+        23,
+        65
+      ]
+    },
+    {
+      "regionId": "pk",
+      "ageBand": "18-29",
+      "masses": [
+        68,
+        29,
+        3
+      ]
+    },
+    {
+      "regionId": "pk",
+      "ageBand": "30-44",
+      "masses": [
+        48,
+        46,
+        6
+      ]
+    },
+    {
+      "regionId": "pk",
+      "ageBand": "45-59",
+      "masses": [
+        27,
+        48,
+        25
+      ]
+    },
+    {
+      "regionId": "pk",
+      "ageBand": "60+",
+      "masses": [
+        12,
+        23,
+        65
+      ]
+    },
+    {
+      "regionId": "honam",
+      "ageBand": "18-29",
+      "masses": [
+        68,
+        29,
+        3
+      ]
+    },
+    {
+      "regionId": "honam",
+      "ageBand": "30-44",
+      "masses": [
+        48,
+        46,
+        6
+      ]
+    },
+    {
+      "regionId": "honam",
+      "ageBand": "45-59",
+      "masses": [
+        27,
+        48,
+        25
+      ]
+    },
+    {
+      "regionId": "honam",
+      "ageBand": "60+",
+      "masses": [
+        12,
+        23,
+        65
+      ]
+    },
+    {
+      "regionId": "gangwon",
+      "ageBand": "18-29",
+      "masses": [
+        68,
+        29,
+        3
+      ]
+    },
+    {
+      "regionId": "gangwon",
+      "ageBand": "30-44",
+      "masses": [
+        48,
+        46,
+        6
+      ]
+    },
+    {
+      "regionId": "gangwon",
+      "ageBand": "45-59",
+      "masses": [
+        27,
+        48,
+        25
+      ]
+    },
+    {
+      "regionId": "gangwon",
+      "ageBand": "60+",
+      "masses": [
+        12,
+        23,
+        65
+      ]
+    },
+    {
+      "regionId": "jeju",
+      "ageBand": "18-29",
+      "masses": [
+        68,
+        29,
+        3
+      ]
+    },
+    {
+      "regionId": "jeju",
+      "ageBand": "30-44",
+      "masses": [
+        48,
+        46,
+        6
+      ]
+    },
+    {
+      "regionId": "jeju",
+      "ageBand": "45-59",
+      "masses": [
+        27,
+        48,
+        25
+      ]
+    },
+    {
+      "regionId": "jeju",
+      "ageBand": "60+",
+      "masses": [
+        12,
+        23,
+        65
+      ]
+    }
+  ],
+  "tagInterpretation": {
+    "기본서비스": [
+      "safety-net"
+    ],
+    "과학기술": [
+      "science"
+    ],
+    "주거안정": [
+      "housing"
+    ],
+    "경제혁신": [
+      "market",
+      "science"
+    ],
+    "약자와의 동행": [
+      "safety-net"
+    ],
+    "정치개혁": [
+      "reform"
+    ],
+    "시장경제": [
+      "market"
+    ],
+    "재정 건전성": [
+      "efficiency",
+      "generations"
+    ],
+    "사회권": [
+      "safety-net"
+    ],
+    "복지국가": [
+      "safety-net"
+    ]
+  },
+  "platformPriorWeights": [
+    1,
+    2,
+    5,
+    2,
+    1
+  ],
+  "nonLeverSignals": {
+    "generations": [
+      "candidate-age-mix"
+    ],
+    "decentralization": [
+      "organization-regional-spread"
+    ]
+  },
+  "seedLabel": "SEED INDEX · 게임 모델 지수; 현실 통계 또는 공식 정당 레버 수치 아님",
+  "partyAttachmentMasses": {
+    "dp": 5,
+    "ppp": 5,
+    "reform": 2,
+    "rkp": 2,
+    "minor-bloc": 1,
+    "player-preview": 1
+  }
+}

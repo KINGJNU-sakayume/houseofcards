@@ -1,0 +1,1025 @@
+[
+  {
+    "id": "housing.private-supply",
+    "name": "민간공급 확대",
+    "domain": "housing",
+    "axis": "4 = 민간공급 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "housing": 2,
+      "market": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 1,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 36,
+    "effectChannels": [
+      {
+        "driverId": "housing-supply",
+        "coefficient": -700
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "housing.public-housing",
+    "name": "공공주택 확대",
+    "domain": "housing",
+    "axis": "4 = 공공주택 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "housing": 2,
+      "safety-net": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 36,
+    "effectChannels": [
+      {
+        "driverId": "housing-supply",
+        "coefficient": -800
+      },
+      {
+        "driverId": "rental-stress",
+        "coefficient": -300
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "housing.redevelopment",
+    "name": "재건축·재개발 촉진",
+    "domain": "housing",
+    "axis": "4 = 재건축·재개발 촉진",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "housing": 2,
+      "market": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 1,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 36,
+    "effectChannels": [
+      {
+        "driverId": "housing-supply",
+        "coefficient": -600
+      },
+      {
+        "driverId": "rental-stress",
+        "coefficient": 150
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "housing.first-home-finance",
+    "name": "청년·생애최초 금융지원 확대",
+    "domain": "housing",
+    "axis": "4 = 청년·생애최초 금융지원 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "housing": 2,
+      "generations": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 2,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "financing-stress",
+        "coefficient": -400
+      },
+      {
+        "driverId": "rental-stress",
+        "coefficient": 150
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "housing.property-tax",
+    "name": "보유세 강화",
+    "domain": "housing",
+    "axis": "4 = 보유세 강화",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "housing": 1,
+      "efficiency": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": -2,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 12,
+    "effectChannels": [
+      {
+        "driverId": "rental-stress",
+        "coefficient": -100
+      },
+      {
+        "driverId": "financing-stress",
+        "coefficient": 200
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "housing.rent-support",
+    "name": "임대지원 확대",
+    "domain": "housing",
+    "axis": "4 = 임대지원 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "housing": 2,
+      "safety-net": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 2,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 3,
+    "effectChannels": [
+      {
+        "driverId": "rental-stress",
+        "coefficient": -700
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "family.child-cash",
+    "name": "양육 현금지원 확대",
+    "domain": "family",
+    "axis": "4 = 양육 현금지원 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 24,
+    "effectChannels": [
+      {
+        "driverId": "childcare-burden",
+        "coefficient": -350
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "family.childcare",
+    "name": "보육·돌봄 인프라 확대",
+    "domain": "family",
+    "axis": "4 = 보육·돌봄 인프라 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 2,
+      "labour": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 30,
+    "effectChannels": [
+      {
+        "driverId": "childcare-burden",
+        "coefficient": -800
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "family.work-family",
+    "name": "육아휴직·일가정 양립 강화",
+    "domain": "family",
+    "axis": "4 = 육아휴직·일가정 양립 강화",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "labour": 2,
+      "generations": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 2,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 24,
+    "effectChannels": [
+      {
+        "driverId": "work-family-stress",
+        "coefficient": -700
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "family.family-housing",
+    "name": "신혼·출산 주거연계 확대",
+    "domain": "family",
+    "axis": "4 = 신혼·출산 주거연계 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "housing": 2,
+      "generations": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 30,
+    "effectChannels": [
+      {
+        "driverId": "family-housing-burden",
+        "coefficient": -700
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "family.education-cost",
+    "name": "교육비 경감 확대",
+    "domain": "family",
+    "axis": "4 = 교육비 경감 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 24,
+    "effectChannels": [
+      {
+        "driverId": "childcare-burden",
+        "coefficient": -500
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "pension.contribution",
+    "name": "보험료율 인상",
+    "domain": "pension",
+    "axis": "4 = 보험료율 인상",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "generations": 2,
+      "efficiency": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": -2,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "contribution-burden",
+        "coefficient": 600
+      },
+      {
+        "driverId": "fiscal-risk",
+        "coefficient": -700
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "pension.replacement",
+    "name": "소득대체율 인상",
+    "domain": "pension",
+    "axis": "4 = 소득대체율 인상",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "retirement-insecurity",
+        "coefficient": -600
+      },
+      {
+        "driverId": "fiscal-risk",
+        "coefficient": 600
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "pension.basic-pension",
+    "name": "기초연금 확대",
+    "domain": "pension",
+    "axis": "4 = 기초연금 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "retirement-insecurity",
+        "coefficient": -700
+      },
+      {
+        "driverId": "fiscal-risk",
+        "coefficient": 500
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "pension.auto-adjustment",
+    "name": "자동조정장치 도입 강화",
+    "domain": "pension",
+    "axis": "4 = 자동조정장치 도입 강화",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "generations": 2,
+      "efficiency": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": -1,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 12,
+    "effectChannels": [
+      {
+        "driverId": "fiscal-risk",
+        "coefficient": -800
+      },
+      {
+        "driverId": "retirement-insecurity",
+        "coefficient": 300
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "pension.private-pension",
+    "name": "퇴직·개인연금 활성화",
+    "domain": "pension",
+    "axis": "4 = 퇴직·개인연금 활성화",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "market": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 1,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 12,
+    "effectChannels": [
+      {
+        "driverId": "retirement-insecurity",
+        "coefficient": -400
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "healthcare.workforce",
+    "name": "의료인력 정원 확대",
+    "domain": "healthcare",
+    "axis": "4 = 의료인력 정원 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 2,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 60,
+    "effectChannels": [
+      {
+        "driverId": "workforce-shortage",
+        "coefficient": -800
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "healthcare.regional-care",
+    "name": "필수·지역의료 지원 확대",
+    "domain": "healthcare",
+    "axis": "4 = 필수·지역의료 지원 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "decentralization": 2,
+      "safety-net": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 12,
+    "effectChannels": [
+      {
+        "driverId": "regional-access-gap",
+        "coefficient": -800
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "healthcare.coverage",
+    "name": "건강보험 보장성 확대",
+    "domain": "healthcare",
+    "axis": "4 = 건강보험 보장성 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "care-cost-pressure",
+        "coefficient": -600
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "healthcare.public-hospitals",
+    "name": "공공병원 확대",
+    "domain": "healthcare",
+    "axis": "4 = 공공병원 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 2,
+      "decentralization": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 36,
+    "effectChannels": [
+      {
+        "driverId": "regional-access-gap",
+        "coefficient": -700
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "healthcare.provider-fees",
+    "name": "수가 보상 확대",
+    "domain": "healthcare",
+    "axis": "4 = 수가 보상 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "safety-net": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "workforce-shortage",
+        "coefficient": -300
+      },
+      {
+        "driverId": "care-cost-pressure",
+        "coefficient": 200
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "industry-ai.research",
+    "name": "연구개발 투자 확대",
+    "domain": "industry-ai",
+    "axis": "4 = 연구개발 투자 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "science": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 18,
+    "effectChannels": [
+      {
+        "driverId": "research-gap",
+        "coefficient": -700
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "industry-ai.ai-infrastructure",
+    "name": "AI·반도체 인프라 확대",
+    "domain": "industry-ai",
+    "axis": "4 = AI·반도체 인프라 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "science": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 24,
+    "effectChannels": [
+      {
+        "driverId": "infrastructure-gap",
+        "coefficient": -800
+      },
+      {
+        "driverId": "energy-pressure",
+        "coefficient": 300
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "industry-ai.deregulation",
+    "name": "규제 완화",
+    "domain": "industry-ai",
+    "axis": "4 = 규제 완화",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "market": 2,
+      "efficiency": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 0,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "investment-gap",
+        "coefficient": -500
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "industry-ai.venture-finance",
+    "name": "스타트업·벤처 금융 확대",
+    "domain": "industry-ai",
+    "axis": "4 = 스타트업·벤처 금융 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "market": 2,
+      "science": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 2,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "investment-gap",
+        "coefficient": -500
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "industry-ai.renewable-mix",
+    "name": "재생에너지 중심 에너지믹스",
+    "domain": "industry-ai",
+    "axis": "4 = 재생에너지 중심 에너지믹스",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "climate": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 3,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 36,
+    "effectChannels": [
+      {
+        "driverId": "energy-pressure",
+        "coefficient": -700
+      },
+      {
+        "driverId": "infrastructure-gap",
+        "coefficient": 200
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "industry-ai.labour-transition",
+    "name": "노동시장 전환지원 확대",
+    "domain": "industry-ai",
+    "axis": "4 = 노동시장 전환지원 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "labour": 2,
+      "science": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 2,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 12,
+    "effectChannels": [
+      {
+        "driverId": "investment-gap",
+        "coefficient": -200
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "political-reform.proportionality",
+    "name": "선거제도 비례성 강화",
+    "domain": "political-reform",
+    "axis": "4 = 선거제도 비례성 강화",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "reform": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 0,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 12,
+    "effectChannels": [
+      {
+        "driverId": "representation-gap",
+        "coefficient": -600
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "political-reform.party-finance",
+    "name": "정당·정치자금 개혁",
+    "domain": "political-reform",
+    "axis": "4 = 정당·정치자금 개혁",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "reform": 2,
+      "efficiency": 1
+    },
+    "fiscalImplication": {
+      "costPerStep": 0,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "institutional-distrust",
+        "coefficient": -500
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "political-reform.assembly-privileges",
+    "name": "국회 운영·특권 개혁",
+    "domain": "political-reform",
+    "axis": "4 = 국회 운영·특권 개혁",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "reform": 2,
+      "efficiency": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": -1,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 6,
+    "effectChannels": [
+      {
+        "driverId": "institutional-distrust",
+        "coefficient": -600
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "political-reform.devolution",
+    "name": "권력구조 분권(개헌)",
+    "domain": "political-reform",
+    "axis": "4 = 권력구조 분권(개헌)",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "reform": 1,
+      "decentralization": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 1,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 24,
+    "effectChannels": [
+      {
+        "driverId": "institutional-distrust",
+        "coefficient": -300
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  },
+  {
+    "id": "political-reform.local-autonomy",
+    "name": "지방자치 권한·재정 확대",
+    "domain": "political-reform",
+    "axis": "4 = 지방자치 권한·재정 확대",
+    "range": {
+      "min": 0,
+      "max": 4,
+      "statusQuo": 2
+    },
+    "valueTags": {
+      "decentralization": 2
+    },
+    "fiscalImplication": {
+      "costPerStep": 1,
+      "note": "게임 모델의 상대 재정부담 방향; 실제 예산 추계 아님"
+    },
+    "implementationDelayMonths": 12,
+    "effectChannels": [
+      {
+        "driverId": "representation-gap",
+        "coefficient": -600
+      }
+    ],
+    "uncertainty": {
+      "label": "GAME_MODEL",
+      "note": "집행될 경우의 게임 내 가정; 현실 효과·법률 변경을 예측하지 않음",
+      "shockSensitivity": 100
+    }
+  }
+]

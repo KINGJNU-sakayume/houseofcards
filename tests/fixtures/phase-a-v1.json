@@ -1,0 +1,75 @@
+{
+  "format": "HOC_KOREA_SAVE",
+  "version": 1,
+  "checksum": "bac404e488d3e981",
+  "state": {
+    "schemaVersion": 1,
+    "phase": "A",
+    "seed": 42,
+    "rngState": {
+      "[\"calendar-reports\",\"2026-10-26\"]": 3106181568
+    },
+    "realityPackId": "kr-foundation-2026-10-19",
+    "realityPackAsOf": "2026-10-19",
+    "rulesetId": "foundation_calendar_only",
+    "rulesetSnapshot": {
+      "rulesetId": "foundation_calendar_only",
+      "kind": "foundation",
+      "label": "달력 프리뷰 · 선거 배분 미구현",
+      "status": "GAME_ASSUMPTION",
+      "calendar": {
+        "startDate": "2026-10-19",
+        "lastWeeklyDate": "2028-04-10",
+        "electionDate": "2028-04-12"
+      }
+    },
+    "date": "2026-10-26",
+    "tick": 2,
+    "status": "active",
+    "inbox": [
+      {
+        "id": "week-2",
+        "date": "2026-10-26",
+        "sender": "일정 담당",
+        "title": "월간 처리 시점에 도착했습니다",
+        "body": "이번 월요일은 이달의 마지막 주간 틱입니다. 월간 이슈·여론·재정 처리는 Phase B에서 구현됩니다. 현재는 달력과 기록만 진행됩니다.",
+        "priority": "Report",
+        "read": false
+      },
+      {
+        "id": "welcome",
+        "date": "2026-10-19",
+        "sender": "개발 안내",
+        "title": "새로운 정치의 첫 페이지",
+        "priority": "Important",
+        "read": false,
+        "body": "Phase A에서는 매주 월요일로 시간을 진행하고 세이브를 저장·복원할 수 있습니다. 창당, 정책, 인재 영입과 선거 시뮬레이션은 후속 단계에 구현됩니다. 먼저 일정을 살펴보세요."
+      }
+    ],
+    "events": [
+      {
+        "id": "event-0",
+        "date": "2026-10-19",
+        "type": "SESSION_STARTED",
+        "detail": "Phase A 달력 프리뷰 시작"
+      },
+      {
+        "id": "event-1",
+        "date": "2026-10-26",
+        "type": "WEEK_ADVANCED",
+        "detail": "2주차"
+      },
+      {
+        "id": "event-2",
+        "date": "2026-10-26",
+        "type": "MONTH_BOUNDARY",
+        "detail": "월간 틱 경계 (Phase B 연산 대기)"
+      }
+    ],
+    "commandLog": [
+      {
+        "type": "ADVANCE_WEEK"
+      }
+    ]
+  }
+}

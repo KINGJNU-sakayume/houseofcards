@@ -21,6 +21,8 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md`. If any
 
 ## Process
 - One phase per task (A→E). Each phase ends playable, with tests passing and unimplemented parts labelled in the UI.
+- Phase B is split into B1 and B2 by `docs/HOUSE_OF_CARDS_KOREA_phase_b_rev2.md`; execute only its CURRENT STEP. B1 must be merged and tested before B2.
+- Reality snapshot ends 2026-10-18; Save simulation starts 2026-10-19. B1's partial pack is not a verified electoral baseline.
 - Mark unverifiable legal/real-world numbers `UNVERIFIED_ASSUMPTION`; release builds must fail CI while any remain.
 - CI: typecheck/lint → unit tests → data validation → build → deploy. Nightly/manual: full AI-only and bot simulations.
 - GitHub Pages: set Vite `base`; keep routing refresh-safe; Free plan requires a public repo.
@@ -31,4 +33,4 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md`. If any
 - typecheck/lint: `npm run typecheck`, `npm run lint`
 - data validation: `npm run validate:data`
 - build: `npm run build`
-- sim (bots/AI-only): `npm run sim -- --seeds 20`
+- sim (currently B1 issues/cohorts/replay; bots/AI-only are not yet implemented): `npm run sim -- --seeds 20`
