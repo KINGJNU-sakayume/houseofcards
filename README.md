@@ -68,6 +68,7 @@ Phase A 스키마 1과 B1 프리뷰는 한국어 안내와 함께 거부합니�
 - [Slice Spec](docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md): 최우선 설계
 - [원본 Phase A 프롬프트](docs/HOUSE_OF_CARDS_KOREA_codex_implementation_prompt_v1.0_rev2.md): 역사적 원문 보존
 - [B1/B2 작업 지시](docs/HOUSE_OF_CARDS_KOREA_phase_b_rev2.md): 완료된 작업의 역사적 지시(B2 완료)
+- [Phase C 작업 지시 (C1/C2)](docs/HOUSE_OF_CARDS_KOREA_phase_c_rev1.md): **CURRENT STEP C1** — 아직 시작 전
 - [결정 기록](docs/DECISIONS.md), [검증 기록](docs/VALIDATION.md)
 
 후속 Phase C는 별도 작업입니다. 릴리스 차단 항목은 없지만 모형 교정(시드 42 초기 20개 비교 중 15개가 ±5%p 밖)은 아직 미해결이며 Phase D 선거 규칙 값은 별도 검증이 필요합니다.
