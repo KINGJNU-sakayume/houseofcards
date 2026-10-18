@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import data from './political-model.json' with { type: 'json' };
-import { CORE_VALUES } from '../../types/simulation';
 import { deepFreeze } from '../../engine/simulation/determinism';
 const q = z.number().int().min(0).max(1_000_000);
 const count = z.number().int().positive().max(10000);
@@ -12,7 +11,6 @@ export const politicalModelSchema = z.strictObject({
   scenario: z.strictObject({ rulesetId: z.literal('parallel_46_open'), label: z.string(), listSeats: count, legalThresholdVoteShare: q, electabilityKnee: q }),
   viability: z.strictObject({ thresholdWeight: q, thresholdWidth: z.number().int().positive().max(1_000_000), electabilityWidth: z.number().int().positive().max(1_000_000), monthlyCap: q }),
   parties: z.record(z.string(), party),
-  playerPreview: z.strictObject({ name: z.string(), declaredValues: z.array(z.enum(CORE_VALUES)), platform: z.record(z.string(), z.number().int().min(0).max(4)) }),
   governmentApprovalFallback: z.strictObject({ value: z.number().int().min(-1_000_000).max(1_000_000), status: z.literal('UNVERIFIED_ASSUMPTION'), note: z.string() }).nullable(),
   ai: z.strictObject({ changeChance: q, monthlyCap: count, quarterlyCap: count, diversityFloor: q, governmentQuarterlyCap: count, priorPenalty: q }),
   polling: z.strictObject({ sampleSize: count, designEffectPermille: z.number().int().min(1000).max(3000), houseEffectBound: q, analysisMargin: q, coverageBandNational: z.tuple([q, q]), houses: z.array(z.strictObject({ id: z.string(), name: z.string() })).min(1) }),

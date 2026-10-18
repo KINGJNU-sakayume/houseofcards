@@ -11,13 +11,13 @@ import { consistency, platformIdentity, policyFit, computeAnalysis } from './mod
 
 const clamp = (n: number, low = 0, high = SCALE) => Math.max(low, Math.min(high, n));
 export const quarterKey = (date: string) => `${date.slice(0, 4)}-Q${Math.floor((Number(date.slice(5, 7)) - 1) / 3) + 1}`;
-const emptyAnalysis = (date: string): SupportAnalysis => ({ date, currentSupport: {}, potentialSupport: {}, byAge: {}, byRegion: {}, groupMass: {}, neutralViability: 0,
-  barriers: { awareness: 0, viability: 0, priorLoyalty: 0, policyMismatch: 0, ownership: 0 } });
+const emptyAnalysis = (date: string): SupportAnalysis => ({ date, currentSupport: {}, potentialSupport: {}, byAge: {}, byRegion: {}, groupMass: {}, neutralViability: 0, playerPartyId: null,
+  barriers: null });
 
 export function initializePolitics(base: Omit<GameState, 'politics'>): GameState {
   const parties: PartyPerception[] = base.platforms.map(platform => {
     const seed = model.parties[platform.partyId]!;
-    const declaredValues = platform.partyId === 'player-preview' ? [...model.playerPreview.declaredValues] : [];
+    const declaredValues: PartyPerception['declaredValues'] = [];
     return { partyId: platform.partyId, declaredValues, identity: platformIdentity(platform, declaredValues),
       expertise: Object.fromEntries(DOMAIN_IDS.map(d => [d, seed.expertise])) as PartyPerception['expertise'],
       ownership: Object.fromEntries(DOMAIN_IDS.map(d => [d, seed.ownership])) as PartyPerception['ownership'],
@@ -30,7 +30,7 @@ export function initializePolitics(base: Omit<GameState, 'politics'>): GameState
   const perceptions = Object.fromEntries(base.cohorts.map(cohort => [cohort.id, Object.fromEntries(parties.map(party => {
     const draw = randomInt(rng, 20001); rng = draw.state;
     const awareness = clamp(fixedMultiply(model.parties[party.partyId]!.awareness, 800000 + cohort.politicalAttention * 20) + draw.value - 10000);
-    return [party.partyId, { awareness, loyalty: party.partyId === 'player-preview' ? 0 : cohort.partyAttachment[party.partyId]! }];
+    return [party.partyId, { awareness, loyalty: cohort.partyAttachment[party.partyId]! }];
   }))]));
   const approval = realityPack.facts.find(f => f.id === 'government-approval');
   const verified = approval?.status === 'REAL_FACT' && typeof approval.value === 'number';
@@ -66,7 +66,9 @@ export function updateViability(state: GameState) {
   const shares: SupportVector = {};
   const viability: SupportVector = {};
   for (const id of Object.keys(state.politics.viability).sort()) {
-    shares[id] = roundDiv(polls.reduce((sum, poll) => sum + poll.national.results[id]!.point, 0), polls.length);
+    const containing = state.politics.polls.filter(p => p.date < state.date && p.national.results[id] !== undefined).slice(-2);
+    if (!containing.length) { viability[id] = state.politics.viability[id]!; continue; }
+    shares[id] = roundDiv(containing.reduce((sum, poll) => sum + poll.national.results[id]!.point, 0), containing.length);
     const current = state.politics.viability[id]!;
     viability[id] = current + clamp(viabilityTarget(shares[id]!, state.rulesetSnapshot) - current, -model.viability.monthlyCap, model.viability.monthlyCap);
   }

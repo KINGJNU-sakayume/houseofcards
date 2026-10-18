@@ -1,10 +1,11 @@
+import { createFoundedGame as createGame } from './helpers';
 import { describe, expect, it } from 'vitest';
 import legacySave from './fixtures/phase-a-v1.json' with { type: 'json' };
 import { policyLevers, realityPack, seedPack } from '../src/data/reality';
 import { validateData } from '../src/data/reality/validate';
 import { updateIssues } from '../src/engine/issues';
 import { addMonths, editDraft, effectiveValue, enactPolicy, publishPlatform, decayConsistency } from '../src/engine/policy';
-import { createGame, dispatchCommand, replay, simulationFields } from '../src/engine/simulation/engine';
+import { dispatchCommand, replay, simulationFields } from '../src/engine/simulation/engine';
 import { stateHash } from '../src/engine/simulation/determinism';
 import { deriveStream, randomInt, streamKey } from '../src/engine/simulation/rng';
 import { SCALE } from '../src/engine/simulation/math';
@@ -15,13 +16,13 @@ import { DOMAIN_IDS } from '../src/types/simulation';
 import { FORBIDDEN_POLL_MEDIA_NAMES } from '../src/validation/forbidden-names';
 
 describe('B1 snapshot and deterministic saves', () => {
-  it('separates the snapshot from the simulation and round trips schema 2 commands', () => {
+  it('separates the snapshot from the simulation and round trips schema 3 commands', () => {
     let state = createGame(42);
     expect(state.realityPackAsOf).toBe('2026-10-18');
     expect(state.realityPackId).not.toContain('2026-10-19');
     expect(state.simulationStartDate).toBe('2026-10-19');
     expect(state.date).toBe(state.simulationStartDate);
-    expect(state.schemaVersion).toBe(2);
+    expect(state.schemaVersion).toBe(3);
     state = dispatchCommand(state, { type: 'SET_PLATFORM_DRAFT', leverId: 'housing.rent-support', value: 4 });
     state = dispatchCommand(state, { type: 'PUBLISH_PLATFORM', leverId: 'housing.rent-support' });
     for (let i = 0; i < 30; i++) state = dispatchCommand(state, { type: 'ADVANCE_WEEK' });
@@ -58,8 +59,8 @@ describe('B1 snapshot and deterministic saves', () => {
     let state = createGame(3);
     for (let i = 0; i < 501; i++) state = dispatchCommand(state, { type: 'SET_PLATFORM_DRAFT', leverId: 'housing.rent-support', value: i % 5 });
     expect(stateHash(deserializeSave(serializeSave(state)))).toBe(stateHash(state));
-    for (let i = 501; i < 1000; i++) state = dispatchCommand(state, { type: 'SET_PLATFORM_DRAFT', leverId: 'housing.rent-support', value: i % 5 });
-    expect(() => dispatchCommand(state, { type: 'ADVANCE_WEEK' })).toThrow('1000개');
+    for (let i = 501; i < 5999; i++) state = dispatchCommand(state, { type: 'SET_PLATFORM_DRAFT', leverId: 'housing.rent-support', value: i % 5 });
+    expect(() => dispatchCommand(state, { type: 'ADVANCE_WEEK' })).toThrow('6000개');
     expect(stateHash(deserializeSave(serializeSave(state)))).toBe(stateHash(state));
   });
 });

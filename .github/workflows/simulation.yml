@@ -1,4 +1,4 @@
-name: B2 national political chain (not election balance)
+name: C1 national political chain (not election balance)
 on:
   schedule:
     - cron: '15 18 * * *'

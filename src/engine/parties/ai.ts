@@ -1,3 +1,4 @@
+import { PLAYER_PARTY_ID } from '../../types/party';
 import { policyLevers } from '../../data/reality';
 import { politicalModel as model } from '../../data/seeds/political-model';
 import type { GameState } from '../../types/game';
@@ -9,7 +10,7 @@ import { quarterKey } from '../voters/dynamics';
 import { fiscalCredibility } from '../voters/model';
 
 export function platformDiversity(platforms: readonly PartyPlatform[]): number {
-  const parties = platforms.filter(p => p.partyId !== 'player-preview');
+  const parties = platforms.filter(p => p.partyId !== PLAYER_PARTY_ID);
   let distance = 0, pairs = 0;
   for (let a = 0; a < parties.length; a++) for (let b = a + 1; b < parties.length; b++) {
     for (const lever of policyLevers) distance += Math.abs((parties[a]!.positions[lever.id]!.publishedValue ?? 2) - (parties[b]!.positions[lever.id]!.publishedValue ?? 2));
@@ -25,7 +26,7 @@ export function updatePartyAI(state: GameState): { state: GameState; changes: st
   const parties = [...state.politics.parties].sort((a, b) => a.partyId < b.partyId ? -1 : 1).map(party => {
     const quarter = quarterKey(state.date), month = state.date.slice(0, 7);
     let ai = { month, quarter, changesThisMonth: party.ai.month === month ? party.ai.changesThisMonth : 0, changesThisQuarter: party.ai.quarter === quarter ? party.ai.changesThisQuarter : 0 };
-    if (party.partyId === 'player-preview' || ai.changesThisMonth >= model.ai.monthlyCap || ai.changesThisQuarter >= model.ai.quarterlyCap) return { ...party, ai };
+    if (party.partyId === PLAYER_PARTY_ID || ai.changesThisMonth >= model.ai.monthlyCap || ai.changesThisQuarter >= model.ai.quarterlyCap) return { ...party, ai };
     const draw = randomInt(rng, SCALE); rng = draw.state;
     const latestPoll = state.politics.polls[state.politics.polls.length - 1]!;
     const midpoint = (result: { low: number; high: number }) => roundDiv(result.low + result.high, 2);

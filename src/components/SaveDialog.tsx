@@ -44,11 +44,11 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
         event.target.value = '';
         setLocalError('');
         if (!file) return;
-        if (file.size > MAX_SAVE_BYTES) { setLocalError('파일은 최대 2MB까지 가져올 수 있습니다.'); return; }
+        if (file.size > MAX_SAVE_BYTES) { setLocalError('파일은 최대 8MB까지 가져올 수 있습니다.'); return; }
         void file.text().then(text => { setImportContent(text); setConfirm('import'); }).catch(() => setLocalError('파일을 읽지 못했습니다.'));
       }} /></label>
     </div>
-    <div className="new-session"><h3>새 프리뷰 시작</h3><p className="muted">시드는 같은 선택을 같은 결과로 재현하는 번호입니다. 창당은 Phase C에서 열립니다.</p><div className="input-row"><label htmlFor="seed">시드</label><input id="seed" type="number" min="0" max="4294967295" step="1" value={seed} onChange={event => setSeed(event.target.value)} /><button className="button" disabled={store.busy || seed.trim() === '' || !Number.isInteger(Number(seed)) || Number(seed) < 0 || Number(seed) > 0xffffffff} onClick={() => setConfirm('new')}>새로 시작</button></div></div>
+    <div className="new-session"><h3>새 프리뷰 시작</h3><p className="muted">시드는 같은 선택을 같은 결과로 재현하는 번호입니다. 새 게임은 창당 화면에서 시작합니다.</p><div className="input-row"><label htmlFor="seed">시드</label><input id="seed" type="number" min="0" max="4294967295" step="1" value={seed} onChange={event => setSeed(event.target.value)} /><button className="button" disabled={store.busy || seed.trim() === '' || !Number.isInteger(Number(seed)) || Number(seed) < 0 || Number(seed) > 0xffffffff} onClick={() => setConfirm('new')}>새로 시작</button></div></div>
     {confirm && <div className="confirmation" role="group" aria-label="진행 상황 교체 확인"><p>현재 진행 상황과 자동저장을 교체합니다. 수동 저장 슬롯은 유지됩니다.</p><div className="input-row"><button className="button primary" disabled={store.busy} onClick={() => void confirmAction()}>교체하고 계속</button><button className="button" onClick={() => setConfirm(null)}>취소</button></div></div>}
     {(localError || store.error) && <p className="error" role="alert">{localError || store.error}</p>}
     <p className="dialog-status" role="status">{store.notice}</p>

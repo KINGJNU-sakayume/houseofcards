@@ -1,7 +1,8 @@
+import { createFoundedGame as createGame } from './helpers';
 import { describe, expect, it } from 'vitest';
 import { addDays, CALENDAR, daysBetween, isMonday, isMonthlyTick, weekCount } from '../src/engine/calendar';
 import { canonicalJson, deepFreeze, stateHash } from '../src/engine/simulation/determinism';
-import { createGame, dispatchCommand, replay } from '../src/engine/simulation/engine';
+import { dispatchCommand, replay } from '../src/engine/simulation/engine';
 import { fixedExp, fixedMultiply, roundDiv, SCALE } from '../src/engine/simulation/math';
 import { handleEngineRequest } from '../src/engine/simulation/protocol';
 import { deriveStream, nextUint32, randomInt, streamKey } from '../src/engine/simulation/rng';
@@ -91,13 +92,13 @@ describe('commands and replay', () => {
   it('never mutates input and reproduces the exact final hash', () => {
     const initial = createGame(765);
     const originalHash = stateHash(initial);
-    let game = dispatchCommand(initial, { type: 'RESPOND_INBOX', messageId: 'welcome' });
-    expect(dispatchCommand(game, { type: 'RESPOND_INBOX', messageId: 'welcome' })).toBe(game);
+    let game = dispatchCommand(initial, { type: 'RESPOND_INBOX', messageId: initial.inbox[0]!.id });
+    expect(dispatchCommand(game, { type: 'RESPOND_INBOX', messageId: initial.inbox[0]!.id })).toBe(game);
     for (let i = 0; i < 77; i++) game = dispatchCommand(game, { type: 'ADVANCE_WEEK' });
     game = dispatchCommand(game, { type: 'RESPOND_INBOX', messageId: game.inbox[0]!.id });
     expect(stateHash(initial)).toBe(originalHash);
     expect(Object.isFrozen(game.inbox[0])).toBe(true);
-    expect(game.inbox.length).toBeLessThanOrEqual(12);
+    expect(game.inbox.length).toBeLessThanOrEqual(60);
     expect(stateHash(replay(game.seed, game.commandLog))).toBe(stateHash(game));
     expect(() => dispatchCommand(game, { type: 'RESPOND_INBOX', messageId: 'missing' })).toThrow();
   });

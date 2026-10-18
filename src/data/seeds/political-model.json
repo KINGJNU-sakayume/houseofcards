@@ -67,29 +67,6 @@
       "ownership": 220000,
       "viability": 250000,
       "oppositionAlignment": 1
-    },
-    "player-preview": {
-      "awareness": 50000,
-      "expertise": 350000,
-      "ownership": 100000,
-      "viability": 120000,
-      "oppositionAlignment": 1
-    }
-  },
-  "playerPreview": {
-    "name": "주거 실험 정당",
-    "declaredValues": [
-      "housing",
-      "safety-net",
-      "science"
-    ],
-    "platform": {
-      "housing.private-supply": 3,
-      "housing.public-housing": 4,
-      "housing.redevelopment": 2,
-      "housing.first-home-finance": 3,
-      "housing.property-tax": 3,
-      "housing.rent-support": 4
     }
   },
   "governmentApprovalFallback": null,

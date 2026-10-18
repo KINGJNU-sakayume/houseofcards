@@ -15,9 +15,10 @@ export interface BarrierEstimate {
   awareness: number; viability: number; priorLoyalty: number; policyMismatch: number; ownership: number;
 }
 export interface SupportAnalysis {
+  playerPartyId: string | null;
   date: string; currentSupport: SupportVector; potentialSupport: SupportVector;
   byAge: Record<string, SupportVector>; byRegion: Record<string, SupportVector>;
-  groupMass: Record<string, number>; barriers: BarrierEstimate; neutralViability: number;
+  groupMass: Record<string, number>; barriers: BarrierEstimate | null; neutralViability: number;
 }
 export interface PollResult { point: number; low: number; high: number; margin: number }
 export interface PollGroup { sampleSize: number; results: Record<string, PollResult> }

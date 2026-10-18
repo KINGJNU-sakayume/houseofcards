@@ -3,9 +3,11 @@
 Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md` (Slice Spec). If anything here conflicts with it, the Slice Spec wins, except where `docs/DECISIONS.md` records an explicit user decision. Record every decision in `docs/DECISIONS.md`.
 
 ## Status
-- Phase A (foundation) and Phase B1/B2 (national political simulation) are **done and merged**. B2 task documents are historical.
-- **Next: Phase C** (party creation, resources, recruitment, regional organization). It is a separate task with its own prompt; execute only the phase named in that prompt's `CURRENT PHASE`.
-- Not implemented yet: party creation, recruitment, organization, resources, publication costs, nominations, district/list election, tactical voting, seats, Election Night, Season Review. Do not fake them in the UI.
+- A/B1/B2 are merged. **CURRENT STEP: C1** implementation is complete; execute no C2 work in the C1 task.
+- C1 implements founding, resources, finance, publication costs, player research, paid internal surveys and the Party page.
+- **Next: C2**, only after C1 is merged and its tests pass. Virtual people/recruitment/promises, regional investments and brand consistency remain C2; nominations/elections/seats remain D; Season Review remains E.
+- Reality pack `kr-b2-2026-10-18-r3`; schema3 / phase C; party-management model C1.0. Political model B2.1 remains in use.
+- C1 seed42 hashes: before founding `8c52aa107c0a262d`, founded `80540311e6cc2763`, idle end `5cb48dbde11d429d`, management/reversal `1c3da2a992705758`. 20-seed ×4-strategy batch hash `d64c0602e0255e81` (B2 historical hash `d8d46221df2985db`).
 
 ## Non-negotiables
 1. Engine code (`src/engine/**`) is pure TypeScript: no React, DOM, or browser APIs. Must run in Node, on the main thread, and in a Worker.
@@ -30,7 +32,7 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md` (Slice 
 - Mark unverifiable legal/real-world numbers `UNVERIFIED_ASSUMPTION`; release builds fail while any remain. Currently zero blockers remain for the national pack; Phase D rule values (party-revocation threshold, deposit/reimbursement, dual-candidacy ban, list-gender rule) must be added as `UNVERIFIED_ASSUMPTION` or sourced.
 - Changing the model, the reality pack, or the save schema changes golden hashes. Regenerate `tests/fixtures/*golden*.json` only deliberately, by replaying the same command sequence, and record old→new hashes in `docs/DECISIONS.md`.
 - Older saves are never silently upgraded or filled with generated state: bump the schema/phase discriminator and reject old JSON with Korean guidance to keep it.
-- CI: typecheck/lint → unit tests → data validation → 20-seed × 3-strategy sim → dev build → Playwright; `release` runs `npm run build:release`; `deploy` only from main after both pass. Nightly/manual: 500-seed simulation.
+- CI: typecheck/lint → unit tests → data validation → 20-seed × 4-strategy C1 sim → dev build → Playwright; `release` runs `npm run build:release`; `deploy` only from main after both pass. Nightly/manual: 500-seed simulation.
 - GitHub Pages: Vite `base` is `/houseofcards/`, HashRouter, refresh-safe; Free plan requires a public repo.
 
 ## Commands
@@ -39,13 +41,15 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md` (Slice 
 - unit/regression tests: `npm test` (about 100 s; do not run in the background without waiting)
 - data validation: `npm run validate:data` (strict: `-- --release`)
 - build: `npm run build`; release build: `npm run build:release`
-- sim (national political chain; balanced/idle/housing-focused bots; **not** an election balance test): `npm run sim -- --seeds 20`
+- sim (national political chain; idle/balanced/housing-focused/spender bots; **not** an election balance test): `npm run sim -- --seeds 20`
 - E2E: `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium npm run test:e2e`
 
 ## Decisions carried forward
-- Schema 2, phase discriminator `B2`. Phase A/B1 JSON is rejected with guidance; do not regenerate B1-absent politics. Reality pack `kr-b2-2026-10-18-r3` (real MOIS 2026-09 population, sourced 39% government approval). Packs or phases before this are rejected; do not replay saves against a different baseline.
+- Schema3, phase C. A/B1/B2 JSON is rejected with Korean keep-JSON guidance. Import limit 8,000,000 UTF-8 bytes; command cap6,000. `tests/fixtures/phase-b2-v2.json` was exported from the real B2 engine before changing it.
+- A new world has five AI parties and status=founding. Only CREATE_PARTY is permitted; it adds `player` once, with no poll published that day. Never restore a fixed preview party.
+- Atomic refusals leave state/log untouched; show shortage errors in UI rather than mutating the persistent Inbox. Weekly arrears are real Critical messages. Staff/Slots refill to caps, never accumulate. Maintain ledger conservation including ledgerTruncatedSum.
 - **Potential Support** (user-confirmed, Slice Spec §18.5): for ALL parties set awareness = 1 and viability = one shared neutral value, equal to the rounded mean of the viability of the two parties leading in current support (ties by party id; `neutralViability` in `src/engine/voters/model.ts`). Trust, prior loyalty, identity distance and government evaluation are retained. No clamping; Potential may be below Current for large parties. Barrier decomposition uses independent single-barrier counterfactuals and is non-additive.
-- Political-model defaults, the development preview party (`player-preview`), AI parties and polls are GAME MODEL, not official positions or predictions. Party positions and bills are not `REAL_FACT`.
+- Political/party-management defaults, AI parties, generated player state and polls are GAME MODEL, not official positions or predictions. No subsidy for the out-of-parliament player is a labelled game assumption, not a Reality claim.
 - Election-law state: current law is semi-compensatory; the 3% threshold was struck down 2026-01-29 with no replacement enacted (`law-transition` = UNRESOLVED). The default game ruleset `parallel_46_open` is a GAME ASSUMPTION. Always show the "this save's ruleset" notice.
 - Verified source data does not mean the model fits it: 15 of 20 seed-42 initial calibration comparisons are outside the old ±5pp tolerance. Do not tune targets/tolerances to pass; report honestly.
-- Phase C replaces the fixed development preview party with real party creation; it must be removed from engine seeds at that point (see the Phase C prompt).
+- C1 removed the development preview from runtime code/seeds. Real core politicians are deferred for lack of verified Tier2 sources; C2 uses virtual Full objects only. Do not start C2/D/E as part of C1.

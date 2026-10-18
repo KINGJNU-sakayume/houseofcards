@@ -3,22 +3,15 @@ import { createIssues } from '../issues';
 import { createGovernmentPolicy, createPlatform, editDraft, publishPlatform } from '../policy';
 import { buildCohorts } from '../voters/cohorts';
 import { deriveStream, randomInt, streamKey } from './rng';
-import { politicalModel } from '../../data/seeds/political-model';
 import type { CoreValue } from '../../types/simulation';
 
-export const PLAYER_PARTY_ID = 'player-preview';
+export { PLAYER_PARTY_ID } from '../../types/party';
 export function initializeSimulation(seed: number, date: string) {
-  const ids = [...realityPack.parties.map(p => p.id), 'minor-bloc', PLAYER_PARTY_ID].sort();
+  const ids = [...realityPack.parties.map(p => p.id), 'minor-bloc'].sort();
   const key = streamKey('platform-priors', date);
   let rng = deriveStream(seed, 'platform-priors', date);
   const platforms = ids.map(id => {
     let platform = createPlatform(id, policyLevers);
-    if (id === PLAYER_PARTY_ID) {
-      for (const leverId of Object.keys(politicalModel.playerPreview.platform).sort()) {
-        platform = publishPlatform(editDraft(platform, leverId, politicalModel.playerPreview.platform[leverId]!), leverId, date);
-      }
-      return platform; // Fixed development preview; party creation belongs to Phase C.
-    }
     const party = realityPack.parties.find(p => p.id === id);
     const tags = new Set((party?.platformTags?.value ?? []).flatMap(topic => seedPack.tagInterpretation[topic] ?? []));
     for (const lever of [...policyLevers].sort((a, b) => a.id < b.id ? -1 : 1)) {

@@ -1,4 +1,4 @@
-import type { GovernmentPolicy, LeverDefinition, LeverValue, PartyPlatform } from '../../types/simulation';
+import type { GovernmentPolicy, LeverDefinition, LeverValue, PartyPlatform, PlatformPosition } from '../../types/simulation';
 import { daysBetween } from '../calendar';
 
 export function requireLeverValue(value: number): asserts value is LeverValue {
@@ -21,16 +21,17 @@ export function publishPlatform(platform: PartyPlatform, leverId: string, date: 
   if (!previous) throw new Error('공약 레버를 찾을 수 없습니다.');
   if (previous.publishedValue === previous.draftValue) return platform;
   const directional = previous.draftValue !== 2;
-  const reversal = directional && previous.lastDirectionalValue !== null && previous.lastDirectionalAt !== null &&
-    (previous.draftValue - 2) * (previous.lastDirectionalValue - 2) < 0 &&
-    daysBetween(previous.lastDirectionalAt, date) >= 0 && date <= addMonths(previous.lastDirectionalAt, 6);
-  // Agenda Slot / Staff Capacity publication costs are deferred to Phase C.
+  const reversal = isPublicationReversal(previous, date);
   return { ...platform, positions: { ...platform.positions, [leverId]: { ...previous,
     publishedValue: previous.draftValue, publishedAt: date,
     lastDirectionalValue: directional ? previous.draftValue : previous.lastDirectionalValue,
     lastDirectionalAt: directional ? date : previous.lastDirectionalAt,
     reversalPenalty: Math.min(10000, previous.reversalPenalty + (reversal ? 2500 : 0)),
   } } };
+}
+export function isPublicationReversal(p: PlatformPosition, date: string): boolean {
+  return p.draftValue !== 2 && p.lastDirectionalValue !== null && p.lastDirectionalAt !== null &&
+    (p.draftValue - 2) * (p.lastDirectionalValue - 2) < 0 && daysBetween(p.lastDirectionalAt, date) >= 0 && date <= addMonths(p.lastDirectionalAt, 6);
 }
 export function decayConsistency(platform: PartyPlatform): PartyPlatform {
   return { ...platform, positions: Object.fromEntries(Object.keys(platform.positions).sort().map(id => [id, {

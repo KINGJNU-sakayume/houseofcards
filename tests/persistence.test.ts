@@ -1,6 +1,7 @@
+import { createFoundedGame as createGame } from './helpers';
 import 'fake-indexeddb/auto';
 import { describe, expect, it } from 'vitest';
-import { createGame, dispatchCommand } from '../src/engine/simulation/engine';
+import { dispatchCommand } from '../src/engine/simulation/engine';
 import { stateHash } from '../src/engine/simulation/determinism';
 import { deserializeSave, MAX_SAVE_BYTES, serializeSave } from '../src/persistence/codec';
 import { readSave, writeSave } from '../src/persistence/database';
@@ -21,7 +22,7 @@ describe('save/load', () => {
     expect(() => deserializeSave(serializeSave(game).replace('"seed": 1', '"seed": 2'))).toThrow('무결성');
     expect(() => deserializeSave(serializeSave({ ...game, date: '2026-10-26' }))).toThrow('재생');
     expect(() => deserializeSave(serializeSave({ ...game, rulesetSnapshot: { ...game.rulesetSnapshot, label: 'tampered' } }))).toThrow('재생');
-    expect(() => deserializeSave(' '.repeat(MAX_SAVE_BYTES + 1))).toThrow('2MB');
+    expect(() => deserializeSave(' '.repeat(MAX_SAVE_BYTES + 1))).toThrow('8MB');
   });
   it('uses separate IndexedDB autosave and manual slots', async () => {
     expect(await readSave('autosave')).toBeNull();
