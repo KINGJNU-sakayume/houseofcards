@@ -1,0 +1,66 @@
+import { expect, test } from '@playwright/test';
+import { createGame, dispatchCommand } from '../../src/engine/simulation/engine';
+import { stateHash } from '../../src/engine/simulation/determinism';
+import { serializeSave } from '../../src/persistence/codec';
+
+test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round trip', async ({ page, context }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('./');
+  await expect(page.getByRole('button', { name: '다음 주로' })).toBeEnabled();
+  await expect(page.getByTestId('game-date')).toHaveText('2026.10.19');
+  await page.getByRole('button', { name: '다음 주로' }).click();
+  await expect(page.getByTestId('game-date')).toHaveText('2026.10.26');
+  await expect(page.getByRole('status').filter({ hasText: '자동저장 완료' })).toBeVisible();
+  await page.reload();
+  await expect(page.getByTestId('game-date')).toHaveText('2026.10.26');
+  await page.getByRole('link', { name: '정책', exact: false }).click();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: '다음 단계에서 열립니다.' })).toBeVisible();
+  await page.getByRole('button', { name: '저장 / 불러오기' }).click();
+  await page.getByText('저장 무결성 정보').click();
+  await expect(page.getByText('스키마 1 · 엔진 Web Worker', { exact: false })).toBeVisible();
+  const advanced = dispatchCommand(createGame(20261019), { type: 'ADVANCE_WEEK' });
+  await expect(page.getByTestId('state-hash')).toHaveText(stateHash(advanced));
+  await page.getByRole('button', { name: '수동 저장', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: '수동 저장을 완료' })).toBeVisible();
+  const downloadPromise = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'JSON 내보내기' }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toContain('2026-10-26');
+  await page.getByRole('button', { name: '세이브 관리 닫기' }).click();
+  await page.getByRole('button', { name: '다음 주로' }).click();
+  await expect(page.getByRole('status').filter({ hasText: '자동저장 완료' })).toBeVisible();
+  await page.getByRole('button', { name: '저장 / 불러오기' }).click();
+  await page.getByRole('button', { name: '수동 저장 불러오기' }).click();
+  await page.getByRole('button', { name: '교체하고 계속' }).click();
+  await page.getByText('저장 무결성 정보').click();
+  await expect(page.getByTestId('state-hash')).toHaveText(stateHash(advanced));
+  const imported = createGame(777);
+  await page.getByLabel('JSON 가져오기', { exact: true }).setInputFiles({ name: 'save.json', mimeType: 'application/json', buffer: Buffer.from(serializeSave(imported)) });
+  await page.getByRole('button', { name: '교체하고 계속' }).click();
+  await expect(page.getByTestId('state-hash')).toHaveText(stateHash(imported));
+  await page.getByLabel('JSON 가져오기', { exact: true }).setInputFiles({ name: 'bad.json', mimeType: 'application/json', buffer: Buffer.from('{"bad":true}') });
+  await page.getByRole('button', { name: '교체하고 계속' }).click();
+  await expect(page.getByRole('alert')).toContainText('지원하지 않는');
+  await expect(page.getByTestId('state-hash')).toHaveText(stateHash(imported));
+  await page.getByRole('button', { name: '세이브 관리 닫기' }).click();
+  // After load, the core game needs no external API and can advance offline.
+  await context.setOffline(true);
+  await page.getByRole('button', { name: '다음 주로' }).click();
+  await page.getByRole('link', { name: '홈', exact: true }).click();
+  await expect(page.getByTestId('game-date')).toHaveText('2026.10.26');
+  expect(errors).toEqual([]);
+});
+
+test('main-thread fallback and small screens remain functional', async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(window, 'Worker', { value: undefined }));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+  await page.getByRole('button', { name: '다음 주로' }).click();
+  await expect(page.getByTestId('game-date')).toHaveText('2026.10.26');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.getByRole('button', { name: '저장 / 불러오기' }).click();
+  await page.getByText('저장 무결성 정보').click();
+  await expect(page.getByText('스키마 1 · 엔진 메인 스레드', { exact: false })).toBeVisible();
+});

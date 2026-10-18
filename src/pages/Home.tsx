@@ -1,0 +1,40 @@
+import { useState } from 'react';
+import { useGameStore } from '../state/store';
+import { CALENDAR, daysBetween, isMonthlyTick, MILESTONES, weekCount } from '../engine/calendar';
+import { Icon } from '../components/Icon';
+
+export function Home() {
+  const { game, dispatch, busy, ready } = useGameStore();
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [filter, setFilter] = useState<'all' | 'unread'>('all');
+  const selected = game.inbox.find(message => message.id === selectedId) ?? game.inbox[0]!;
+  const messages = game.inbox.filter(message => filter === 'all' || !message.read);
+  const unread = game.inbox.filter(message => !message.read).length;
+  const days = daysBetween(game.date, CALENDAR.electionDate);
+  const percentage = (game.tick - 1) / (weekCount(CALENDAR) - 1) * 100;
+  return <>
+    <div className="page-heading"><div><p className="eyebrow">PARTY OFFICE / WEEK {String(game.tick).padStart(2, '0')}</p><h1>우리의 다음 페이지.</h1><p className="muted">작은 정당의 시작부터, 새로운 가능성까지.</p></div><span className="outline-badge">시즌 2026 — 2028</span></div>
+    <section className="season-card" aria-labelledby="season-title">
+      <div className="season-copy"><span className="light-eyebrow">HOUSE OF CARDS: KOREA</span><h2 id="season-title">정치는 선택의 기록입니다.</h2><p>정책을 만들고, 사람을 모으고, 지역에 뿌리내리세요.<br />2028년을 향한 첫 주가 여기서 시작됩니다.</p><div className="season-tags"><span>PHASE A · FOUNDATION</span><span>달력 · 저장 프리뷰</span></div></div>
+      <div className="card-architecture" aria-hidden="true"><div className="arch-line" /><i className="playing-card card-one" /><i className="playing-card card-two" /><i className="playing-card card-three" /><i className="playing-card card-four" /><span>BUILD SOMETHING<br />THAT LASTS.</span></div>
+    </section>
+    <section className="overview-grid" aria-label="시즌 현황">
+      <article className="metric"><span>프리뷰 기준일</span><strong data-testid="game-date">{game.date.replaceAll('-', '.')}</strong><small>{isMonthlyTick(game.date) ? '월요일 · 월간 틱 경계' : '월요일 · 주간 틱'}</small></article>
+      <article className="metric"><span>시나리오 선거일까지</span><strong>D−{days}</strong><small>2028.04.12 · 게임 일정</small></article>
+      <article className="metric"><span>주간 일정</span><strong>{String(game.tick).padStart(2, '0')}<em> / {weekCount(CALENDAR)}</em></strong><small>시작 주를 포함한 월요일 {weekCount(CALENDAR)}회</small></article>
+      <article className="metric"><span>정당 현황</span><strong className="unavailable">창당 전</strong><small>지지율 · 의석 · 자원은 후속 단계</small></article>
+    </section>
+    <div className="workspace-grid">
+      <section className="inbox-panel" aria-labelledby="inbox-title">
+        <div className="section-heading"><h2 id="inbox-title"><Icon name="inbox" />받은 편지함 <span className="count">{unread}</span></h2><span className="muted small">일정 기록</span></div>
+        <div className="inbox-tabs" role="group" aria-label="편지 필터"><button aria-pressed={filter === 'all'} className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>전체</button><button aria-pressed={filter === 'unread'} className={filter === 'unread' ? 'active' : ''} onClick={() => setFilter('unread')}>읽지 않음</button></div>
+        <div className="inbox-layout"><div className="message-list">
+          {messages.length === 0 && <p className="empty-list">모든 편지를 읽었습니다.</p>}
+          {messages.map(item => <button key={item.id} onClick={() => setSelectedId(item.id)} className={`message-item ${item.id === selected.id ? 'selected' : ''}`} aria-pressed={item.id === selected.id}><span className="message-meta"><span>{item.sender}</span><span>{item.date.slice(5).replace('-', '.')}</span></span><strong>{!item.read && <i className="unread-dot" />}{item.title}</strong><span className="message-category">{item.priority === 'Important' ? '안내' : item.priority === 'Report' ? '보고' : '참고'} · PHASE A</span></button>)}
+        </div><article className="message-detail"><div className="message-detail-meta"><span className="badge">{selected.priority === 'Important' ? '시작 안내' : '일정 보고'}</span><span>{selected.date}</span></div><h3>{selected.title}</h3><p className="sender">{selected.sender} <span>→ 대표님</span></p><p className="letter-body">{selected.body}</p><div className="letter-footnote">가상 운영 안내 · SAVE SIMULATION</div><button className="button compact" disabled={selected.read || busy || !ready} onClick={() => void dispatch({ type: 'RESPOND_INBOX', messageId: selected.id })}><Icon name="check" size={16} />{selected.read ? '읽음' : '읽음으로 표시'}</button></article></div>
+      </section>
+      <aside className="agenda-panel"><div className="section-heading"><h2><Icon name="clock" />다가오는 일정</h2><span className="muted small">게임 일정</span></div><ol className="timeline">{MILESTONES.slice(0, 4).map(item => <li key={item.date} className={game.date >= item.date ? 'reached' : ''}><time>{item.date.replaceAll('-', '.')}</time><strong>{item.label}</strong><span>Phase {item.phase}에서 구현</span></li>)}</ol><div className="agenda-note">일정은 게임 시나리오입니다.<br />실제 법정 선거 일정의 안내가 아닙니다.</div></aside>
+    </div>
+    <section className="progress-panel"><div><p className="eyebrow">THE ROAD TO 2028</p><h2>{game.status === 'phase_complete' ? 'Phase A의 마지막 주에 도착했습니다.' : '한 주씩, 다음 가능성으로.'}</h2><p className="muted">{game.status === 'phase_complete' ? '선거 계산은 Phase D에서 이어집니다. 지금까지의 기록을 저장하거나 새 시드로 다시 시작할 수 있습니다.' : '시간을 진행하면 날짜와 받은 편지가 갱신되고 자동저장됩니다.'}</p></div><div className="season-progress"><div><span>2026.10.19</span><span>2028.04.10</span></div><progress max={100} value={percentage} aria-label="시즌 일정 진행률" /><span>{game.tick} / {weekCount(CALENDAR)} 주차</span></div></section>
+  </>;
+}
