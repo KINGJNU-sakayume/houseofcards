@@ -1,0 +1,932 @@
+{
+  "id": "kr-b1-2026-10-18",
+  "asOf": "2026-10-18",
+  "completeness": "SIMULATION_FOUNDATIONS",
+  "governingPartyId": "dp",
+  "parties": [
+    {
+      "id": "dp",
+      "name": {
+        "id": "dp-name",
+        "status": "REAL_FACT",
+        "value": "더불어민주당",
+        "source": "https://theminjoo.kr/main/sub/introduce/rule.php",
+        "verifiedAt": "2026-10-18"
+      },
+      "shortName": {
+        "id": "dp-short",
+        "status": "REAL_FACT",
+        "value": "민주당",
+        "source": "https://theminjoo.kr/main/sub/introduce/rule.php",
+        "verifiedAt": "2026-10-18"
+      },
+      "platformTags": {
+        "id": "dp-topics",
+        "status": "REAL_FACT",
+        "value": [
+          "기본서비스",
+          "과학기술",
+          "주거안정"
+        ],
+        "sourceQuality": "primary",
+        "note": "공식 강령의 주제 표제/요약; 수치와 레버 해석은 Seeds에만 둠",
+        "source": "https://theminjoo.kr/main/sub/introduce/rule.php",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "id": "ppp",
+      "name": {
+        "id": "ppp-name",
+        "status": "REAL_FACT",
+        "value": "국민의힘",
+        "source": "https://www.peoplepowerparty.kr/about/preamble",
+        "verifiedAt": "2026-10-18"
+      },
+      "shortName": {
+        "id": "ppp-short",
+        "status": "REAL_FACT",
+        "value": "국민의힘",
+        "source": "https://www.peoplepowerparty.kr/about/preamble",
+        "verifiedAt": "2026-10-18"
+      },
+      "platformTags": {
+        "id": "ppp-topics",
+        "status": "REAL_FACT",
+        "value": [
+          "경제혁신",
+          "약자와의 동행",
+          "정치개혁"
+        ],
+        "sourceQuality": "primary",
+        "note": "공식 강령의 주제 표제/요약; 수치와 레버 해석은 Seeds에만 둠",
+        "source": "https://www.peoplepowerparty.kr/about/preamble",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "id": "reform",
+      "name": {
+        "id": "reform-name",
+        "status": "REAL_FACT",
+        "value": "개혁신당",
+        "source": "https://reformparty.kr/sub/vision",
+        "verifiedAt": "2026-10-18"
+      },
+      "shortName": {
+        "id": "reform-short",
+        "status": "REAL_FACT",
+        "value": "개혁신당",
+        "source": "https://reformparty.kr/sub/vision",
+        "verifiedAt": "2026-10-18"
+      },
+      "platformTags": {
+        "id": "reform-topics",
+        "status": "REAL_FACT",
+        "value": [
+          "시장경제",
+          "과학기술",
+          "재정 건전성"
+        ],
+        "sourceQuality": "primary",
+        "note": "공식 강령의 주제 표제/요약; 수치와 레버 해석은 Seeds에만 둠",
+        "source": "https://reformparty.kr/sub/vision",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "id": "rkp",
+      "name": {
+        "id": "rkp-name",
+        "status": "REAL_FACT",
+        "value": "조국혁신당",
+        "source": "https://rebuildingkoreaparty.kr/about/platform",
+        "verifiedAt": "2026-10-18"
+      },
+      "shortName": {
+        "id": "rkp-short",
+        "status": "REAL_FACT",
+        "value": "조국혁신당",
+        "source": "https://rebuildingkoreaparty.kr/about/platform",
+        "verifiedAt": "2026-10-18"
+      },
+      "platformTags": {
+        "id": "rkp-topics",
+        "status": "REAL_FACT",
+        "value": [
+          "사회권",
+          "복지국가"
+        ],
+        "sourceQuality": "primary",
+        "note": "공식 강령의 주제 표제/요약; 수치와 레버 해석은 Seeds에만 둠",
+        "source": "https://rebuildingkoreaparty.kr/about/platform",
+        "verifiedAt": "2026-10-18"
+      }
+    }
+  ],
+  "politicians": [],
+  "assembly": null,
+  "indicators": [],
+  "facts": [
+    {
+      "id": "governing-party",
+      "status": "REAL_FACT",
+      "value": "dp",
+      "note": "2026-10-06 공식 당 발언의 집권여당 표기 확인; 인명은 적재하지 않음",
+      "source": "https://theminjoo.kr/main/",
+      "verifiedAt": "2026-10-18",
+      "sourceQuality": "primary"
+    },
+    {
+      "id": "threshold-ruling",
+      "status": "REAL_FACT",
+      "value": "2026-01-29: 3% 조항 위헌, 7–2",
+      "sourceQuality": "secondary_news",
+      "source": "https://www.yna.co.kr/view/AKR20260129140451004",
+      "verifiedAt": "2026-10-18"
+    },
+    {
+      "id": "law-transition",
+      "status": "UNVERIFIED_ASSUMPTION",
+      "value": "병립형 복귀 논의; 2028년 규칙 미확정",
+      "sourceQuality": "secondary_news",
+      "resolution": "UNRESOLVED",
+      "note": "9월 보도 확인; 미입법 여부와 각 당의 10월 현재 입장은 검증 미완료",
+      "source": "https://v.daum.net/v/20260909005310824",
+      "verifiedAt": "2026-10-18"
+    },
+    {
+      "id": "current-list-law",
+      "status": "UNVERIFIED_ASSUMPTION",
+      "value": "semi_compensatory",
+      "note": "2020·2024 적용 및 기준일 현행법 원문 재검증 필요"
+    },
+    {
+      "id": "current-district-seats",
+      "status": "UNVERIFIED_ASSUMPTION",
+      "value": 254
+    },
+    {
+      "id": "current-list-seats",
+      "status": "UNVERIFIED_ASSUMPTION",
+      "value": 46
+    },
+    {
+      "id": "government-approval",
+      "status": "UNVERIFIED_ASSUMPTION",
+      "value": null,
+      "asOf": "2026-10-18",
+      "metric": true,
+      "note": "검증된 조사 수치 없음; 숫자 생성하지 않음"
+    }
+  ],
+  "provinceRegions": [
+    {
+      "provinceId": "seoul",
+      "regionId": "seoul"
+    },
+    {
+      "provinceId": "busan",
+      "regionId": "pk"
+    },
+    {
+      "provinceId": "daegu",
+      "regionId": "tk"
+    },
+    {
+      "provinceId": "incheon",
+      "regionId": "gyeonggi-incheon"
+    },
+    {
+      "provinceId": "gwangju",
+      "regionId": "honam"
+    },
+    {
+      "provinceId": "daejeon",
+      "regionId": "chungcheong"
+    },
+    {
+      "provinceId": "ulsan",
+      "regionId": "pk"
+    },
+    {
+      "provinceId": "sejong",
+      "regionId": "chungcheong"
+    },
+    {
+      "provinceId": "gyeonggi",
+      "regionId": "gyeonggi-incheon"
+    },
+    {
+      "provinceId": "gangwon",
+      "regionId": "gangwon"
+    },
+    {
+      "provinceId": "chungbuk",
+      "regionId": "chungcheong"
+    },
+    {
+      "provinceId": "chungnam",
+      "regionId": "chungcheong"
+    },
+    {
+      "provinceId": "jeonbuk",
+      "regionId": "honam"
+    },
+    {
+      "provinceId": "jeonnam",
+      "regionId": "honam"
+    },
+    {
+      "provinceId": "gyeongbuk",
+      "regionId": "tk"
+    },
+    {
+      "provinceId": "gyeongnam",
+      "regionId": "pk"
+    },
+    {
+      "provinceId": "jeju",
+      "regionId": "jeju"
+    }
+  ],
+  "electionDate": {
+    "id": "election-date",
+    "status": "UNVERIFIED_ASSUMPTION",
+    "value": "2028-04-12",
+    "note": "사용자 사양의 일정; 선관위 1차 출처 미확인. 달력은 게임 일정으로만 사용"
+  },
+  "electionLawState": "UNRESOLVED",
+  "regionAgeMarginals": [
+    {
+      "regionId": "seoul",
+      "ageBand": "18-29",
+      "mass": {
+        "id": "demography-seoul-18-29",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 288,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "seoul",
+      "ageBand": "30-44",
+      "mass": {
+        "id": "demography-seoul-30-44",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 414,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "seoul",
+      "ageBand": "45-59",
+      "mass": {
+        "id": "demography-seoul-45-59",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 504,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "seoul",
+      "ageBand": "60+",
+      "mass": {
+        "id": "demography-seoul-60+",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 594,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "ageBand": "18-29",
+      "mass": {
+        "id": "demography-gyeonggi-incheon-18-29",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 512,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "ageBand": "30-44",
+      "mass": {
+        "id": "demography-gyeonggi-incheon-30-44",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 736,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "ageBand": "45-59",
+      "mass": {
+        "id": "demography-gyeonggi-incheon-45-59",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 896,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "ageBand": "60+",
+      "mass": {
+        "id": "demography-gyeonggi-incheon-60+",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 1056,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "chungcheong",
+      "ageBand": "18-29",
+      "mass": {
+        "id": "demography-chungcheong-18-29",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 176,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "chungcheong",
+      "ageBand": "30-44",
+      "mass": {
+        "id": "demography-chungcheong-30-44",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 253,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "chungcheong",
+      "ageBand": "45-59",
+      "mass": {
+        "id": "demography-chungcheong-45-59",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 308,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "chungcheong",
+      "ageBand": "60+",
+      "mass": {
+        "id": "demography-chungcheong-60+",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 363,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "tk",
+      "ageBand": "18-29",
+      "mass": {
+        "id": "demography-tk-18-29",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 160,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "tk",
+      "ageBand": "30-44",
+      "mass": {
+        "id": "demography-tk-30-44",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 230,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "tk",
+      "ageBand": "45-59",
+      "mass": {
+        "id": "demography-tk-45-59",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 280,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "tk",
+      "ageBand": "60+",
+      "mass": {
+        "id": "demography-tk-60+",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 330,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "pk",
+      "ageBand": "18-29",
+      "mass": {
+        "id": "demography-pk-18-29",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 240,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "pk",
+      "ageBand": "30-44",
+      "mass": {
+        "id": "demography-pk-30-44",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 345,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "pk",
+      "ageBand": "45-59",
+      "mass": {
+        "id": "demography-pk-45-59",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 420,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "pk",
+      "ageBand": "60+",
+      "mass": {
+        "id": "demography-pk-60+",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 495,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "honam",
+      "ageBand": "18-29",
+      "mass": {
+        "id": "demography-honam-18-29",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 160,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "honam",
+      "ageBand": "30-44",
+      "mass": {
+        "id": "demography-honam-30-44",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 230,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "honam",
+      "ageBand": "45-59",
+      "mass": {
+        "id": "demography-honam-45-59",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 280,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "honam",
+      "ageBand": "60+",
+      "mass": {
+        "id": "demography-honam-60+",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 330,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "gangwon",
+      "ageBand": "18-29",
+      "mass": {
+        "id": "demography-gangwon-18-29",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 48,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "gangwon",
+      "ageBand": "30-44",
+      "mass": {
+        "id": "demography-gangwon-30-44",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 69,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "gangwon",
+      "ageBand": "45-59",
+      "mass": {
+        "id": "demography-gangwon-45-59",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 84,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "gangwon",
+      "ageBand": "60+",
+      "mass": {
+        "id": "demography-gangwon-60+",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 99,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "jeju",
+      "ageBand": "18-29",
+      "mass": {
+        "id": "demography-jeju-18-29",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 16,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "jeju",
+      "ageBand": "30-44",
+      "mass": {
+        "id": "demography-jeju-30-44",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 23,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "jeju",
+      "ageBand": "45-59",
+      "mass": {
+        "id": "demography-jeju-45-59",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 28,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    },
+    {
+      "regionId": "jeju",
+      "ageBand": "60+",
+      "mass": {
+        "id": "demography-jeju-60+",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": 33,
+        "asOf": "2026-09-30",
+        "metric": true,
+        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "source": "https://jumin.mois.go.kr/ageStatMonth.do",
+        "verifiedAt": "2026-10-18"
+      }
+    }
+  ],
+  "calibrationTargets": [
+    {
+      "regionId": "seoul",
+      "partyId": "dp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-seoul-dp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "seoul",
+      "partyId": "ppp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-seoul-ppp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "partyId": "dp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-gyeonggi-incheon-dp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "gyeonggi-incheon",
+      "partyId": "ppp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-gyeonggi-incheon-ppp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "chungcheong",
+      "partyId": "dp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-chungcheong-dp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "chungcheong",
+      "partyId": "ppp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-chungcheong-ppp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "tk",
+      "partyId": "dp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-tk-dp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "tk",
+      "partyId": "ppp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-tk-ppp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "pk",
+      "partyId": "dp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-pk-dp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "pk",
+      "partyId": "ppp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-pk-ppp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "honam",
+      "partyId": "dp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-honam-dp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "honam",
+      "partyId": "ppp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-honam-ppp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "gangwon",
+      "partyId": "dp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-gangwon-dp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "gangwon",
+      "partyId": "ppp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-gangwon-ppp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "jeju",
+      "partyId": "dp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-jeju-dp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "jeju",
+      "partyId": "ppp",
+      "kind": "latest-election",
+      "target": {
+        "id": "calibration-jeju-ppp",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true,
+        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+      }
+    },
+    {
+      "regionId": "national",
+      "partyId": "all",
+      "kind": "recent-poll-aggregate",
+      "target": {
+        "id": "calibration-recent-polls",
+        "status": "UNVERIFIED_ASSUMPTION",
+        "value": null,
+        "asOf": "2026-10-18",
+        "metric": true
+      }
+    }
+  ]
+}

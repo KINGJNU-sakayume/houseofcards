@@ -1,14 +1,20 @@
-import { PROVINCE_IDS, realityPackSchema, seedPackSchema } from './schema';
+import { PROVINCE_IDS, REGION_IDS, leverSchema, realityPackSchema, seedPackSchema } from './schema';
+import { AGE_BANDS, CORE_VALUES, DOMAIN_IDS, PROFILE_IDS } from '../../types/simulation';
+import { forbiddenNamesIn } from '../../validation/forbidden-names';
+import leverData from '../policy/levers.json' with { type: 'json' };
 
 export interface ValidationReport { errors: string[]; warnings: string[] }
-export function validateData(reality: unknown, seeds: unknown, release = false): ValidationReport {
+export function validateData(reality: unknown, seeds: unknown, release = false, levers: unknown = leverData): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
+  for (const name of forbiddenNamesIn([reality, seeds, levers])) errors.push(`Forbidden poll/media name: ${name}`);
   const parsed = realityPackSchema.safeParse(reality);
   const parsedSeeds = seedPackSchema.safeParse(seeds);
+  const parsedLevers = leverSchema.array().safeParse(levers);
+  if (!parsedLevers.success) errors.push(...parsedLevers.error.issues.map(issue => `levers.${issue.path.join('.')}: ${issue.message}`));
   if (!parsed.success) errors.push(...parsed.error.issues.map(issue => `reality.${issue.path.join('.')}: ${issue.message}`));
   if (!parsedSeeds.success) errors.push(...parsedSeeds.error.issues.map(issue => `seeds.${issue.path.join('.')}: ${issue.message}`));
-  if (!parsed.success || !parsedSeeds.success) return { errors, warnings };
+  if (!parsed.success || !parsedSeeds.success || !parsedLevers.success) return { errors, warnings };
   const pack = parsed.data;
   const seed = parsedSeeds.data;
   const unique = (ids: string[], context: string) => {
@@ -34,7 +40,7 @@ export function validateData(reality: unknown, seeds: unknown, release = false):
       errors.push('Foundation pack must not masquerade as a political baseline');
     }
     warnings.push('FOUNDATION_ONLY: no real political baseline loaded; simulation systems are not implemented in Phase A.');
-  } else if (!pack.assembly || pack.parties.length === 0 || pack.governingPartyId === null) {
+  } else if (pack.completeness === 'BASELINE' && (!pack.assembly || pack.parties.length === 0 || pack.governingPartyId === null)) {
     errors.push('Baseline requires an assembly, parties and governing party');
   }
   if (pack.assembly) {
@@ -47,16 +53,57 @@ export function validateData(reality: unknown, seeds: unknown, release = false):
   }
   const facts = [
     ...pack.facts, ...pack.indicators,
-    ...pack.parties.flatMap(p => [p.name, p.shortName]), ...pack.politicians.map(p => p.name),
+    ...pack.parties.flatMap(p => [p.name, p.shortName, ...(p.platformTags ? [p.platformTags] : [])]), ...pack.politicians.map(p => p.name),
+    ...(pack.electionDate ? [pack.electionDate] : []),
+    ...(pack.regionAgeMarginals ?? []).map(row => row.mass), ...(pack.calibrationTargets ?? []).map(row => row.target),
     ...(pack.assembly ? Object.values(pack.assembly) : []),
   ];
   unique(facts.map(f => f.id), 'facts');
   const metrics = new Set([...pack.indicators, ...(pack.assembly ? Object.values(pack.assembly) : [])].map(f => f.id));
   for (const f of facts) {
     if (f.status === 'REAL_FACT' && (!f.source?.trim() || !f.verifiedAt)) errors.push(`${f.id}: REAL_FACT needs source and verifiedAt`);
+    if (f.status === 'REAL_FACT' && f.metric && typeof f.value !== 'number') errors.push(`${f.id}: REAL_FACT metric needs a numeric measurement`);
     if ((f.metric || metrics.has(f.id)) && !f.asOf) errors.push(`${f.id}: metric needs asOf`);
     if (f.asOf && f.asOf > pack.asOf) errors.push(`${f.id}: metric is newer than pack snapshot`);
+    if (f.verifiedAt && f.verifiedAt > pack.asOf) errors.push(`${f.id}: verification is newer than pack snapshot`);
     if (f.status === 'UNVERIFIED_ASSUMPTION') (release ? errors : warnings).push(`${f.id}: UNVERIFIED_ASSUMPTION`);
+    if (f.status === 'GAME_ASSUMPTION' && pack.completeness !== 'FOUNDATION_ONLY') errors.push(`${f.id}: Seed interpretation does not belong in Reality`);
+  }
+  if (pack.completeness === 'SIMULATION_FOUNDATIONS') {
+    if (!pack.parties.length || !pack.governingPartyId || !pack.electionDate || !pack.calibrationTargets?.length || !pack.facts.some(f => f.id === 'government-approval')) {
+      errors.push('B1 foundations require parties, government, election date, approval status and calibration status');
+    }
+    for (const party of pack.parties) if (!party.platformTags) errors.push(`${party.id}: official platform topics required`);
+    if (!pack.facts.some(f => f.id === 'governing-party' && f.value === pack.governingPartyId)) errors.push('Governing party needs a matching provenance record');
+    for (const region of REGION_IDS) for (const age of AGE_BANDS) {
+      if (pack.regionAgeMarginals?.filter(r => r.regionId === region && r.ageBand === age).length !== 1) errors.push(`Missing/duplicate demographic marginal: ${region}/${age}`);
+    }
+    if (!pack.regionAgeMarginals?.some(row => row.mass.value > 0)) errors.push('Demographic mass must be positive');
+    if (pack.regionAgeMarginals?.some(row => !Number.isSafeInteger(row.mass.value))) errors.push('Demographic masses must be safe integers');
+  }
+  const definitions = parsedLevers.data;
+  unique(definitions.map(l => l.id), 'levers');
+  const driverIds = seed.issueConfigs.flatMap(c => c.drivers.map(d => d.id));
+  unique(driverIds, 'issue drivers');
+  unique(seed.issueConfigs.map(c => c.id), 'issue configs');
+  unique(seed.cohortProfiles.map(p => p.id), 'cohort profiles');
+  for (const id of DOMAIN_IDS) {
+    const count = definitions.filter(l => l.domain === id).length;
+    if (count !== (id === 'housing' || id === 'industry-ai' ? 6 : 5)) errors.push(`${id}: wrong lever count`);
+  }
+  for (const lever of definitions) for (const effect of lever.effectChannels) {
+    if (!driverIds.includes(effect.driverId)) errors.push(`${lever.id}: invalid effect channel ${effect.driverId}`);
+  }
+  for (const value of CORE_VALUES) {
+    if (!definitions.some(l => l.valueTags[value]) && !seed.nonLeverSignals[value]?.length) errors.push(`${value}: unreachable core value`);
+  }
+  for (const profile of PROFILE_IDS) if (!seed.cohortProfiles.some(p => p.id === profile)) errors.push(`Missing profile ${profile}`);
+  for (const id of [...pack.parties.map(p => p.id), 'minor-bloc', 'player-preview']) {
+    if (!seed.partyAttachmentMasses[id]) errors.push(`Missing attachment seed ${id}`);
+  }
+  for (const region of REGION_IDS) for (const age of AGE_BANDS) {
+    const rows = seed.profileConditionals.filter(row => row.regionId === region && row.ageBand === age);
+    if (rows.length !== 1 || rows[0]!.masses.reduce((a, b) => a + b, 0) <= 0) errors.push(`Invalid profile conditional ${region}/${age}`);
   }
   return { errors, warnings };
 }

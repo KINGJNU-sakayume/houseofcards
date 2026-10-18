@@ -52,6 +52,6 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
     {confirm && <div className="confirmation" role="group" aria-label="진행 상황 교체 확인"><p>현재 진행 상황과 자동저장을 교체합니다. 수동 저장 슬롯은 유지됩니다.</p><div className="input-row"><button className="button primary" disabled={store.busy} onClick={() => void confirmAction()}>교체하고 계속</button><button className="button" onClick={() => setConfirm(null)}>취소</button></div></div>}
     {(localError || store.error) && <p className="error" role="alert">{localError || store.error}</p>}
     <p className="dialog-status" role="status">{store.notice}</p>
-    <details className="diagnostics"><summary>저장 무결성 정보</summary><p>상태 해시 <code data-testid="state-hash">{stateHash(store.game)}</code></p><p>스키마 1 · 엔진 {store.engineMode === 'worker' ? 'Web Worker' : '메인 스레드'} · 명령 {store.game.commandLog.length}개</p><p>해시는 손상 확인용이며 암호학적 서명이 아닙니다.</p></details>
+    <details className="diagnostics"><summary>저장 무결성 정보</summary><p>상태 해시 <code data-testid="state-hash">{stateHash(store.game)}</code></p><p>스키마 {store.game.schemaVersion} · 엔진 {store.engineMode === 'worker' ? 'Web Worker' : '메인 스레드'} · 명령 {store.game.commandLog.length}개</p><p>해시는 손상 확인용이며 암호학적 서명이 아닙니다.</p></details>
   </dialog>;
 }

@@ -75,7 +75,7 @@ export const useGameStore = create<Store>((set, get) => {
     }),
     newGame: seed => perform(async () => {
       const game = createGame(seed);
-      set({ game, notice: '새 달력 프리뷰를 시작했습니다.' });
+      set({ game, notice: '새 B1 프리뷰를 시작했습니다.' });
       await persist(game);
     }),
     clearError: () => set({ error: null }),

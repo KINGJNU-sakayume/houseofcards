@@ -1,4 +1,4 @@
-name: Foundation replay batch (not AI balance)
+name: B1 issue/cohort replay batch (not voter or election balance)
 on:
   schedule:
     - cron: '15 18 * * *'
