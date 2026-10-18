@@ -240,13 +240,17 @@ describe('party AI, calibration and saves', () => {
   });
   it('reports unverified calibration instead of treating missing targets as zero', () => {
     const state = createGame(1), report = checkCalibration(state.politics.analysis, realityPack);
-    expect(report.errors).toEqual([]); expect(report.unverified).toHaveLength(17); expect(report.checked).toEqual([]);
-    console.info(`UNVERIFIED calibration targets: ${report.unverified.join(', ')}`);
+    expect(report.unverified).toEqual([]); expect(report.checked).toHaveLength(20);
+    // Verifying observed targets does not certify that development Seeds fit them.
+    expect(report.errors.every(error => error.includes('tolerance'))).toBe(true);
     const fixture = JSON.parse(JSON.stringify(realityPack));
     fixture.calibrationTargets = [{ regionId: 'seoul', partyId: 'dp', kind: 'latest-election', target: { id: 'verified-test-only', status: 'REAL_FACT', source: 'test-fixture', verifiedAt: '2026-10-18', value: state.politics.analysis.byRegion.seoul!.dp! } }];
     expect(checkCalibration(state.politics.analysis, fixture).checked).toEqual(['verified-test-only']);
     fixture.calibrationTargets[0].target.value = SCALE;
     expect(checkCalibration(state.politics.analysis, fixture).errors.join()).toContain('tolerance');
+    fixture.calibrationTargets[0].target.value = null;
+    fixture.calibrationTargets[0].target.status = 'UNVERIFIED_ASSUMPTION';
+    expect(checkCalibration(state.politics.analysis, fixture)).toEqual({ checked: [], unverified: ['verified-test-only'], errors: [] });
   });
   it('round trips schema 2, rejects B1 previews and verifies the full political replay', () => {
     let state = createGame(6);

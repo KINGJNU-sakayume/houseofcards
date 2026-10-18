@@ -1,0 +1,288 @@
+{
+  "snapshot": "2026-10-18",
+  "originalCount": 56,
+  "resolved": 22,
+  "remaining": 34,
+  "items": [
+    {
+      "id": "law-transition",
+      "result": "UNVERIFIED",
+      "detail": "현행법 근거만 확보; 향후 확정 사실의 출처 미확보."
+    },
+    {
+      "id": "current-list-law",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "current-district-seats",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "current-list-seats",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "government-approval",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "election-date",
+      "result": "UNVERIFIED",
+      "detail": "현행법 근거만 확보; 향후 확정 사실의 출처 미확보."
+    },
+    {
+      "id": "demography-seoul-18-29",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-seoul-30-44",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-seoul-45-59",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-seoul-60+",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-gyeonggi-incheon-18-29",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-gyeonggi-incheon-30-44",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-gyeonggi-incheon-45-59",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-gyeonggi-incheon-60+",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-chungcheong-18-29",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-chungcheong-30-44",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-chungcheong-45-59",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-chungcheong-60+",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-tk-18-29",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-tk-30-44",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-tk-45-59",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-tk-60+",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-pk-18-29",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-pk-30-44",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-pk-45-59",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-pk-60+",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-honam-18-29",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-honam-30-44",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-honam-45-59",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-honam-60+",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-gangwon-18-29",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-gangwon-30-44",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-gangwon-45-59",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-gangwon-60+",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-jeju-18-29",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-jeju-30-44",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-jeju-45-59",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "demography-jeju-60+",
+      "result": "UNVERIFIED",
+      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+    },
+    {
+      "id": "calibration-seoul-dp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-seoul-ppp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-gyeonggi-incheon-dp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-gyeonggi-incheon-ppp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-chungcheong-dp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-chungcheong-ppp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-tk-dp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-tk-ppp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-pk-dp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-pk-ppp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-honam-dp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-honam-ppp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-gangwon-dp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-gangwon-ppp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-jeju-dp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-jeju-ppp",
+      "result": "RESOLVED",
+      "detail": "공식 출처와 산식 반영"
+    },
+    {
+      "id": "calibration-recent-polls",
+      "result": "RESOLVED",
+      "detail": "all/빈값 항목을 실제 정당 4개의 파생 평균으로 교체; 원표 9건과 산식 보존."
+    },
+    {
+      "id": "government-approval-fallback",
+      "result": "RESOLVED",
+      "detail": "현실 승인율 39% 확인으로 개발 중립 대체값 제거. 이 가정을 현실 사실로 승격한 것이 아님."
+    }
+  ]
+}

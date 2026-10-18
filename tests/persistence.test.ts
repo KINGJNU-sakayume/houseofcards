@@ -32,4 +32,10 @@ describe('save/load', () => {
     expect(stateHash(await readSave('manual'))).toBe(stateHash(game));
     expect(stateHash(await readSave('autosave'))).toBe(stateHash(advanced));
   });
+  it('explains an older baseline without silently regenerating its politics', () => {
+    const game = createGame(1);
+    const previous = serializeSave({ ...game, realityPackId: 'kr-b1-2026-10-18' });
+    expect(() => deserializeSave(previous)).toThrow('현실 데이터 기준');
+    expect(() => deserializeSave(previous)).toThrow('JSON을 보관');
+  });
 });

@@ -41,3 +41,9 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md`. If any
 - CURRENT STEP is B2. Phase C/D/E needs a separate task; do not add party creation, recruitment, organization, resources, tactical votes or seats in B2.
 - Political-model defaults, preview party, AI and polls are GAME MODEL. Missing real government approval stays null in Reality; the separate neutral development fallback is explicitly UNVERIFIED_ASSUMPTION and blocks release.
 - Schema 2 uses phase=B2; B1 previews are explicitly rejected with JSON preservation guidance, never silently filled with generated politics.
+
+## Data verification revision (2026-10-18)
+- `docs/DATA_VERIFICATION.md` and `docs/data/verification-2026-10-18.json` record the review of all 56 original blockers: 22 resolved, 34 remain. Release gates remain strict.
+- Government approval is now a sourced 39% measurement through 2026-10-15; the obsolete neutral fallback is null. No approval fallback is needed for this pack.
+- Reality pack `kr-b2-2026-10-18-r2` changes deterministic initial politics. Older development saves need explicit JSON preservation guidance; do not replay them against a different baseline.
+- Verified calibration observations do not mean the model fits them. Election observations are 2026 regional council proportional ballots, distinct from national assembly elections and current support; poll means are documented derived statistics, not official pooled estimates.
