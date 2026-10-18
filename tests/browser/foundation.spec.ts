@@ -17,7 +17,7 @@ test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round
   await expect(page.getByTestId('game-date')).toHaveText('2026.10.26');
   await page.getByRole('link', { name: '정책', exact: false }).click();
   await page.reload();
-  await expect(page.getByRole('heading', { name: '다음 단계에서 열립니다.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '어떤 입장을 공표할까요?' })).toBeVisible();
   await page.getByRole('button', { name: '저장 / 불러오기' }).click();
   await page.getByText('저장 무결성 정보').click();
   await expect(page.getByText('스키마 2 · 엔진 Web Worker', { exact: false })).toBeVisible();
@@ -58,9 +58,9 @@ test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round
   expect(errors).toEqual([]);
 });
 
-test('B1 monthly reports stay labelled and persist across several months', async ({ page }) => {
+test('B2 monthly reports stay labelled and persist across several months', async ({ page }) => {
   await page.goto('./');
-  await expect(page.getByText('현재는 B1입니다.', { exact: false })).toBeVisible();
+  await expect(page.getByText('현재는 B2 개발 프리뷰입니다.', { exact: false })).toBeVisible();
   for (let i = 0; i < 15; i++) {
     await page.getByRole('button', { name: '다음 주로' }).click();
     await expect(page.getByRole('status').filter({ hasText: '자동저장 완료' })).toBeVisible();
@@ -84,4 +84,38 @@ test('main-thread fallback and small screens remain functional', async ({ page }
   await page.getByRole('button', { name: '저장 / 불러오기' }).click();
   await page.getByText('저장 무결성 정보').click();
   await expect(page.getByText('스키마 2 · 엔진 메인 스레드', { exact: false })).toBeVisible();
+});
+
+test('B2 policy drafts, publication, issue cards and analysis remain command driven', async ({ page }) => {
+  const errors: string[] = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('./#/data');
+  await expect(page.getByTestId('current-support')).toBeVisible();
+  const current = await page.getByTestId('current-support').textContent();
+  await page.getByRole('link', { name: '정책', exact: false }).click();
+  await page.getByRole('button', { name: '산업·AI', exact: true }).click();
+  const published = page.getByTestId('published-industry-ai.deregulation');
+  await expect(published).toContainText('미공표');
+  await page.getByRole('slider', { name: '규제 완화 초안' }).press('End');
+  await expect(page.getByRole('status').filter({ hasText: '자동저장 완료' })).toBeVisible();
+  await expect(published).toContainText('미공표');
+  await page.getByRole('link', { name: '데이터 허브', exact: false }).click();
+  await expect(page.getByTestId('current-support')).toHaveText(current!);
+  await page.getByRole('link', { name: '정책', exact: false }).click();
+  await page.getByRole('button', { name: '산업·AI', exact: true }).click();
+  await page.getByRole('button', { name: '규제 완화 공표' }).click();
+  await expect(page.getByTestId('published-industry-ai.deregulation')).toContainText('공표 4');
+  await page.reload();
+  await page.getByRole('button', { name: '산업·AI', exact: true }).click();
+  await expect(page.getByTestId('published-industry-ai.deregulation')).toContainText('공표 4');
+  await page.getByRole('button', { name: '다음 주로' }).click();
+  await expect(page.getByRole('status').filter({ hasText: '자동저장 완료' })).toBeVisible();
+  await page.getByRole('link', { name: '대한민국', exact: false }).click();
+  await expect(page.getByRole('meter')).toHaveCount(12);
+  await page.getByRole('link', { name: '데이터 허브', exact: false }).click();
+  await page.getByRole('button', { name: '전국 조사', exact: true }).click();
+  await expect(page.getByRole('rowheader', { name: '없음·미정' })).toBeVisible();
+  await page.getByRole('button', { name: '권역별', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '서울', exact: true })).toBeVisible();
+  expect(errors).toEqual([]);
 });

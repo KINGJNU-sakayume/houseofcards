@@ -33,4 +33,11 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md`. If any
 - typecheck/lint: `npm run typecheck`, `npm run lint`
 - data validation: `npm run validate:data`
 - build: `npm run build`
-- sim (currently B1 issues/cohorts/replay; bots/AI-only are not yet implemented): `npm run sim -- --seeds 20`
+- sim (B2 national political chain, balanced/idle/housing-focused bots; no election balance): `npm run sim -- --seeds 20`
+
+## B2 decisions carried forward
+- B1 was merged in PR #1, merge `a6cd47b3193e8fc0bcc2c19cbe2571026b62c37f`, before B2.
+- User explicitly chose Slice Spec Potential: remove awareness and viability barriers for ALL parties, retaining trust, loyalty, identity and government evaluation. Use awareness=1 and the same neutral viability (median of the two current-support leaders' viability). Do not switch to target-party-only counterfactuals from B2 rev2.
+- CURRENT STEP is B2. Phase C/D/E needs a separate task; do not add party creation, recruitment, organization, resources, tactical votes or seats in B2.
+- Political-model defaults, preview party, AI and polls are GAME MODEL. Missing real government approval stays null in Reality; the separate neutral development fallback is explicitly UNVERIFIED_ASSUMPTION and blocks release.
+- Schema 2 uses phase=B2; B1 previews are explicitly rejected with JSON preservation guidance, never silently filled with generated politics.

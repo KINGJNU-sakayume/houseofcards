@@ -1,4 +1,4 @@
-name: Validate B1 and gate release
+name: Validate B2 and gate release
 on:
   push:
     branches: [main]

@@ -2,12 +2,13 @@ import { PROVINCE_IDS, REGION_IDS, leverSchema, realityPackSchema, seedPackSchem
 import { AGE_BANDS, CORE_VALUES, DOMAIN_IDS, PROFILE_IDS } from '../../types/simulation';
 import { forbiddenNamesIn } from '../../validation/forbidden-names';
 import leverData from '../policy/levers.json' with { type: 'json' };
+import { politicalModel } from '../seeds/political-model';
 
 export interface ValidationReport { errors: string[]; warnings: string[] }
-export function validateData(reality: unknown, seeds: unknown, release = false, levers: unknown = leverData): ValidationReport {
+export function validateData(reality: unknown, seeds: unknown, release = false, levers: unknown = leverData, politicalSeeds: typeof politicalModel = politicalModel): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
-  for (const name of forbiddenNamesIn([reality, seeds, levers])) errors.push(`Forbidden poll/media name: ${name}`);
+  for (const name of forbiddenNamesIn([reality, seeds, levers, politicalSeeds])) errors.push(`Forbidden poll/media name: ${name}`);
   const parsed = realityPackSchema.safeParse(reality);
   const parsedSeeds = seedPackSchema.safeParse(seeds);
   const parsedLevers = leverSchema.array().safeParse(levers);
@@ -105,5 +106,7 @@ export function validateData(reality: unknown, seeds: unknown, release = false, 
     const rows = seed.profileConditionals.filter(row => row.regionId === region && row.ageBand === age);
     if (rows.length !== 1 || rows[0]!.masses.reduce((a, b) => a + b, 0) <= 0) errors.push(`Invalid profile conditional ${region}/${age}`);
   }
+  if (politicalSeeds.governmentApprovalFallback?.status === 'UNVERIFIED_ASSUMPTION') (release ? errors : warnings).push('government-approval-fallback: UNVERIFIED_ASSUMPTION');
+  for (const party of pack.parties) if (pack.completeness === 'SIMULATION_FOUNDATIONS' && !politicalSeeds.parties[party.id]) errors.push(`Missing political model seed ${party.id}`);
   return { errors, warnings };
 }

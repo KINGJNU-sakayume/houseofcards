@@ -55,7 +55,7 @@ export const useGameStore = create<Store>((set, get) => {
     dispatch: command => perform(async () => {
       client ??= new EngineClient();
       const game = await client.dispatch(get().game, command);
-      set({ game, engineMode: client.mode, notice: command.type === 'ADVANCE_WEEK' ? '다음 주로 진행했습니다.' : '편지를 읽음으로 표시했습니다.' });
+      set({ game, engineMode: client.mode, notice: command.type === 'ADVANCE_WEEK' ? '다음 주로 진행했습니다.' : command.type === 'SET_PLATFORM_DRAFT' ? '공약 초안을 저장했습니다. 공표 전에는 영향이 없습니다.' : command.type === 'PUBLISH_PLATFORM' ? '공약을 공표했습니다. 다음 월간 분석에서 전달·인식 변화를 확인하세요.' : '편지를 읽음으로 표시했습니다.' });
       await persist(game);
     }),
     saveManual: () => perform(async () => {
@@ -75,7 +75,7 @@ export const useGameStore = create<Store>((set, get) => {
     }),
     newGame: seed => perform(async () => {
       const game = createGame(seed);
-      set({ game, notice: '새 B1 프리뷰를 시작했습니다.' });
+      set({ game, notice: '새 B2 프리뷰를 시작했습니다.' });
       await persist(game);
     }),
     clearError: () => set({ error: null }),

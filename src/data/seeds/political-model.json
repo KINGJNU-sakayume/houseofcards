@@ -1,0 +1,139 @@
+{
+  "modelVersion": "B2.1",
+  "label": "GAME MODEL · 개발 프리뷰 · 현실 지지율/정당 평가 아님",
+  "utility": {
+    "fit": 1400000,
+    "identity": 450000,
+    "trust": 750000,
+    "loyalty": 1450000,
+    "government": 600000,
+    "viability": 800000,
+    "none": 1300000
+  },
+  "dynamics": {
+    "awarenessGrowth": 85000,
+    "awarenessDecay": 3500,
+    "awarenessCap": 980000,
+    "ownershipRate": 100000,
+    "identityRate": 120000,
+    "loyaltyErosion": 7000,
+    "approvalRate": 80000
+  },
+  "scenario": {
+    "rulesetId": "parallel_46_open",
+    "label": "병립형 가정 · 전국 지지 인식만 · 의석 배분 미구현",
+    "listSeats": 46,
+    "legalThresholdVoteShare": 0,
+    "electabilityKnee": 80000
+  },
+  "viability": {
+    "thresholdWeight": 650000,
+    "thresholdWidth": 25000,
+    "electabilityWidth": 100000,
+    "monthlyCap": 50000
+  },
+  "parties": {
+    "dp": {
+      "awareness": 930000,
+      "expertise": 600000,
+      "ownership": 540000,
+      "viability": 850000,
+      "oppositionAlignment": 0
+    },
+    "ppp": {
+      "awareness": 920000,
+      "expertise": 600000,
+      "ownership": 520000,
+      "viability": 850000,
+      "oppositionAlignment": 5
+    },
+    "reform": {
+      "awareness": 440000,
+      "expertise": 420000,
+      "ownership": 300000,
+      "viability": 350000,
+      "oppositionAlignment": 2
+    },
+    "rkp": {
+      "awareness": 420000,
+      "expertise": 410000,
+      "ownership": 300000,
+      "viability": 350000,
+      "oppositionAlignment": 2
+    },
+    "minor-bloc": {
+      "awareness": 330000,
+      "expertise": 320000,
+      "ownership": 220000,
+      "viability": 250000,
+      "oppositionAlignment": 1
+    },
+    "player-preview": {
+      "awareness": 50000,
+      "expertise": 350000,
+      "ownership": 100000,
+      "viability": 120000,
+      "oppositionAlignment": 1
+    }
+  },
+  "playerPreview": {
+    "name": "주거 실험 정당",
+    "declaredValues": [
+      "housing",
+      "safety-net",
+      "science"
+    ],
+    "platform": {
+      "housing.private-supply": 3,
+      "housing.public-housing": 4,
+      "housing.redevelopment": 2,
+      "housing.first-home-finance": 3,
+      "housing.property-tax": 3,
+      "housing.rent-support": 4
+    }
+  },
+  "governmentApprovalFallback": {
+    "value": 0,
+    "status": "UNVERIFIED_ASSUMPTION",
+    "note": "측정값 부재 시 개발 모형의 중립 출발점. 실제 국정평가가 아님"
+  },
+  "ai": {
+    "changeChance": 420000,
+    "monthlyCap": 1,
+    "quarterlyCap": 2,
+    "diversityFloor": 100000,
+    "governmentQuarterlyCap": 1,
+    "priorPenalty": 650000
+  },
+  "polling": {
+    "sampleSize": 1200,
+    "designEffectPermille": 1150,
+    "houseEffectBound": 2000,
+    "analysisMargin": 15000,
+    "houses": [
+      {
+        "id": "naru",
+        "name": "나루 의견연구소"
+      },
+      {
+        "id": "morae",
+        "name": "모래숲 조사실"
+      },
+      {
+        "id": "saegyeol",
+        "name": "새결 공론연구소"
+      }
+    ],
+    "coverageBandNational": [
+      880000,
+      995000
+    ]
+  },
+  "smoke": {
+    "monthlySupportChangeCap": 90000,
+    "maxPartySupport": 800000,
+    "minMajorSupport": 30000,
+    "calibrationTolerance": 50000
+  },
+  "potentialDefinition": "all-parties"
+}

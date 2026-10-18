@@ -2,7 +2,7 @@
 
 Repository: `KINGJNU-sakayume/houseofcards`
 
-**CURRENT STEP: B1**   <!-- Run B1 first. Stop and report. Then change to B2 for the second task. -->
+**CURRENT STEP: B2**   <!-- Run B1 first. Stop and report. Then change to B2 for the second task. -->
 
 Phase B is split into two steps. Execute **only the step named above**. When the step is done, stop and report; do not start the other step or any Phase C/D/E work.
 

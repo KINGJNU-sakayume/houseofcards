@@ -1,4 +1,5 @@
 import type { Cohort, GovernmentPolicy, IssueState, PartyPlatform } from './simulation';
+import type { OpinionRuleset, PoliticsState } from './politics';
 export type ISODate = string;
 export interface CalendarConfig {
   startDate: ISODate;
@@ -49,12 +50,12 @@ export interface InboxMessage {
 export interface GameEvent {
   id: string;
   date: ISODate;
-  type: 'SESSION_STARTED' | 'WEEK_ADVANCED' | 'MONTH_BOUNDARY' | 'INBOX_READ' | 'PLATFORM_DRAFTED' | 'PLATFORM_PUBLISHED';
+  type: 'SESSION_STARTED' | 'WEEK_ADVANCED' | 'MONTH_BOUNDARY' | 'INBOX_READ' | 'PLATFORM_DRAFTED' | 'PLATFORM_PUBLISHED' | 'AI_PLATFORM_SHIFT' | 'GOVERNMENT_ENACTED' | 'POLL_PUBLISHED';
   detail: string;
 }
 export interface GameState {
   schemaVersion: 2;
-  phase: 'B1';
+  phase: 'B2';
   seed: number;
   rngState: Record<string, number>;
   realityPackId: string;
@@ -64,8 +65,9 @@ export interface GameState {
   governmentPolicy: GovernmentPolicy;
   issues: IssueState[];
   cohorts: Cohort[];
-  rulesetId: 'foundation_calendar_only';
-  rulesetSnapshot: FoundationRuleset;
+  politics: PoliticsState;
+  rulesetId: 'parallel_46_open';
+  rulesetSnapshot: OpinionRuleset;
   date: ISODate;
   tick: number;
   status: 'active' | 'phase_complete';
