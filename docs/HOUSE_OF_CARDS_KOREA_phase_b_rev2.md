@@ -2,7 +2,11 @@
 
 Repository: `KINGJNU-sakayume/houseofcards`
 
-**CURRENT STEP: B2**   <!-- Run B1 first. Stop and report. Then change to B2 for the second task. -->
+**STATUS: B1 and B2 are COMPLETE and merged (PR #1, #2, #3). This file is a historical task prompt — do not execute it again.** Next work is Phase C; see its own prompt.
+
+> Corrections after implementation: (1) Potential uses the user-confirmed Slice Spec definition (see §14 note). (2) Reality pack is `kr-b2-2026-10-18-r3`; the 56 original UNVERIFIED blockers were resolved (`docs/DATA_VERIFICATION.md`). (3) Where this file and `docs/DECISIONS.md` differ, DECISIONS.md and the code win.
+
+<!-- Original marker: CURRENT STEP: B2 -->
 
 Phase B is split into two steps. Execute **only the step named above**. When the step is done, stop and report; do not start the other step or any Phase C/D/E work.
 
@@ -191,7 +195,7 @@ Mid-term elections are heavily shaped by evaluation of the government. Let `a_t 
 # 14. Potential vs Current (mandatory)
 
 - **Current Support:** the model as above with real `A`, `V`, `T`, `L`, `G`.
-- **Potential Support:** counterfactual with `A_cp = 1` for the party and `V_p` set to a **neutral value = the median of the top two parties' V**. Trust, loyalty, identity, and government evaluation are **retained**.
+- **Potential Support (as implemented; user-confirmed, supersedes the original wording of this bullet):** counterfactual for **all parties**: `A_cp = 1` and a single shared neutral `V` = the rounded mean of the `V` of the two parties leading in current support (ties by party id). Trust, loyalty, identity, and government evaluation are **retained**. (The original text here applied the counterfactual to the analysed party only; that was rejected.)
 - Potential ≥ Current is expected for a small new party but is not enforced by clamping. For major parties Potential may be lower than Current; that is acceptable. If a result looks wrong, inspect the model.
 
 # 15. Barrier decomposition
