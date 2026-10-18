@@ -24,11 +24,11 @@ function fixture() {
   return { pack, seeds };
 }
 describe('spec §33 data validator', () => {
-  it('keeps B1 data immutable, blocks unresolved releases and validates a complete fixture', () => {
+  it('keeps data immutable, accepts the sourced snapshot and validates a complete fixture', () => {
     expect(Object.isFrozen(realityPack.provinceRegions)).toBe(true);
     expect(validateData(realityPack, seedPack).errors).toEqual([]);
-    expect(validateData(realityPack, seedPack, true).errors.join()).toContain('UNVERIFIED_ASSUMPTION');
-    expect(validateData(realityPack, seedPack).warnings.join()).toContain('UNVERIFIED_ASSUMPTION');
+    expect(validateData(realityPack, seedPack, true).errors).toEqual([]);
+    expect(validateData(realityPack, seedPack).warnings).toEqual([]);
     const { pack, seeds } = fixture();
     expect(validateData(pack, seeds, true, undefined, { ...politicalModel, governmentApprovalFallback: null }).errors).toEqual([]);
   });

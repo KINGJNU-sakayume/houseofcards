@@ -1,5 +1,5 @@
 {
-  "id": "kr-b1-2026-10-18",
+  "id": "kr-b2-2026-10-18-r3",
   "asOf": "2026-10-18",
   "completeness": "SIMULATION_FOUNDATIONS",
   "governingPartyId": "dp",
@@ -140,44 +140,64 @@
     {
       "id": "threshold-ruling",
       "status": "REAL_FACT",
-      "value": "2026-01-29: 3% 조항 위헌, 7–2",
-      "sourceQuality": "secondary_news",
-      "source": "https://www.yna.co.kr/view/AKR20260129140451004",
-      "verifiedAt": "2026-10-18"
+      "value": "2026-01-29: 공직선거법 제189조제1항 위헌 (3% 득표 또는 지역구 5석 의석할당요건)",
+      "sourceQuality": "primary",
+      "source": "https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&joBrNo=00&joNo=0189&lsiSeq=290229&urlMode=lsScJoRltInfoR",
+      "verifiedAt": "2026-10-18",
+      "asOf": "2026-10-18",
+      "note": "2020헌마956·2024헌마271(병합) 단순위헌 주석 및 NARS 현안분석414호 확인. 제189조제2·3항 배분 규정 전체가 폐지된 것으로 해석하지 않음."
     },
     {
       "id": "law-transition",
-      "status": "UNVERIFIED_ASSUMPTION",
-      "value": "병립형 복귀 논의; 2028년 규칙 미확정",
-      "sourceQuality": "secondary_news",
+      "status": "REAL_FACT",
+      "value": "2026-10-18 현재 준연동형 배분 규정 유지; 제189조제1항 대체 기준 및 병립형 복귀 개정 미공포; 2028 적용 규칙 UNRESOLVED",
+      "sourceQuality": "primary",
       "resolution": "UNRESOLVED",
-      "note": "9월 보도 확인; 미입법 여부와 각 당의 10월 현재 입장은 검증 미완료",
-      "source": "https://v.daum.net/v/20260909005310824",
-      "verifiedAt": "2026-10-18"
+      "note": "현행 2026-10-02 시행 제189조 원문·위헌 주석을 대조하고 사용자가 제공한 2026-10-18 기준 미공포 확인을 함께 기록. 정당별 발언·발의안은 법률 사실에서 제외. 미확정 상태를 확인한 것이며 미래 제도 확정이나 배분 규정 전체 소멸을 뜻하지 않음. 국회입법조사처 보고서 근거: https://nsp.nanet.go.kr/plan/subject/detail.do?nationalPlanControlNo=PLAN0000062352",
+      "source": "https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&joBrNo=00&joNo=0189&lsiSeq=290229&urlMode=lsScJoRltInfoR",
+      "verifiedAt": "2026-10-18",
+      "asOf": "2026-10-18"
     },
     {
       "id": "current-list-law",
-      "status": "UNVERIFIED_ASSUMPTION",
+      "status": "REAL_FACT",
       "value": "semi_compensatory",
-      "note": "2020·2024 적용 및 기준일 현행법 원문 재검증 필요"
+      "note": "2026-10-02 시행본 제189조제2·3항의 연동배분 산식 확인. 제1항에는 2026-01-29 단순위헌 주석; 3% 문턱을 유효한 현행 규칙으로 복원하지 않음. 2028 ruleset은 여전히 UNRESOLVED.",
+      "source": "https://www.law.go.kr/LSW//lsSideInfoP.do?docCls=jo&joBrNo=00&joNo=0189&lsiSeq=290229&urlMode=lsScJoRltInfoR",
+      "verifiedAt": "2026-10-18",
+      "asOf": "2026-10-18",
+      "sourceQuality": "primary"
     },
     {
       "id": "current-district-seats",
-      "status": "UNVERIFIED_ASSUMPTION",
-      "value": 254
+      "status": "REAL_FACT",
+      "value": 254,
+      "source": "https://www.law.go.kr/LSW/lsRvsDocListP.do?chrClsCd=010202&lsId=001725&lsRvsGubun=all",
+      "verifiedAt": "2026-10-18",
+      "asOf": "2026-10-18",
+      "sourceQuality": "primary",
+      "note": "공직선거법 제21조제1항, 2024-03-08 개정의 지역구 254/비례 46 확인. 현행 정수이며 2028년 선거구/정수 확정의 의미가 아님."
     },
     {
       "id": "current-list-seats",
-      "status": "UNVERIFIED_ASSUMPTION",
-      "value": 46
+      "status": "REAL_FACT",
+      "value": 46,
+      "source": "https://www.law.go.kr/LSW/lsRvsDocListP.do?chrClsCd=010202&lsId=001725&lsRvsGubun=all",
+      "verifiedAt": "2026-10-18",
+      "asOf": "2026-10-18",
+      "sourceQuality": "primary",
+      "note": "공직선거법 제21조제1항, 2024-03-08 개정의 지역구 254/비례 46 확인. 현행 정수이며 2028년 선거구/정수 확정의 의미가 아님."
     },
     {
       "id": "government-approval",
-      "status": "UNVERIFIED_ASSUMPTION",
-      "value": null,
-      "asOf": "2026-10-18",
+      "status": "REAL_FACT",
+      "value": 39,
+      "asOf": "2026-10-15",
       "metric": true,
-      "note": "검증된 조사 수치 없음; 숫자 생성하지 않음"
+      "note": "2026-10-16 공개 조사 원문: 전국 만18세 이상 1003명, 10/13~15 무선전화 가상번호 CATI, 긍정 39%, 부정 52%, 유보 9%, 응답률 10.4%, 95% 표본오차 ±3.1%p. 단위는 긍정 응답 비율(%), 실제 국정성과 점수 아님.",
+      "source": "https://www.gallup.co.kr/gallupdb/reportContent.asp?seqNo=1662",
+      "verifiedAt": "2026-10-18",
+      "sourceQuality": "primary"
     }
   ],
   "provinceRegions": [
@@ -252,9 +272,14 @@
   ],
   "electionDate": {
     "id": "election-date",
-    "status": "UNVERIFIED_ASSUMPTION",
+    "status": "REAL_FACT",
     "value": "2028-04-12",
-    "note": "사용자 사양의 일정; 선관위 1차 출처 미확인. 달력은 게임 일정으로만 사용"
+    "note": "2028-04-12 예정. 사용자 확인과 공직선거법 제34조에 따른 현행법상 예정일 기록; 선관위 확정 공고 확인 또는 미래 실시 보장 아님. 법 개정·공휴일 예외에 따라 변경 가능.",
+    "source": "https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&joBrNo=00&joNo=0034&lsiSeq=290229&urlMode=lsScJoRltInfoR",
+    "scheduleStatus": "SCHEDULED",
+    "asOf": "2026-10-18",
+    "verifiedAt": "2026-10-18",
+    "sourceQuality": "primary"
   },
   "electionLawState": "UNRESOLVED",
   "regionAgeMarginals": [
@@ -263,13 +288,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-seoul-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 288,
+        "status": "REAL_FACT",
+        "value": 1378782,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -277,13 +303,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-seoul-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 414,
+        "status": "REAL_FACT",
+        "value": 2132014,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -291,13 +318,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-seoul-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 504,
+        "status": "REAL_FACT",
+        "value": 2150761,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -305,13 +333,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-seoul-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 594,
+        "status": "REAL_FACT",
+        "value": 2613628,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -319,13 +348,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-gyeonggi-incheon-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 512,
+        "status": "REAL_FACT",
+        "value": 2170992,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -333,13 +363,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-gyeonggi-incheon-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 736,
+        "status": "REAL_FACT",
+        "value": 3637671,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -347,13 +378,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-gyeonggi-incheon-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 896,
+        "status": "REAL_FACT",
+        "value": 4249602,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -361,13 +393,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-gyeonggi-incheon-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 1056,
+        "status": "REAL_FACT",
+        "value": 4462022,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -375,13 +408,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-chungcheong-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 176,
+        "status": "REAL_FACT",
+        "value": 702186,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -389,13 +423,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-chungcheong-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 253,
+        "status": "REAL_FACT",
+        "value": 1086368,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -403,13 +438,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-chungcheong-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 308,
+        "status": "REAL_FACT",
+        "value": 1353835,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -417,13 +453,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-chungcheong-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 363,
+        "status": "REAL_FACT",
+        "value": 1675023,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -431,13 +468,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-tk-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 160,
+        "status": "REAL_FACT",
+        "value": 543391,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -445,13 +483,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-tk-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 230,
+        "status": "REAL_FACT",
+        "value": 840538,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -459,13 +498,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-tk-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 280,
+        "status": "REAL_FACT",
+        "value": 1187430,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -473,13 +513,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-tk-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 330,
+        "status": "REAL_FACT",
+        "value": 1676434,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -487,13 +528,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-pk-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 240,
+        "status": "REAL_FACT",
+        "value": 846241,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -501,13 +543,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-pk-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 345,
+        "status": "REAL_FACT",
+        "value": 1367965,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -515,13 +558,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-pk-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 420,
+        "status": "REAL_FACT",
+        "value": 1875068,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -529,13 +573,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-pk-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 495,
+        "status": "REAL_FACT",
+        "value": 2469745,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -543,13 +588,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-honam-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 160,
+        "status": "REAL_FACT",
+        "value": 577742,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -557,13 +603,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-honam-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 230,
+        "status": "REAL_FACT",
+        "value": 817570,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -571,13 +618,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-honam-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 280,
+        "status": "REAL_FACT",
+        "value": 1186501,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -585,13 +633,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-honam-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 330,
+        "status": "REAL_FACT",
+        "value": 1672137,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -599,13 +648,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-gangwon-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 48,
+        "status": "REAL_FACT",
+        "value": 170710,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -613,13 +663,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-gangwon-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 69,
+        "status": "REAL_FACT",
+        "value": 247732,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -627,13 +678,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-gangwon-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 84,
+        "status": "REAL_FACT",
+        "value": 357066,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -641,13 +693,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-gangwon-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 99,
+        "status": "REAL_FACT",
+        "value": 555232,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -655,13 +708,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-jeju-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 16,
+        "status": "REAL_FACT",
+        "value": 76649,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -669,13 +723,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-jeju-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 23,
+        "status": "REAL_FACT",
+        "value": 123624,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -683,13 +738,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-jeju-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 28,
+        "status": "REAL_FACT",
+        "value": 172121,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -697,13 +753,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-jeju-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 33,
+        "status": "REAL_FACT",
+        "value": 191242,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     }
   ],
@@ -714,11 +771,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-seoul-dp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 438655,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 2287569 / 전체 정당 유효투표수 5214958; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -727,11 +787,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-seoul-ppp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 440098,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 2295093 / 전체 정당 유효투표수 5214958; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -740,11 +803,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-gyeonggi-incheon-dp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 492760,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 4117641 / 전체 정당 유효투표수 8356276; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -753,11 +819,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-gyeonggi-incheon-ppp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 389444,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 3254300 / 전체 정당 유효투표수 8356276; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -766,11 +835,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-chungcheong-dp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 482547,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 1353071 / 전체 정당 유효투표수 2804019; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -779,11 +851,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-chungcheong-ppp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 441452,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 1237840 / 전체 정당 유효투표수 2804019; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -792,11 +867,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-tk-dp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 315313,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 818899 / 전체 정당 유효투표수 2597102; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -805,11 +883,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-tk-ppp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 623814,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 1620109 / 전체 정당 유효투표수 2597102; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -818,11 +899,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-pk-dp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 427365,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 1751055 / 전체 정당 유효투표수 4097333; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -831,11 +915,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-pk-ppp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 493327,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 2021326 / 전체 정당 유효투표수 4097333; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -844,11 +931,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-honam-dp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 677683,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 1728753 / 전체 정당 유효투표수 2550977; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -857,11 +947,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-honam-ppp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 86523,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 220718 / 전체 정당 유효투표수 2550977; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -870,11 +963,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-gangwon-dp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 458132,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 385027 / 전체 정당 유효투표수 840428; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -883,11 +979,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-gangwon-ppp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 468762,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 393961 / 전체 정당 유효투표수 840428; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -896,11 +995,14 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-jeju-dp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 493744,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 154818 / 전체 정당 유효투표수 313559; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -909,23 +1011,78 @@
       "kind": "latest-election",
       "target": {
         "id": "calibration-jeju-ppp",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
+        "status": "REAL_FACT",
+        "value": 328726,
+        "asOf": "2026-06-03",
         "metric": true,
-        "note": "최신 선거별 기준일·득표 원표 검증 대기; 가짜 타깃 없음"
+        "note": "2026-06-03 광역의원비례대표 정당투표. 권역 득표수 103075 / 전체 정당 유효투표수 313559; Q6 반올림. 시도 득표율의 단순평균 아님. 국회의원선거 결과/현실 현재 지지율과 구별; 모형 교정 적합도 별도.",
+        "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
       "regionId": "national",
-      "partyId": "all",
+      "partyId": "dp",
       "kind": "recent-poll-aggregate",
       "target": {
-        "id": "calibration-recent-polls",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": null,
-        "asOf": "2026-10-18",
-        "metric": true
+        "id": "calibration-recent-polls-dp",
+        "status": "REAL_FACT",
+        "value": 373333,
+        "asOf": "2026-10-10",
+        "metric": true,
+        "source": "https://www.nesdc.go.kr/portal/bbs/B0000025/view.do?menuNo=200500&nttId=2369",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary",
+        "note": "2026-10-13 공개 등록주간 9건, 조사별 동일 가중 평균을 Q6로 반올림한 파생 통계. 공식 통합 추정치 아님; 조사별 방법 차이·동일 기관 반복 포함. 원표 행/표본/산식은 docs/data/polls-2026-10-13.json. 기준일 최신 전체 조사 포괄 주장 아님."
+      }
+    },
+    {
+      "regionId": "national",
+      "partyId": "ppp",
+      "kind": "recent-poll-aggregate",
+      "target": {
+        "id": "calibration-recent-polls-ppp",
+        "status": "REAL_FACT",
+        "value": 384556,
+        "asOf": "2026-10-10",
+        "metric": true,
+        "source": "https://www.nesdc.go.kr/portal/bbs/B0000025/view.do?menuNo=200500&nttId=2369",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary",
+        "note": "2026-10-13 공개 등록주간 9건, 조사별 동일 가중 평균을 Q6로 반올림한 파생 통계. 공식 통합 추정치 아님; 조사별 방법 차이·동일 기관 반복 포함. 원표 행/표본/산식은 docs/data/polls-2026-10-13.json. 기준일 최신 전체 조사 포괄 주장 아님."
+      }
+    },
+    {
+      "regionId": "national",
+      "partyId": "rkp",
+      "kind": "recent-poll-aggregate",
+      "target": {
+        "id": "calibration-recent-polls-rkp",
+        "status": "REAL_FACT",
+        "value": 58222,
+        "asOf": "2026-10-10",
+        "metric": true,
+        "source": "https://www.nesdc.go.kr/portal/bbs/B0000025/view.do?menuNo=200500&nttId=2369",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary",
+        "note": "2026-10-13 공개 등록주간 9건, 조사별 동일 가중 평균을 Q6로 반올림한 파생 통계. 공식 통합 추정치 아님; 조사별 방법 차이·동일 기관 반복 포함. 원표 행/표본/산식은 docs/data/polls-2026-10-13.json. 기준일 최신 전체 조사 포괄 주장 아님."
+      }
+    },
+    {
+      "regionId": "national",
+      "partyId": "reform",
+      "kind": "recent-poll-aggregate",
+      "target": {
+        "id": "calibration-recent-polls-reform",
+        "status": "REAL_FACT",
+        "value": 21333,
+        "asOf": "2026-10-10",
+        "metric": true,
+        "source": "https://www.nesdc.go.kr/portal/bbs/B0000025/view.do?menuNo=200500&nttId=2369",
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary",
+        "note": "2026-10-13 공개 등록주간 9건, 조사별 동일 가중 평균을 Q6로 반올림한 파생 통계. 공식 통합 추정치 아님; 조사별 방법 차이·동일 기관 반복 포함. 원표 행/표본/산식은 docs/data/polls-2026-10-13.json. 기준일 최신 전체 조사 포괄 주장 아님."
       }
     }
   ]

@@ -1,0 +1,180 @@
+{
+  "source": "https://info.nec.go.kr/electioninfo/electionInfo_report.xhtml?electionId=0020260603&requestURI=%2Felectioninfo%2F0020260603%2Fvc%2Fvccp09.jsp&topMenuId=VC&secondMenuId=VCCP09&menuId=VCCP09&statementId=VCCP09_%238&electionCode=8&cityCode=0&townCode=-1&sggCityCode=0&sggTownCode=0",
+  "retrievedAt": "2026-10-18",
+  "asOf": "2026-06-03",
+  "contest": "광역의원비례대표선거 (electionCode=8); 국회의원선거가 아님",
+  "rawSha256": "bb848fb17a06fc68b59a4540670bc47c4172da3746846f64ebb3e621124c9bdb",
+  "regions": {
+    "seoul": [
+      "서울특별시"
+    ],
+    "gyeonggi-incheon": [
+      "경기도",
+      "인천광역시"
+    ],
+    "chungcheong": [
+      "대전광역시",
+      "세종특별자치시",
+      "충청북도",
+      "충청남도"
+    ],
+    "tk": [
+      "대구광역시",
+      "경상북도"
+    ],
+    "pk": [
+      "부산광역시",
+      "울산광역시",
+      "경상남도"
+    ],
+    "honam": [
+      "광주광역시",
+      "전라남도",
+      "전북특별자치도"
+    ],
+    "gangwon": [
+      "강원특별자치도"
+    ],
+    "jeju": [
+      "제주특별자치도"
+    ]
+  },
+  "rows": [
+    {
+      "province": "서울특별시",
+      "validVotes": 5214958,
+      "ballots": 5287889,
+      "invalidVotes": 72931,
+      "dp": 2287569,
+      "ppp": 2295093
+    },
+    {
+      "province": "광주광역시",
+      "validVotes": 635130,
+      "ballots": 645894,
+      "invalidVotes": 10764,
+      "dp": 409659,
+      "ppp": 52472
+    },
+    {
+      "province": "전라남도",
+      "validVotes": 994138,
+      "ballots": 1024244,
+      "invalidVotes": 30106,
+      "dp": 709323,
+      "ppp": 75774
+    },
+    {
+      "province": "부산광역시",
+      "validVotes": 1748978,
+      "ballots": 1775323,
+      "invalidVotes": 26345,
+      "dp": 774346,
+      "ppp": 866687
+    },
+    {
+      "province": "대구광역시",
+      "validVotes": 1294257,
+      "ballots": 1316389,
+      "invalidVotes": 22132,
+      "dp": 431221,
+      "ppp": 785564
+    },
+    {
+      "province": "인천광역시",
+      "validVotes": 1523951,
+      "ballots": 1548583,
+      "invalidVotes": 24632,
+      "dp": 767626,
+      "ppp": 626374
+    },
+    {
+      "province": "대전광역시",
+      "validVotes": 730514,
+      "ballots": 746445,
+      "invalidVotes": 15931,
+      "dp": 355827,
+      "ppp": 316501
+    },
+    {
+      "province": "울산광역시",
+      "validVotes": 588949,
+      "ballots": 599734,
+      "invalidVotes": 10785,
+      "dp": 250093,
+      "ppp": 272620
+    },
+    {
+      "province": "세종특별자치시",
+      "validVotes": 190865,
+      "ballots": 193202,
+      "invalidVotes": 2337,
+      "dp": 98485,
+      "ppp": 67818
+    },
+    {
+      "province": "경기도",
+      "validVotes": 6832325,
+      "ballots": 6929654,
+      "invalidVotes": 97329,
+      "dp": 3350015,
+      "ppp": 2627926
+    },
+    {
+      "province": "강원특별자치도",
+      "validVotes": 840428,
+      "ballots": 858117,
+      "invalidVotes": 17689,
+      "dp": 385027,
+      "ppp": 393961
+    },
+    {
+      "province": "충청북도",
+      "validVotes": 815089,
+      "ballots": 832551,
+      "invalidVotes": 17462,
+      "dp": 389433,
+      "ppp": 366445
+    },
+    {
+      "province": "충청남도",
+      "validVotes": 1067551,
+      "ballots": 1091514,
+      "invalidVotes": 23963,
+      "dp": 509326,
+      "ppp": 487076
+    },
+    {
+      "province": "전북특별자치도",
+      "validVotes": 921709,
+      "ballots": 946581,
+      "invalidVotes": 24872,
+      "dp": 609771,
+      "ppp": 92472
+    },
+    {
+      "province": "경상북도",
+      "validVotes": 1302845,
+      "ballots": 1338407,
+      "invalidVotes": 35562,
+      "dp": 387678,
+      "ppp": 834545
+    },
+    {
+      "province": "경상남도",
+      "validVotes": 1759406,
+      "ballots": 1793174,
+      "invalidVotes": 33768,
+      "dp": 726616,
+      "ppp": 882019
+    },
+    {
+      "province": "제주특별자치도",
+      "validVotes": 313559,
+      "ballots": 318988,
+      "invalidVotes": 5429,
+      "dp": 154818,
+      "ppp": 103075
+    }
+  ]
+}

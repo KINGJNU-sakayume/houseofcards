@@ -9,7 +9,7 @@ export function estimateRange(value: number, signed = false) {
   return `${percent(signed ? value - margin : Math.max(0, value - margin))}–${percent(signed ? value + margin : Math.min(1000000, value + margin))}${signed ? ' %p' : '%'}`;
 }
 export function SimulationNotice({ children }: { children?: React.ReactNode }) {
-  return <div className="model-notice"><span className="badge">SAVE SIMULATION</span><p>{children ?? '가상 시뮬레이션 · 현실 여론조사나 선거 예측이 아닙니다. 미검증 기준 데이터가 포함된 개발 프리뷰입니다.'}</p></div>;
+  return <div className="model-notice"><span className="badge">SAVE SIMULATION</span><p>{children ?? '가상 시뮬레이션 · 현실 여론조사나 선거 예측이 아닙니다. 모형 교정이 끝나지 않은 개발 프리뷰입니다.'}</p></div>;
 }
 export function PollTable({ group }: { group: PollGroup }) {
   const ids = Object.keys(group.results).sort((a, b) => a === 'none' ? 1 : b === 'none' ? -1 : group.results[b]!.point - group.results[a]!.point || (a < b ? -1 : 1));

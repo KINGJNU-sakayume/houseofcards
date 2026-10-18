@@ -3,9 +3,9 @@
   "phase": "B2",
   "modelVersion": "B2.1",
   "seed": 42,
-  "initialHash": "743540557de1b07e",
-  "seasonEndHash": "792d5e3326991beb",
-  "publicationReversalHash": "7dbbde70e83bbcfc",
+  "initialHash": "f590b08d6963a3be",
+  "seasonEndHash": "6520a186e0ae2abe",
+  "publicationReversalHash": "4078e4b64a75b778",
   "publicationReversalCommands": [
     {
       "type": "SET_PLATFORM_DRAFT",

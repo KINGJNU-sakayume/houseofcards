@@ -1,0 +1,113 @@
+{
+  "source": "https://www.nesdc.go.kr/portal/bbs/B0000025/view.do?menuNo=200500&nttId=2369",
+  "publishedAt": "2026-10-13",
+  "retrievedAt": "2026-10-18",
+  "registrationWindow": [
+    "2026-10-05",
+    "2026-10-11"
+  ],
+  "workbookSha256": "b43af23b6933e7aee3aa6d05e78428e9d045294bbabb5ef652b2cb34720329f9",
+  "sheet": "정당지지도 (26.1.1~)",
+  "method": "등록주간 9건의 조사별 동일 가중 산술평균. 표본수 합산 추정/공식 통합 지지율이 아니며 기관별 중복 가중 및 조사방식 차이를 보정하지 않음. 반올림은 최종 Q6에서 1회.",
+  "polls": [
+    {
+      "registrationId": 17297,
+      "workbookRow": 367,
+      "fieldwork": "26.10.04.~05.",
+      "sampleSize": 1002,
+      "method": "무선ARS(100)",
+      "dp": 35.6,
+      "ppp": 45.3,
+      "rkp": 4.5,
+      "reform": 1.3
+    },
+    {
+      "registrationId": 17298,
+      "workbookRow": 368,
+      "fieldwork": "26.10.03.~05.",
+      "sampleSize": 2000,
+      "method": "무선ARS(100)",
+      "dp": 40.3,
+      "ppp": 39.6,
+      "rkp": 3.9,
+      "reform": 1.8
+    },
+    {
+      "registrationId": 17300,
+      "workbookRow": 369,
+      "fieldwork": "26.10.05.~06.",
+      "sampleSize": 1033,
+      "method": "무선ARS(100)",
+      "dp": 37,
+      "ppp": 37.6,
+      "rkp": 7.4,
+      "reform": 2.9
+    },
+    {
+      "registrationId": 17301,
+      "workbookRow": 370,
+      "fieldwork": "26.10.05.~06.",
+      "sampleSize": 1003,
+      "method": "무선ARS(100)",
+      "dp": 38.1,
+      "ppp": 42.8,
+      "rkp": 4.6,
+      "reform": 2.1
+    },
+    {
+      "registrationId": 17302,
+      "workbookRow": 371,
+      "fieldwork": "26.10.07.~08.",
+      "sampleSize": 1004,
+      "method": "무선ARS(100)",
+      "dp": 35.5,
+      "ppp": 41.3,
+      "rkp": 6.3,
+      "reform": 2.8
+    },
+    {
+      "registrationId": 17303,
+      "workbookRow": 372,
+      "fieldwork": "26.10.06.~08.",
+      "sampleSize": 1000,
+      "method": "무선전화면접(100)",
+      "dp": 35,
+      "ppp": 26,
+      "rkp": 3,
+      "reform": 2
+    },
+    {
+      "registrationId": 17305,
+      "workbookRow": 373,
+      "fieldwork": "26.10.09.~10.",
+      "sampleSize": 1007,
+      "method": "무선ARS(100)",
+      "dp": 40.7,
+      "ppp": 40.5,
+      "rkp": 8.1,
+      "reform": 2.5
+    },
+    {
+      "registrationId": 17306,
+      "workbookRow": 374,
+      "fieldwork": "26.10.09.~10.",
+      "sampleSize": 1000,
+      "method": "무선ARS(100)",
+      "dp": 31,
+      "ppp": 34.6,
+      "rkp": 9,
+      "reform": 2.4
+    },
+    {
+      "registrationId": 17307,
+      "workbookRow": 375,
+      "fieldwork": "26.10.09.~10.",
+      "sampleSize": 1004,
+      "method": "무선전화면접(100)",
+      "dp": 42.8,
+      "ppp": 38.4,
+      "rkp": 5.6,
+      "reform": 1.4
+    }
+  ]
+}

@@ -92,11 +92,7 @@
       "housing.rent-support": 4
     }
   },
-  "governmentApprovalFallback": {
-    "value": 0,
-    "status": "UNVERIFIED_ASSUMPTION",
-    "note": "측정값 부재 시 개발 모형의 중립 출발점. 실제 국정평가가 아님"
-  },
+  "governmentApprovalFallback": null,
   "ai": {
     "changeChance": 420000,
     "monthlyCap": 1,

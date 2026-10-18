@@ -4,7 +4,7 @@ import type { GameState } from '../types/game';
 import { indexSchema, isoDate, leverValueSchema, REGION_IDS } from '../data/reality/schema';
 import { AGE_BANDS, DOMAIN_IDS, PROFILE_IDS } from '../types/simulation';
 import { deepFreeze, stateHash } from '../engine/simulation/determinism';
-import { MAX_COMMANDS, replay } from '../engine/simulation/engine';
+import { MAX_COMMANDS, REALITY_PACK_ID, replay } from '../engine/simulation/engine';
 
 export const MAX_SAVE_BYTES = 2_000_000;
 const commandSchema = z.discriminatedUnion('type', [
@@ -69,6 +69,7 @@ export function deserializeSave(text: string): GameState {
   if (!parsed.success) throw new Error('지원하지 않는 세이브 버전이거나 파일 구조가 잘못되었습니다.');
   const { state, checksum } = parsed.data;
   if (stateHash(state) !== checksum) throw new Error('세이브 무결성 검사에 실패했습니다. 파일이 변경되었거나 손상되었습니다.');
+  if (state.realityPackId !== REALITY_PACK_ID) throw new Error('현실 데이터 기준이 다른 개발 프리뷰 세이브입니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   let replayed: GameState;
   try { replayed = replay(state.seed, state.commandLog); } catch { throw new Error('세이브 명령 기록이 유효하지 않습니다.'); }
   if (stateHash(replayed) !== checksum) throw new Error('세이브 상태와 명령 재생 결과가 다릅니다.');
