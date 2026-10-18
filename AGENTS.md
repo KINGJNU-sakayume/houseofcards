@@ -43,7 +43,10 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md`. If any
 - Schema 2 uses phase=B2; B1 previews are explicitly rejected with JSON preservation guidance, never silently filled with generated politics.
 
 ## Data verification revision (2026-10-18)
-- `docs/DATA_VERIFICATION.md` and `docs/data/verification-2026-10-18.json` record the review of all 56 original blockers: 22 resolved, 34 remain. Release gates remain strict.
+- `docs/DATA_VERIFICATION.md` and `docs/data/verification-2026-10-18.json` record the review of all 56 original blockers: 56 resolved, zero unverified blockers remain. Release gates remain strict.
 - Government approval is now a sourced 39% measurement through 2026-10-15; the obsolete neutral fallback is null. No approval fallback is needed for this pack.
-- Reality pack `kr-b2-2026-10-18-r2` changes deterministic initial politics. Older development saves need explicit JSON preservation guidance; do not replay them against a different baseline.
+- Reality pack `kr-b2-2026-10-18-r3` changes deterministic initial politics. Older development saves need explicit JSON preservation guidance; do not replay them against a different baseline.
 - Verified calibration observations do not mean the model fits them. Election observations are 2026 regional council proportional ballots, distinct from national assembly elections and current support; poll means are documented derived statistics, not official pooled estimates.
+
+- Revision r3 imports owner-supplied MOIS September 2026 one-year-age CSV: 32 actual population counts, nationally reconciled. Use `python scripts/import-population.py docs/data/population-2026-09.csv` to reproduce; preserve original upload provenance.
+- Future law remains UNRESOLVED as a sourced current-state fact. Election date 2028-04-12 is SCHEDULED, not a confirmed future event; retain this distinction in UI and data.

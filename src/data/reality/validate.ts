@@ -18,6 +18,7 @@ export function validateData(reality: unknown, seeds: unknown, release = false, 
   if (!parsed.success || !parsedSeeds.success || !parsedLevers.success) return { errors, warnings };
   const pack = parsed.data;
   const seed = parsedSeeds.data;
+  if (pack.electionDate?.status === 'REAL_FACT' && !pack.electionDate.scheduleStatus) errors.push('election-date: REAL_FACT election date needs scheduleStatus');
   const unique = (ids: string[], context: string) => {
     if (new Set(ids).size !== ids.length) errors.push(`${context}: duplicate ID`);
   };

@@ -1,5 +1,5 @@
 {
-  "id": "kr-b2-2026-10-18-r2",
+  "id": "kr-b2-2026-10-18-r3",
   "asOf": "2026-10-18",
   "completeness": "SIMULATION_FOUNDATIONS",
   "governingPartyId": "dp",
@@ -140,20 +140,23 @@
     {
       "id": "threshold-ruling",
       "status": "REAL_FACT",
-      "value": "2026-01-29: 3% 조항 위헌, 7–2",
-      "sourceQuality": "secondary_news",
-      "source": "https://www.yna.co.kr/view/AKR20260129140451004",
-      "verifiedAt": "2026-10-18"
+      "value": "2026-01-29: 공직선거법 제189조제1항 위헌 (3% 득표 또는 지역구 5석 의석할당요건)",
+      "sourceQuality": "primary",
+      "source": "https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&joBrNo=00&joNo=0189&lsiSeq=290229&urlMode=lsScJoRltInfoR",
+      "verifiedAt": "2026-10-18",
+      "asOf": "2026-10-18",
+      "note": "2020헌마956·2024헌마271(병합) 단순위헌 주석 및 NARS 현안분석414호 확인. 제189조제2·3항 배분 규정 전체가 폐지된 것으로 해석하지 않음."
     },
     {
       "id": "law-transition",
-      "status": "UNVERIFIED_ASSUMPTION",
-      "value": "병립형 복귀 논의; 2028년 규칙 미확정",
-      "sourceQuality": "secondary_news",
+      "status": "REAL_FACT",
+      "value": "2026-10-18 현재 준연동형 배분 규정 유지; 제189조제1항 대체 기준 및 병립형 복귀 개정 미공포; 2028 적용 규칙 UNRESOLVED",
+      "sourceQuality": "primary",
       "resolution": "UNRESOLVED",
-      "note": "2026-10-18 재검토: 현행 제189조와 위헌 주석은 확인. 향후 입법·선거구 및 정당별 현재 입장을 모두 확정할 1차 출처는 확보하지 못했으므로 UNRESOLVED 유지.",
-      "source": "https://v.daum.net/v/20260909005310824",
-      "verifiedAt": "2026-10-18"
+      "note": "현행 2026-10-02 시행 제189조 원문·위헌 주석을 대조하고 사용자가 제공한 2026-10-18 기준 미공포 확인을 함께 기록. 정당별 발언·발의안은 법률 사실에서 제외. 미확정 상태를 확인한 것이며 미래 제도 확정이나 배분 규정 전체 소멸을 뜻하지 않음. 국회입법조사처 보고서 근거: https://nsp.nanet.go.kr/plan/subject/detail.do?nationalPlanControlNo=PLAN0000062352",
+      "source": "https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&joBrNo=00&joNo=0189&lsiSeq=290229&urlMode=lsScJoRltInfoR",
+      "verifiedAt": "2026-10-18",
+      "asOf": "2026-10-18"
     },
     {
       "id": "current-list-law",
@@ -269,10 +272,14 @@
   ],
   "electionDate": {
     "id": "election-date",
-    "status": "UNVERIFIED_ASSUMPTION",
+    "status": "REAL_FACT",
     "value": "2028-04-12",
-    "note": "제34조의 임기만료 전50일 이후 첫 수요일 및 공휴일 예외 확인. 2028-04-12는 현행법에서 산출하는 예상 일정; 선관위 확정 공고/공휴일 대조 미확보이므로 미검증 유지.",
-    "source": "https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&joBrNo=00&joNo=0034&lsiSeq=290229&urlMode=lsScJoRltInfoR"
+    "note": "2028-04-12 예정. 사용자 확인과 공직선거법 제34조에 따른 현행법상 예정일 기록; 선관위 확정 공고 확인 또는 미래 실시 보장 아님. 법 개정·공휴일 예외에 따라 변경 가능.",
+    "source": "https://www.law.go.kr/LSW/lsSideInfoP.do?docCls=jo&joBrNo=00&joNo=0034&lsiSeq=290229&urlMode=lsScJoRltInfoR",
+    "scheduleStatus": "SCHEDULED",
+    "asOf": "2026-10-18",
+    "verifiedAt": "2026-10-18",
+    "sourceQuality": "primary"
   },
   "electionLawState": "UNRESOLVED",
   "regionAgeMarginals": [
@@ -281,13 +288,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-seoul-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 288,
+        "status": "REAL_FACT",
+        "value": 1378782,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -295,13 +303,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-seoul-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 414,
+        "status": "REAL_FACT",
+        "value": 2132014,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -309,13 +318,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-seoul-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 504,
+        "status": "REAL_FACT",
+        "value": 2150761,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -323,13 +333,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-seoul-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 594,
+        "status": "REAL_FACT",
+        "value": 2613628,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -337,13 +348,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-gyeonggi-incheon-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 512,
+        "status": "REAL_FACT",
+        "value": 2170992,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -351,13 +363,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-gyeonggi-incheon-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 736,
+        "status": "REAL_FACT",
+        "value": 3637671,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -365,13 +378,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-gyeonggi-incheon-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 896,
+        "status": "REAL_FACT",
+        "value": 4249602,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -379,13 +393,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-gyeonggi-incheon-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 1056,
+        "status": "REAL_FACT",
+        "value": 4462022,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -393,13 +408,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-chungcheong-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 176,
+        "status": "REAL_FACT",
+        "value": 702186,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -407,13 +423,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-chungcheong-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 253,
+        "status": "REAL_FACT",
+        "value": 1086368,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -421,13 +438,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-chungcheong-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 308,
+        "status": "REAL_FACT",
+        "value": 1353835,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -435,13 +453,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-chungcheong-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 363,
+        "status": "REAL_FACT",
+        "value": 1675023,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -449,13 +468,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-tk-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 160,
+        "status": "REAL_FACT",
+        "value": 543391,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -463,13 +483,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-tk-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 230,
+        "status": "REAL_FACT",
+        "value": 840538,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -477,13 +498,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-tk-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 280,
+        "status": "REAL_FACT",
+        "value": 1187430,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -491,13 +513,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-tk-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 330,
+        "status": "REAL_FACT",
+        "value": 1676434,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -505,13 +528,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-pk-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 240,
+        "status": "REAL_FACT",
+        "value": 846241,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -519,13 +543,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-pk-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 345,
+        "status": "REAL_FACT",
+        "value": 1367965,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -533,13 +558,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-pk-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 420,
+        "status": "REAL_FACT",
+        "value": 1875068,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -547,13 +573,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-pk-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 495,
+        "status": "REAL_FACT",
+        "value": 2469745,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -561,13 +588,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-honam-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 160,
+        "status": "REAL_FACT",
+        "value": 577742,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -575,13 +603,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-honam-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 230,
+        "status": "REAL_FACT",
+        "value": 817570,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -589,13 +618,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-honam-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 280,
+        "status": "REAL_FACT",
+        "value": 1186501,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -603,13 +633,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-honam-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 330,
+        "status": "REAL_FACT",
+        "value": 1672137,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -617,13 +648,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-gangwon-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 48,
+        "status": "REAL_FACT",
+        "value": 170710,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -631,13 +663,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-gangwon-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 69,
+        "status": "REAL_FACT",
+        "value": 247732,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -645,13 +678,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-gangwon-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 84,
+        "status": "REAL_FACT",
+        "value": 357066,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -659,13 +693,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-gangwon-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 99,
+        "status": "REAL_FACT",
+        "value": 555232,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -673,13 +708,14 @@
       "ageBand": "18-29",
       "mass": {
         "id": "demography-jeju-18-29",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 16,
+        "status": "REAL_FACT",
+        "value": 76649,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -687,13 +723,14 @@
       "ageBand": "30-44",
       "mass": {
         "id": "demography-jeju-30-44",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 23,
+        "status": "REAL_FACT",
+        "value": 123624,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -701,13 +738,14 @@
       "ageBand": "45-59",
       "mass": {
         "id": "demography-jeju-45-59",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 28,
+        "status": "REAL_FACT",
+        "value": 172121,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     },
     {
@@ -715,13 +753,14 @@
       "ageBand": "60+",
       "mass": {
         "id": "demography-jeju-60+",
-        "status": "UNVERIFIED_ASSUMPTION",
-        "value": 33,
+        "status": "REAL_FACT",
+        "value": 191242,
         "asOf": "2026-09-30",
         "metric": true,
-        "note": "합성 상대질량; 실제 인구·유권자 수 아님. 행안부 원표 교체 전 릴리스 금지",
+        "note": "사용자 제공 행안부 2026-09 월말 각세별 원본, 주민등록 전체·남녀 합계·명 단위. 해당 권역/연령 실제 인구 합계; 선거인명부 아님. 전남광주 통합 코드120은 호남에 1회. 원본 해시/합산 근거는 docs/data/population-2026-09.json.",
         "source": "https://jumin.mois.go.kr/ageStatMonth.do",
-        "verifiedAt": "2026-10-18"
+        "verifiedAt": "2026-10-18",
+        "sourceQuality": "primary"
       }
     }
   ],

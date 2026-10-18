@@ -48,7 +48,7 @@ export const realityPackSchema = z.strictObject({
   indicators: z.array(numberFact),
   facts: z.array(genericFact),
   provinceRegions: z.array(z.strictObject({ provinceId: z.enum(PROVINCE_IDS), regionId: z.enum(REGION_IDS) })),
-  electionDate: stringFact.optional(),
+  electionDate: stringFact.extend({ scheduleStatus: z.enum(['SCHEDULED', 'CONFIRMED']).optional() }).optional(),
   electionLawState: z.literal('UNRESOLVED').optional(),
   regionAgeMarginals: z.array(z.strictObject({ regionId: z.enum(REGION_IDS), ageBand: z.enum(AGE_BANDS), mass: numberFact })).optional(),
   calibrationTargets: z.array(z.strictObject({

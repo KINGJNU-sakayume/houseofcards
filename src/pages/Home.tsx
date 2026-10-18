@@ -26,7 +26,7 @@ export function Home() {
     </section>
     <section className="overview-grid" aria-label="시즌 현황">
       <article className="metric"><span>프리뷰 기준일</span><strong data-testid="game-date">{game.date.replaceAll('-', '.')}</strong><small>{isMonthlyTick(game.date) ? '월요일 · 월간 틱 경계' : '월요일 · 주간 틱'}</small></article>
-      <article className="metric"><span>시나리오 선거일까지</span><strong>D−{days}</strong><small>2028.04.12 · 게임 일정</small></article>
+      <article className="metric"><span>예정 선거일까지</span><strong>D−{days}</strong><small>2028.04.12 · 예정</small></article>
       <article className="metric"><span>주간 일정</span><strong>{String(game.tick).padStart(2, '0')}<em> / {weekCount(CALENDAR)}</em></strong><small>시작 주를 포함한 월요일 {weekCount(CALENDAR)}회</small></article>
       <article className="metric"><span>개발 프리뷰 정당 · 가상 조사</span><strong>{range(pollSupport.low, pollSupport.high)}</strong><small>{latestPoll.date} · 현실 여론조사 아님</small></article>
     </section>

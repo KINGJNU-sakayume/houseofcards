@@ -1,13 +1,13 @@
 {
   "snapshot": "2026-10-18",
   "originalCount": 56,
-  "resolved": 22,
-  "remaining": 34,
+  "resolved": 56,
+  "remaining": 0,
   "items": [
     {
       "id": "law-transition",
-      "result": "UNVERIFIED",
-      "detail": "현행법 근거만 확보; 향후 확정 사실의 출처 미확보."
+      "result": "RESOLVED",
+      "detail": "현행 제189조 및 위헌 주석·NARS 자료와 사용자 기준일 미공포 확인을 대조. 현재 미확정 상태 확인; 미래 법제 확정 아님."
     },
     {
       "id": "current-list-law",
@@ -31,168 +31,168 @@
     },
     {
       "id": "election-date",
-      "result": "UNVERIFIED",
-      "detail": "현행법 근거만 확보; 향후 확정 사실의 출처 미확보."
+      "result": "RESOLVED",
+      "detail": "2028-04-12 예정일로 사용자 확인. scheduleStatus=SCHEDULED 및 제34조 근거 기록; 확정 공고일로 승격하지 않음."
     },
     {
       "id": "demography-seoul-18-29",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-seoul-30-44",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-seoul-45-59",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-seoul-60+",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-gyeonggi-incheon-18-29",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-gyeonggi-incheon-30-44",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-gyeonggi-incheon-45-59",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-gyeonggi-incheon-60+",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-chungcheong-18-29",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-chungcheong-30-44",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-chungcheong-45-59",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-chungcheong-60+",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-tk-18-29",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-tk-30-44",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-tk-45-59",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-tk-60+",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-pk-18-29",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-pk-30-44",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-pk-45-59",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-pk-60+",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-honam-18-29",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-honam-30-44",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-honam-45-59",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-honam-60+",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-gangwon-18-29",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-gangwon-30-44",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-gangwon-45-59",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-gangwon-60+",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-jeju-18-29",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-jeju-30-44",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-jeju-45-59",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "demography-jeju-60+",
-      "result": "UNVERIFIED",
-      "detail": "각세별 2026-09 원표 미확보; 공식 서버 503. 10세 단위 표로 18/30/45 경계 추정 금지."
+      "result": "RESOLVED",
+      "detail": "사용자 제공 행안부 2026-09 각세별 원본 CSV의 실제 인구를 합산; 전국·각세·남녀 합계 검산. 인구 명 단위, 선거인명부와 구별."
     },
     {
       "id": "calibration-seoul-dp",
