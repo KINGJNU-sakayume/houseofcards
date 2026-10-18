@@ -1,0 +1,28 @@
+{
+  "modelVersion": "C1.0",
+  "label": "GAME_MODEL",
+  "palette": ["#8864b5", "#26998d", "#ba8745", "#a86683", "#738345", "#687d90", "#a67654", "#60646d"],
+  "newParty": {
+    "money": 150000, "staffCapacity": 10, "agendaSlots": 6,
+    "membersMin": 8000, "membersMax": 15000, "regionalLevelMin": 1, "regionalLevelMax": 4,
+    "awareness": 50000, "viability": 120000, "ownership": 10000, "oppositionAlignment": 1,
+    "expertise": {"housing": 220000, "family": 110000, "pension": 70000, "healthcare": 90000, "industry-ai": 180000, "political-reform": 250000}
+  },
+  "finance": {"payingRate": 350000, "monthlyDues": 1, "baseStaffCapacity": 8, "agendaCap": 6},
+  "staffLevels": [
+    {"level": 0, "weeklyPayroll": 500, "capacity": 2, "hiringCost": 0},
+    {"level": 1, "weeklyPayroll": 1500, "capacity": 5, "hiringCost": 3000},
+    {"level": 2, "weeklyPayroll": 3500, "capacity": 9, "hiringCost": 6000},
+    {"level": 3, "weeklyPayroll": 7000, "capacity": 14, "hiringCost": 12000},
+    {"level": 4, "weeklyPayroll": 14000, "capacity": 20, "hiringCost": 24000}
+  ],
+  "publication": {"agendaSlots": 1, "baseStaff": 1, "reversalStaff": 2, "consistentGain": 10000},
+  "research": {"money": 12000, "staffCapacity": 4, "weeks": 4, "gain": 100000, "expertiseCap": 850000, "affinityDiscount": 250000},
+  "survey": {"money": 8000, "staffCapacity": 3, "margin": 15000},
+  "valueDomainAffinity": {
+    "reform": ["political-reform"], "housing": ["housing"], "generations": ["family", "pension"],
+    "market": ["industry-ai", "housing"], "safety-net": ["pension", "healthcare", "family"],
+    "decentralization": ["housing", "healthcare", "political-reform"], "science": ["industry-ai", "healthcare"],
+    "labour": ["industry-ai", "family"], "climate": ["industry-ai"], "efficiency": ["political-reform", "pension"]
+  }
+}

@@ -1,13 +1,17 @@
 import { z } from 'zod';
-import { politicsSchema } from './politics-schema';
+import { analysisSchema, politicsSchema } from './politics-schema';
 import type { GameState } from '../types/game';
 import { indexSchema, isoDate, leverValueSchema, REGION_IDS } from '../data/reality/schema';
-import { AGE_BANDS, DOMAIN_IDS, PROFILE_IDS } from '../types/simulation';
+import { AGE_BANDS, CORE_VALUES, DOMAIN_IDS, PROFILE_IDS } from '../types/simulation';
 import { deepFreeze, stateHash } from '../engine/simulation/determinism';
 import { MAX_COMMANDS, REALITY_PACK_ID, replay } from '../engine/simulation/engine';
 
-export const MAX_SAVE_BYTES = 2_000_000;
+export const MAX_SAVE_BYTES = 8_000_000;
 const commandSchema = z.discriminatedUnion('type', [
+  z.strictObject({ type: z.literal('CREATE_PARTY'), name: z.string().max(100), shortName: z.string().max(100), color: z.string().max(20), values: z.tuple([z.enum(CORE_VALUES), z.enum(CORE_VALUES), z.enum(CORE_VALUES)]) }),
+  z.strictObject({ type: z.literal('SET_STAFF_LEVEL'), level: z.number().int().min(0).max(4) }),
+  z.strictObject({ type: z.literal('START_POLICY_RESEARCH'), domain: z.enum(DOMAIN_IDS) }),
+  z.strictObject({ type: z.literal('COMMISSION_INTERNAL_SURVEY') }),
   z.strictObject({ type: z.literal('ADVANCE_WEEK') }),
   z.strictObject({ type: z.literal('RESPOND_INBOX'), messageId: z.string().max(100) }),
   z.strictObject({ type: z.literal('SET_PLATFORM_DRAFT'), leverId: z.string().max(100), value: leverValueSchema }),
@@ -17,11 +21,19 @@ const positionSchema = z.strictObject({ draftValue: leverValueSchema, publishedV
   lastDirectionalValue: leverValueSchema.nullable(), lastDirectionalAt: isoDate.nullable(), reversalPenalty: indexSchema });
 const probability = z.number().int().min(0).max(1_000_000);
 const stateSchema = z.strictObject({
-  schemaVersion: z.literal(2), phase: z.literal('B2'), seed: z.number().int().min(0).max(0xffffffff),
+  schemaVersion: z.literal(3), phase: z.literal('C'), seed: z.number().int().min(0).max(0xffffffff),
+  playerParty: z.strictObject({ id: z.literal('player'), name: z.string(), shortName: z.string(), color: z.string(),
+    values: z.tuple([z.enum(CORE_VALUES), z.enum(CORE_VALUES), z.enum(CORE_VALUES)]), foundedAt: isoDate }).nullable(),
+  resources: z.strictObject({ money: z.number().int().nonnegative(), staffCapacity: z.number().int().nonnegative(), agendaSlots: z.number().int().nonnegative() }).nullable(),
+  finance: z.strictObject({ members: z.number().int().nonnegative(), initialMoney: z.number().int().nonnegative(), arrears: z.number().int().nonnegative(), staffLevel: z.number().int().min(0).max(4), ledgerTruncatedSum: z.number().int(),
+    ledger: z.array(z.strictObject({ date: isoDate, kind: z.enum(['dues', 'payroll', 'hiring', 'research', 'survey']), amount: z.number().int(), balanceAfter: z.number().int().nonnegative(), ref: z.string() })).max(100) }).nullable(),
+  regionalOrganization: z.record(z.enum(REGION_IDS), z.strictObject({ members: z.number().int().nonnegative(), level: z.number().int().min(0).max(100) })).or(z.strictObject({})),
+  research: z.array(z.strictObject({ domain: z.enum(DOMAIN_IDS), startedAt: isoDate, completesAt: isoDate })).max(6),
+  internalSurveys: z.array(z.strictObject({ date: isoDate, margin: z.number().int().min(0).max(1_000_000), analysis: analysisSchema })).max(12),
   rngState: z.record(z.string(), z.number().int().min(1).max(0xffffffff)),
   realityPackId: z.string(), realityPackAsOf: isoDate,
   simulationStartDate: isoDate, politics: politicsSchema,
-  platforms: z.array(z.strictObject({ partyId: z.string(), positions: z.record(z.string(), positionSchema) })).length(6),
+  platforms: z.array(z.strictObject({ partyId: z.string(), positions: z.record(z.string(), positionSchema) })).min(5).max(6),
   governmentPolicy: z.strictObject({ partyId: z.string(), levers: z.record(z.string(), z.strictObject({
     value: leverValueSchema, history: z.array(z.strictObject({ value: leverValueSchema, enactedAt: isoDate })).max(200),
   })) }),
@@ -40,14 +52,14 @@ const stateSchema = z.strictObject({
     status: z.literal('GAME_ASSUMPTION'), listSeats: z.number().int().positive(), legalThresholdVoteShare: probability, electabilityKnee: probability,
     calendar: z.strictObject({ startDate: isoDate, lastWeeklyDate: isoDate, electionDate: isoDate }),
   }),
-  date: isoDate, tick: z.number().int().min(1).max(78), status: z.enum(['active', 'phase_complete']),
+  date: isoDate, tick: z.number().int().min(1).max(78), status: z.enum(['founding', 'active', 'phase_complete']),
   inbox: z.array(z.strictObject({
     id: z.string(), date: isoDate, sender: z.string(), title: z.string(), body: z.string(),
-    priority: z.enum(['Important', 'Report', 'FYI']), read: z.boolean(),
-  })).max(12),
+    priority: z.enum(['Critical', 'Action Required', 'Important', 'Report', 'FYI']), read: z.boolean(),
+  })).max(60),
   events: z.array(z.strictObject({ id: z.string(), date: isoDate,
-    type: z.enum(['SESSION_STARTED', 'WEEK_ADVANCED', 'MONTH_BOUNDARY', 'INBOX_READ', 'PLATFORM_DRAFTED', 'PLATFORM_PUBLISHED', 'AI_PLATFORM_SHIFT', 'GOVERNMENT_ENACTED', 'POLL_PUBLISHED']), detail: z.string(),
-  })).max(MAX_COMMANDS + 200),
+    type: z.enum(['PARTY_CREATED', 'STAFF_CHANGED', 'RESEARCH_STARTED', 'RESEARCH_COMPLETED', 'SURVEY_COMMISSIONED', 'SESSION_STARTED', 'WEEK_ADVANCED', 'MONTH_BOUNDARY', 'INBOX_READ', 'PLATFORM_DRAFTED', 'PLATFORM_PUBLISHED', 'AI_PLATFORM_SHIFT', 'GOVERNMENT_ENACTED', 'POLL_PUBLISHED']), detail: z.string(),
+  })).max(MAX_COMMANDS + 400),
   commandLog: z.array(commandSchema).max(MAX_COMMANDS),
 });
 const envelopeSchema = z.strictObject({ format: z.literal('HOC_KOREA_SAVE'), version: z.literal(1), checksum: z.string().regex(/^[a-f0-9]{16}$/), state: stateSchema });
@@ -55,15 +67,18 @@ export function serializeSave(state: GameState): string {
   return JSON.stringify({ format: 'HOC_KOREA_SAVE', version: 1, checksum: stateHash(state), state }, null, 2);
 }
 export function deserializeSave(text: string): GameState {
-  if (text.length > MAX_SAVE_BYTES || new TextEncoder().encode(text).byteLength > MAX_SAVE_BYTES) throw new Error('세이브 파일이 너무 큽니다 (최대 2MB).');
+  if (text.length > MAX_SAVE_BYTES || new TextEncoder().encode(text).byteLength > MAX_SAVE_BYTES) throw new Error('세이브 파일이 너무 큽니다 (최대 8MB).');
   let raw: unknown;
   try { raw = JSON.parse(text); } catch { throw new Error('올바른 JSON 파일이 아닙니다.'); }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' &&
     'schemaVersion' in raw.state && raw.state.schemaVersion === 1) {
-    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 B2(스키마 2)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 C1(스키마 3)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'phase' in raw.state && raw.state.phase === 'B1') {
-    throw new Error('B1 개발 프리뷰 세이브는 B2 정치 모형과 호환되지 않습니다. 기존 JSON을 보관하고 새 B2 프리뷰를 시작하세요.');
+    throw new Error('B1 개발 프리뷰 세이브는 C1 정치 모형과 호환되지 않습니다. 기존 JSON을 보관하고 새 C1 프리뷰를 시작하세요.');
+  }
+  if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 2) {
+    throw new Error('B2 세이브(스키마 2)는 C1(스키마 3)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   const parsed = envelopeSchema.safeParse(raw);
   if (!parsed.success) throw new Error('지원하지 않는 세이브 버전이거나 파일 구조가 잘못되었습니다.');

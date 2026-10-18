@@ -100,7 +100,7 @@ export function validateData(reality: unknown, seeds: unknown, release = false, 
     if (!definitions.some(l => l.valueTags[value]) && !seed.nonLeverSignals[value]?.length) errors.push(`${value}: unreachable core value`);
   }
   for (const profile of PROFILE_IDS) if (!seed.cohortProfiles.some(p => p.id === profile)) errors.push(`Missing profile ${profile}`);
-  for (const id of [...pack.parties.map(p => p.id), 'minor-bloc', 'player-preview']) {
+  for (const id of [...pack.parties.map(p => p.id), 'minor-bloc']) {
     if (!seed.partyAttachmentMasses[id]) errors.push(`Missing attachment seed ${id}`);
   }
   for (const region of REGION_IDS) for (const age of AGE_BANDS) {

@@ -1,3 +1,5 @@
+import { partyManagement } from '../../data/seeds/party-management';
+import { PLAYER_PARTY_ID } from '../../types/party';
 import { policyLevers } from '../../data/reality';
 import { politicalModel as model } from '../../data/seeds/political-model';
 import type { GameState } from '../../types/game';
@@ -63,12 +65,12 @@ export function trust(cohort: Cohort, platform: PartyPlatform, party: PartyPerce
   }
   return fixedMultiply(total ? roundDiv(sum, total) : 0, fiscalCredibility(platform));
 }
-export function governmentTerm(cohortSensitivity: number, approval: number, partyId: string, governingId: string): number {
+export function governmentTerm(cohortSensitivity: number, approval: number, partyId: string, governingId: string, partyIds: readonly string[] = Object.keys(model.parties)): number {
   if (approval === 0 || cohortSensitivity === 0) return 0;
   if (partyId === governingId) return fixedMultiply(cohortSensitivity, approval);
-  const weights = Object.entries(model.parties).filter(([id]) => id !== governingId);
-  const total = weights.reduce((sum, [, seed]) => sum + seed.oppositionAlignment, 0);
-  const weight = model.parties[partyId]?.oppositionAlignment ?? 0;
+  const alignment = (id: string) => id === PLAYER_PARTY_ID ? partyManagement.newParty.oppositionAlignment : model.parties[id]?.oppositionAlignment ?? 0;
+  const total = partyIds.filter(id => id !== governingId).reduce((sum, id) => sum + alignment(id), 0);
+  const weight = alignment(partyId);
   return -roundDiv(fixedMultiply(cohortSensitivity, approval) * weight, Math.max(1, total));
 }
 export interface UtilityInputs { fit: number; identity: number; trust: number; loyalty: number; government: number; viability: number }
@@ -120,7 +122,7 @@ export function evaluateSupport(state: GameState) {
       const perception = state.politics.perceptions[cohort.id]![id]!;
       return { fit: policyFit(cohort, platform, state.issues), identity: SCALE - roundDiv(CORE_VALUES.reduce((sum, tag) => sum + Math.abs(identity[tag] - party.identity[tag]), 0), CORE_VALUES.length),
         trust: trust(cohort, platform, party, state.issues), loyalty: perception.loyalty,
-        government: governmentTerm(cohort.governmentEvaluationSensitivity * 100, state.politics.governmentApproval, id, state.governmentPolicy.partyId), viability: state.politics.viability[id]!,
+        government: governmentTerm(cohort.governmentEvaluationSensitivity * 100, state.politics.governmentApproval, id, state.governmentPolicy.partyId, ids), viability: state.politics.viability[id]!,
       };
     });
     const utilities = inputs.map(utility), awareness = ids.map(id => state.politics.perceptions[cohort.id]![id]!.awareness);
@@ -140,7 +142,7 @@ export function neutralViability(current: SupportVector, viability: SupportVecto
   const leaders = Object.keys(viability).sort((a, b) => current[b]! - current[a]! || (a < b ? -1 : 1)).slice(0, 2);
   return roundDiv(leaders.reduce((sum, id) => sum + viability[id]!, 0), leaders.length);
 }
-export function computeAnalysis(state: GameState): SupportAnalysis {
+export function computeAnalysis(state: GameState, playerId: string | null = state.playerParty?.id ?? null): SupportAnalysis {
   const { ids, prepared, aggregated, groupMass } = evaluateSupport(state);
   const current = aggregated.national!, neutral = neutralViability(current, state.politics.viability);
   const counterfactual = (targetId: string, overrides: { awareness?: boolean; viability?: boolean; loyalty?: boolean; fit?: boolean; trust?: boolean; allBarriers?: boolean }) => {
@@ -160,12 +162,12 @@ export function computeAnalysis(state: GameState): SupportAnalysis {
   };
   const potentialFlags = { allBarriers: true }; // User confirmed Slice Spec: remove barriers for every party.
   const potentialSupport = normalizeMasses([...ids, NONE_ID].map(id => ({ id, mass: counterfactual(id, potentialFlags) })));
-  const player = 'player-preview';
-  return { date: state.date, currentSupport: current, potentialSupport,
+  const player = playerId;
+  return { date: state.date, playerPartyId: player, currentSupport: current, potentialSupport,
     byAge: Object.fromEntries(Object.entries(aggregated).filter(([key]) => key.startsWith('age:')).map(([key, value]) => [key.slice(4), value])),
     byRegion: Object.fromEntries(Object.entries(aggregated).filter(([key]) => key.startsWith('region:')).map(([key, value]) => [key.slice(7), value])),
     groupMass, neutralViability: neutral,
-    barriers: { awareness: counterfactual(player, { awareness: true }) - current[player]!, viability: counterfactual(player, { viability: true }) - current[player]!,
+    barriers: player === null ? null : { awareness: counterfactual(player, { awareness: true }) - current[player]!, viability: counterfactual(player, { viability: true }) - current[player]!,
       priorLoyalty: counterfactual(player, { ...potentialFlags, loyalty: true }) - potentialSupport[player]!,
       policyMismatch: counterfactual(player, { fit: true }) - current[player]!, ownership: counterfactual(player, { trust: true }) - current[player]!,
     },

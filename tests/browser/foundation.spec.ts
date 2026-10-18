@@ -1,8 +1,18 @@
+import { createFoundedGame as createGame } from '../helpers';
 import { expect, test } from '@playwright/test';
-import { createGame, dispatchCommand } from '../../src/engine/simulation/engine';
+import { dispatchCommand } from '../../src/engine/simulation/engine';
 import { stateHash } from '../../src/engine/simulation/determinism';
 import { serializeSave } from '../../src/persistence/codec';
 import legacySave from '../fixtures/phase-a-v1.json' with { type: 'json' };
+
+async function found(page: import('@playwright/test').Page) {
+  await page.getByLabel('정당 이름', { exact: true }).fill('내일의 정당');
+  await page.getByLabel('약칭', { exact: true }).fill('내일');
+  for (const value of ['주거개혁', '사회안전망', '과학기술']) await page.getByRole('checkbox', { name: value, exact: false }).check();
+  await page.getByRole('button', { name: '정당 창당', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: '자동저장 완료' })).toBeVisible();
+}
+test.beforeEach(async ({ page }) => { await page.goto('./'); await found(page); });
 
 test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round trip', async ({ page, context }) => {
   const errors: string[] = [];
@@ -20,7 +30,7 @@ test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round
   await expect(page.getByRole('heading', { name: '어떤 입장을 공표할까요?' })).toBeVisible();
   await page.getByRole('button', { name: '저장 / 불러오기' }).click();
   await page.getByText('저장 무결성 정보').click();
-  await expect(page.getByText('스키마 2 · 엔진 Web Worker', { exact: false })).toBeVisible();
+  await expect(page.getByText('스키마 3 · 엔진 Web Worker', { exact: false })).toBeVisible();
   const advanced = dispatchCommand(createGame(20261019), { type: 'ADVANCE_WEEK' });
   await expect(page.getByTestId('state-hash')).toHaveText(stateHash(advanced));
   await page.getByRole('button', { name: '수동 저장', exact: true }).click();
@@ -58,9 +68,9 @@ test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round
   expect(errors).toEqual([]);
 });
 
-test('B2 monthly reports stay labelled and persist across several months', async ({ page }) => {
+test('C1 monthly reports stay labelled and persist across several months', async ({ page }) => {
   await page.goto('./');
-  await expect(page.getByText('현재는 B2 개발 프리뷰입니다.', { exact: false })).toBeVisible();
+  await expect(page.getByText('현재는 C1 개발 프리뷰입니다.', { exact: false })).toBeVisible();
   for (let i = 0; i < 15; i++) {
     await page.getByRole('button', { name: '다음 주로' }).click();
     await expect(page.getByRole('status').filter({ hasText: '자동저장 완료' })).toBeVisible();
@@ -83,13 +93,15 @@ test('main-thread fallback and small screens remain functional', async ({ page }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.getByRole('button', { name: '저장 / 불러오기' }).click();
   await page.getByText('저장 무결성 정보').click();
-  await expect(page.getByText('스키마 2 · 엔진 메인 스레드', { exact: false })).toBeVisible();
+  await expect(page.getByText('스키마 3 · 엔진 메인 스레드', { exact: false })).toBeVisible();
 });
 
-test('B2 policy drafts, publication, issue cards and analysis remain command driven', async ({ page }) => {
+test('C1 policy drafts, publication, issue cards and analysis remain command driven', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('./#/data');
+  await expect(page.getByTestId('survey-gate')).toBeVisible();
+  await page.getByRole('button', { name: '내부조사 의뢰', exact: true }).click();
   await expect(page.getByTestId('current-support')).toBeVisible();
   const current = await page.getByTestId('current-support').textContent();
   await page.getByRole('link', { name: '정책', exact: false }).click();
@@ -115,7 +127,7 @@ test('B2 policy drafts, publication, issue cards and analysis remain command dri
   await page.getByRole('link', { name: '데이터 허브', exact: false }).click();
   await page.getByRole('button', { name: '전국 조사', exact: true }).click();
   await expect(page.getByRole('rowheader', { name: '없음·미정' })).toBeVisible();
-  await page.getByRole('button', { name: '권역별', exact: true }).click();
+  await page.getByRole('button', { name: '공개 권역별', exact: true }).click();
   await expect(page.getByRole('heading', { name: '서울', exact: true })).toBeVisible();
   expect(errors).toEqual([]);
 });

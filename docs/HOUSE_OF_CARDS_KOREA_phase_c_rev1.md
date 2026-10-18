@@ -2,6 +2,8 @@
 
 Repository: `KINGJNU-sakayume/houseofcards`
 
+> Implementation status: C1 completed in its dedicated PR; C2 is not implemented. Confirm C1 merge and tests before a separate C2 task.
+
 **CURRENT STEP: C1**   <!-- Run C1 first. Stop and report. Then change to C2 for the second task. -->
 
 Phase C is split into two steps. Execute **only the step named above**. When the step is done, stop and report; do not start the other step or any Phase D/E work.

@@ -1,5 +1,7 @@
 import type { Cohort, GovernmentPolicy, IssueState, PartyPlatform } from './simulation';
 import type { OpinionRuleset, PoliticsState } from './politics';
+import type { Finance, InternalSurvey, PlayerParty, Research, Resources } from './party';
+import type { CoreValue, DomainId } from './simulation';
 export type ISODate = string;
 export interface CalendarConfig {
   startDate: ISODate;
@@ -36,6 +38,10 @@ export interface ElectionRuleset {
   campaignCostReimbursement: { fullAbove: number; halfAbove: number };
 }
 export type Command = { type: 'ADVANCE_WEEK' } | { type: 'RESPOND_INBOX'; messageId: string }
+  | { type: 'CREATE_PARTY'; name: string; shortName: string; color: string; values: [CoreValue, CoreValue, CoreValue] }
+  | { type: 'SET_STAFF_LEVEL'; level: number }
+  | { type: 'START_POLICY_RESEARCH'; domain: DomainId }
+  | { type: 'COMMISSION_INTERNAL_SURVEY' }
   | { type: 'SET_PLATFORM_DRAFT'; leverId: string; value: number }
   | { type: 'PUBLISH_PLATFORM'; leverId: string };
 export interface InboxMessage {
@@ -44,18 +50,24 @@ export interface InboxMessage {
   sender: string;
   title: string;
   body: string;
-  priority: 'Important' | 'Report' | 'FYI';
+  priority: 'Critical' | 'Action Required' | 'Important' | 'Report' | 'FYI';
   read: boolean;
 }
 export interface GameEvent {
   id: string;
   date: ISODate;
-  type: 'SESSION_STARTED' | 'WEEK_ADVANCED' | 'MONTH_BOUNDARY' | 'INBOX_READ' | 'PLATFORM_DRAFTED' | 'PLATFORM_PUBLISHED' | 'AI_PLATFORM_SHIFT' | 'GOVERNMENT_ENACTED' | 'POLL_PUBLISHED';
+  type: 'SESSION_STARTED' | 'WEEK_ADVANCED' | 'MONTH_BOUNDARY' | 'INBOX_READ' | 'PLATFORM_DRAFTED' | 'PLATFORM_PUBLISHED' | 'AI_PLATFORM_SHIFT' | 'GOVERNMENT_ENACTED' | 'POLL_PUBLISHED' | 'PARTY_CREATED' | 'STAFF_CHANGED' | 'RESEARCH_STARTED' | 'RESEARCH_COMPLETED' | 'SURVEY_COMMISSIONED';
   detail: string;
 }
 export interface GameState {
-  schemaVersion: 2;
-  phase: 'B2';
+  schemaVersion: 3;
+  phase: 'C';
+  playerParty: PlayerParty | null;
+  resources: Resources | null;
+  finance: Finance | null;
+  regionalOrganization: Record<string, { members: number; level: number }>;
+  research: Research[];
+  internalSurveys: InternalSurvey[];
   seed: number;
   rngState: Record<string, number>;
   realityPackId: string;
@@ -70,7 +82,7 @@ export interface GameState {
   rulesetSnapshot: OpinionRuleset;
   date: ISODate;
   tick: number;
-  status: 'active' | 'phase_complete';
+  status: 'founding' | 'active' | 'phase_complete';
   inbox: InboxMessage[];
   events: GameEvent[];
   commandLog: Command[];

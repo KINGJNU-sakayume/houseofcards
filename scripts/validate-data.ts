@@ -1,3 +1,4 @@
+import { partyManagement } from '../src/data/seeds/party-management';
 import { realityPack, seedPack } from '../src/data/reality';
 import { validateData } from '../src/data/reality/validate';
 import { readdirSync, readFileSync } from 'node:fs';
@@ -16,4 +17,4 @@ scanData('src/data');
 for (const warning of report.warnings) console.warn(`WARNING: ${warning}`);
 for (const error of report.errors) console.error(`ERROR: ${error}`);
 if (report.errors.length) process.exitCode = 1;
-else console.log('Data validation passed (B2 model; inspect UNVERIFIED warnings before release).');
+else console.log(`Data validation passed (C1 / ${partyManagement.modelVersion}; strict release rules retained).`);

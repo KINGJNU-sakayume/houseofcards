@@ -1,11 +1,12 @@
+import { useGameStore } from '../state/store';
+import { PLAYER_PARTY_ID } from '../types/party';
 import { realityPack } from '../data/reality';
 import { politicalModel } from '../data/seeds/political-model';
 import type { PollGroup } from '../types/politics';
-export const partyName = (id: string) => id === 'none' ? '없음·미정' : id === 'player-preview' ? `${politicalModel.playerPreview.name} (개발 프리뷰)` : realityPack.parties.find(p => p.id === id)?.shortName.value ?? '기타 세력 묶음';
+export const partyName = (id: string) => id === 'none' ? '없음·미정' : id === PLAYER_PARTY_ID ? (useGameStore.getState().game.playerParty?.shortName ?? '우리 정당') : realityPack.parties.find(p => p.id === id)?.shortName.value ?? '기타 세력 묶음';
 export const percent = (value: number) => (value / 10000).toFixed(1);
 export const range = (low: number, high: number) => `${percent(low)}–${percent(high)}%`;
-export function estimateRange(value: number, signed = false) {
-  const margin = politicalModel.polling.analysisMargin;
+export function estimateRange(value: number, signed = false, margin = politicalModel.polling.analysisMargin) {
   return `${percent(signed ? value - margin : Math.max(0, value - margin))}–${percent(signed ? value + margin : Math.min(1000000, value + margin))}${signed ? ' %p' : '%'}`;
 }
 export function SimulationNotice({ children }: { children?: React.ReactNode }) {
