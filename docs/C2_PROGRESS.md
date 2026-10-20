@@ -18,3 +18,5 @@
   does not resolve by DNS directly (ENOTFOUND), so node_modules is incomplete (no vitest/typescript/vite). Did not override proxy settings.
   typecheck/lint/test/validate/sim NOT run. AGENTS.md/phase_c CURRENT STEP not yet changed, draft PR not created.
   Next run: retry `npm ci --no-audit --no-fund`; if it still fails, the environment's npm access needs fixing by the user.
+- 2026-10-21 (KST 04:2x): S0 retried. `npm ci --no-audit --no-fund` fails again (ENOTFOUND registry.npmjs.org; host is in the sandbox NO_PROXY list and has no direct DNS).
+  Proxy status is healthy; only the npm registry is unreachable. No code changed, no checks run. User notified. Next run: retry `npm ci`; if the environment's npm access is fixed, complete S0.
