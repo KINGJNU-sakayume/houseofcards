@@ -20,3 +20,5 @@
   Next run: retry `npm ci --no-audit --no-fund`; if it still fails, the environment's npm access needs fixing by the user.
 - 2026-10-21 (KST 04:2x): S0 retried. `npm ci --no-audit --no-fund` fails again (ENOTFOUND registry.npmjs.org; host is in the sandbox NO_PROXY list and has no direct DNS).
   Proxy status is healthy; only the npm registry is unreachable. No code changed, no checks run. User notified. Next run: retry `npm ci`; if the environment's npm access is fixed, complete S0.
+- 2026-10-21 (KST 10:2x): S0 retried a third time. `npm ci` still fails (ENOTFOUND registry.npmjs.org; host in sandbox NO_PROXY). No vitest/tsc/vite installed; no checks run, no code changed.
+  Needs environment fix (allow registry.npmjs.org through the proxy / remove it from NO_PROXY). Next run: retry `npm ci`; proceed with S0 only when it works.
