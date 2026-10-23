@@ -1,5 +1,12 @@
 # C2 Progress (automated)
 
+## HANDOFF (2026-10-23 KST, final wrap-up)
+- Done: only the S0 scaffolding (branch claude/c2 from main ce6d0e9 + this file). No engine/UI code changed; the branch is identical to main apart from docs, so it is green by construction (checks could not be run).
+- Blocker: `npm ci` fails in the cloud sandbox for all 11 attempts (registry.npmjs.org is in NO_PROXY, no direct DNS; the agent proxy returns 403). No typecheck/lint/test/sim could run, so no step could be started safely.
+- Not done: S0 baseline checks, AGENTS.md CURRENT STEP -> C2, draft PR, and S1-S9.
+- Next: allow registry.npmjs.org in the environment network allowlist (or work locally), then start at S0 and proceed through the checklist in order.
+- The scheduled task "houseofcards C2 자동 개발" is disabled.
+
 ## Checklist
 - [ ] S0 baseline (partial: branch + this file created; baseline checks BLOCKED, see Log)
 - [ ] S1 C1 save export + schema bump
