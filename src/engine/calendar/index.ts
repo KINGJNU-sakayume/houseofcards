@@ -12,11 +12,17 @@ export const MILESTONES = Object.freeze([
   { date: '2028-03-20', label: '후보 등록 마감', phase: 'D' },
   { date: '2028-04-12', label: '선거일 · Election Night', phase: 'D' },
 ]);
+// Pure memo of validated dates (hot path in perception updates); bounded size.
+const parsed = new Map<string, number>();
 function timestamp(date: ISODate): number {
+  const cached = parsed.get(date);
+  if (cached !== undefined) return cached;
   const result = Date.parse(`${date}T00:00:00.000Z`);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !Number.isFinite(result) || new Date(result).toISOString().slice(0, 10) !== date) {
     throw new Error('유효하지 않은 날짜입니다.');
   }
+  if (parsed.size > 4096) parsed.clear();
+  parsed.set(date, result);
   return result;
 }
 export function addDays(date: ISODate, days: number): ISODate {

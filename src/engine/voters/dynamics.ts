@@ -8,6 +8,8 @@ import { initializePollHouses, makePoll } from '../polling';
 import { deriveStream, randomInt, streamKey } from '../simulation/rng';
 import { fixedMultiply, roundDiv, SCALE } from '../simulation/math';
 import { consistency, platformIdentity, policyFit, computeAnalysis } from './model';
+import { partyProfile, playerExposure } from '../organization/channels';
+import { PLAYER_PARTY_ID } from '../../types/party';
 
 const clamp = (n: number, low = 0, high = SCALE) => Math.max(low, Math.min(high, n));
 export const quarterKey = (date: string) => `${date.slice(0, 4)}-Q${Math.floor((Number(date.slice(5, 7)) - 1) / 3) + 1}`;
@@ -88,6 +90,7 @@ export function evolvePerceptions(state: GameState): GameState {
     })) as PartyPerception['ownership'];
     return { ...party, identity, ownership };
   });
+  const profile = state.playerParty ? partyProfile(state) : 0;
   const perceptions = Object.fromEntries(state.cohorts.map(cohort => [cohort.id, Object.fromEntries(parties.map(party => {
     const platform = state.platforms.find(p => p.partyId === party.partyId)!;
     let exposure = 0;
@@ -99,6 +102,8 @@ export function evolvePerceptions(state: GameState): GameState {
       exposure += fixedMultiply(salience, freshness);
     }
     exposure = roundDiv(exposure, policyLevers.length);
+    // §16: organization and recruits' profile act only inside the player's exposure term.
+    if (party.partyId === PLAYER_PARTY_ID) exposure = playerExposure(state, cohort.regionId, exposure, profile);
     const before = state.politics.perceptions[cohort.id]![party.partyId]!;
     const gain = fixedMultiply(fixedMultiply(fixedMultiply(model.dynamics.awarenessGrowth, exposure), cohort.politicalAttention * 100), SCALE - before.awareness);
     const decay = fixedMultiply(fixedMultiply(model.dynamics.awarenessDecay, SCALE - exposure), before.awareness);

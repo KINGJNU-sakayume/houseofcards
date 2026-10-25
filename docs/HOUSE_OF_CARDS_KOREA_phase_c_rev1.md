@@ -2,11 +2,11 @@
 
 Repository: `KINGJNU-sakayume/houseofcards`
 
-> Implementation status: C1 completed in its dedicated PR; C2 is not implemented. Confirm C1 merge and tests before a separate C2 task.
+> **Status: COMPLETE / HISTORICAL (2026-10-25).** C1 (PR #5), C2a (PR #7), C2b (PR #8) and C2c are implemented. Do not execute this prompt again; the remaining order is in `docs/ROADMAP.md`.
 >
-> **Revised 2026-10-25 (`docs/ROADMAP.md`):** C2 runs as three steps — C2a (§13), C2b (§14), C2c (§15–17, §20) — on branch `phase/c2`, merged to main once after C2c. **Brand consistency moved to Phase E2** (user decision): in C2 omit the brand-consistency row of §16, its Party-page view in §18 and its tests in §19. Everything else in §13–22 stands. Track progress in `docs/PROGRESS.md`.
+> **Revised 2026-10-25 (`docs/ROADMAP.md`):** C2 runs as three steps — C2a (§13), C2b (§14), C2c (§15–17, §20) — each merged to main after its own PR (user decision, see DECISIONS). **Brand consistency moved to Phase E2** (user decision): in C2 omit the brand-consistency row of §16, its Party-page view in §18 and its tests in §19. Everything else in §13–22 stands. Track progress in `docs/PROGRESS.md`.
 
-**CURRENT STEP: C2** (as split in `docs/ROADMAP.md`)
+**CURRENT STEP: none — Phase C complete.**
 
 Phase C is split into two steps. Execute **only the step named above**. When the step is done, stop and report; do not start the other step or any Phase D/E work.
 

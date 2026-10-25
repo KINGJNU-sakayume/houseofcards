@@ -10,8 +10,8 @@ import { DOMAIN_IDS, DOMAIN_LABELS, type DomainId } from '../types/simulation';
 import { VALUE_LABELS } from './Founding';
 
 const ATTRIBUTE_LABELS: Record<AttributeId, string> = { recognition: '인지도(Recognition)', localBase: '지역 기반(LocalBase)', campaigning: '선거운동(Campaigning)', organization: '조직력(Organization)', media: '미디어(Media)', negotiation: '협상(Negotiation)', broadAppeal: '대중 호감(BroadAppeal)' };
-// Honest usage notes: nothing about a person changes support in C2b.
-const ATTRIBUTE_USE: Record<AttributeId, string> = { recognition: 'C2c 인지도 채널에서 사용됩니다', media: 'C2c 인지도 채널에서 사용됩니다', localBase: 'Phase D에서 사용됩니다', campaigning: 'Phase D에서 사용됩니다', organization: 'Phase D에서 사용됩니다', negotiation: 'Phase D에서 사용됩니다', broadAppeal: 'Phase D에서 사용됩니다' };
+// Honest usage notes per §16; Phase D-only attributes are stored and shown only.
+const ATTRIBUTE_USE: Record<AttributeId, string> = { recognition: '영입 시 인지도 노출(상한·체감)', media: '영입 시 인지도 노출(상한·체감)', localBase: 'Phase D에서 사용됩니다', campaigning: 'Phase D에서 사용됩니다', organization: 'Phase D에서 사용됩니다', negotiation: 'Phase D에서 사용됩니다', broadAppeal: 'Phase D에서 사용됩니다' };
 const STATUS_LABELS: Record<Politician['status'], string> = { prospect: '영입 대기', recruited: '영입됨', declined: '거절 · 재접촉 대기', unavailable: '접촉 불가' };
 const backgroundLabel = (id: string) => politicianModel.backgrounds.find(b => b.id === id)?.label ?? id;
 const topDomain = (p: Politician): DomainId => [...DOMAIN_IDS].sort((a, b) => p.policyExpertise[b] - p.policyExpertise[a] || (a < b ? -1 : 1))[0]!;
@@ -40,8 +40,8 @@ export function Politicians() {
   const personPromises = selected ? game.promises.filter(p => p.politicianId === selected.id) : [];
   const counts = { prospects: game.politicians.filter(p => p.status === 'prospect').length, roster: game.politicians.filter(p => p.status === 'recruited').length };
   return <>
-    <div className="page-heading"><div><p className="eyebrow">POLITICIANS / C2b</p><h1>함께할 사람을 찾다</h1><p className="muted">영입 후보 {counts.prospects}명 · 영입 {counts.roster}명 · 누적 생성 {game.politicians.length}명 · 영입 평판 {game.recruitmentReputation ?? '—'}/100</p></div></div>
-    <ResourceStrip /><SimulationNotice>가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 능력치는 GAME MODEL 값입니다. C2b에서 영입한 인물은 아직 지지 계산에 영향을 주지 않습니다(인지도·전문성 채널은 C2c).</SimulationNotice>
+    <div className="page-heading"><div><p className="eyebrow">POLITICIANS / C2</p><h1>함께할 사람을 찾다</h1><p className="muted">영입 후보 {counts.prospects}명 · 영입 {counts.roster}명 · 누적 생성 {game.politicians.length}명 · 영입 평판 {game.recruitmentReputation ?? '—'}/100</p></div></div>
+    <ResourceStrip /><SimulationNotice>가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 능력치는 GAME MODEL 값입니다. 영입 인물은 인지도 노출과 당 전문성으로만 서서히 작용하며 지지를 직접 더하지 않습니다.</SimulationNotice>
     <div className="sim-tabs" role="group" aria-label="인재 보기">{([['prospects', `영입 후보 (${counts.prospects})`], ['roster', `영입한 인재 (${counts.roster})`]] as const).map(([id, label]) => <button key={id} aria-pressed={view === id} className={view === id ? 'active' : ''} onClick={() => { setView(id); setSelectedId(null); }}>{label}</button>)}</div>
     <div className="sim-toolbar">
       <label>권역 <select value={region} onChange={e => setRegion(e.target.value)}><option value="all">전체</option>{Object.entries(REGION_LABELS).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
@@ -60,7 +60,7 @@ export function Politicians() {
         <p className="muted small">가치 성향: {Object.entries(selected.valueLean).map(([v, lean]) => `${VALUE_LABELS[v as keyof typeof VALUE_LABELS]} ${Math.round(lean / 10000)}`).join(' · ')}</p>
         <div className="table-scroll"><table className="sim-table attr-table"><thead><tr><th>속성</th><th>값</th><th>사용</th></tr></thead><tbody>
           {ATTRIBUTE_IDS.map(id => <tr key={id}><th>{ATTRIBUTE_LABELS[id]}</th><td>{selected.attributes[id]}</td><td className="small muted">{ATTRIBUTE_USE[id]}</td></tr>)}
-          {DOMAIN_IDS.map(d => <tr key={d}><th>정책 전문성 · {DOMAIN_LABELS[d]}</th><td>{selected.policyExpertise[d]}</td><td className="small muted">C2c 당 전문성 채널에서 사용됩니다</td></tr>)}
+          {DOMAIN_IDS.map(d => <tr key={d}><th>정책 전문성 · {DOMAIN_LABELS[d]}</th><td>{selected.policyExpertise[d]}</td><td className="small muted">영입 시 당 전문성 → 이슈 소유(서서히)</td></tr>)}
         </tbody></table></div>
         {selected.status === 'recruited' ? <>
           <label>역할 <select value={selected.role ?? 'member'} disabled={disabled} onChange={e => void dispatch({ type: 'ASSIGN_ROLE', politicianId: selected.id, role: e.target.value as RoleId })}>{ROLE_IDS.map(r => { const holder = roleHolder(game, r); return <option key={r} value={r} disabled={!!holder && holder.id !== selected.id}>{ROLE_LABELS[r]}{holder && holder.id !== selected.id ? ` (${holder.name})` : ''}</option>; })}</select></label>

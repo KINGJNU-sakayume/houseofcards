@@ -4,9 +4,10 @@ import { createGame, dispatchCommand, replay } from '../src/engine/simulation/en
 import { stateHash } from '../src/engine/simulation/determinism';
 import { partyManagement } from '../src/data/seeds/party-management';
 import { politicianModel } from '../src/data/seeds/politicians';
+import { organizationModel } from '../src/data/seeds/organization';
 import type { Command } from '../src/types/game';
-it('replays the deliberately reviewed C2b founding, idle season and management/reversal goldens', () => {
-  expect([partyManagement.modelVersion, politicianModel.modelVersion]).toEqual([golden.modelVersion, golden.peopleModelVersion]);
+it('replays the deliberately reviewed C2c founding, idle season and management/reversal goldens', () => {
+  expect([partyManagement.modelVersion, politicianModel.modelVersion, organizationModel.modelVersion]).toEqual([golden.modelVersion, golden.peopleModelVersion, golden.organizationModelVersion]);
   const initial = createGame(golden.seed);
   expect(stateHash(initial)).toBe(golden.initialHash);
   let state = dispatchCommand(initial, golden.commands[0] as Command);

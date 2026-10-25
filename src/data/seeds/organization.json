@@ -1,0 +1,24 @@
+{
+  "modelVersion": "C2.0",
+  "label": "GAME_MODEL",
+  "kinds": {
+    "member_drive": { "money": 4000, "staffCapacity": 2, "weeks": 4, "maxIntensity": 3, "level": 3, "members": 400 },
+    "local_office": { "money": 20000, "staffCapacity": 3, "weeks": 6, "maxIntensity": 1, "level": 8, "members": 0 },
+    "candidate_scouting": { "money": 3000, "staffCapacity": 2, "weeks": 4, "maxIntensity": 3, "level": 2, "members": 0 },
+    "policy_forum": { "money": 3000, "staffCapacity": 2, "weeks": 3, "maxIntensity": 3, "level": 3, "members": 0 }
+  },
+  "officeRent": 400,
+  "officeStaff": 2,
+  "decayPerMonth": 2,
+  "officeDecayPerMonth": 1,
+  "decayGraceDays": 90,
+  "boostWeeks": 26,
+  "scoutingWeightPerIntensity": 2,
+  "levelExposure": 4000,
+  "forumExposure": 60000,
+  "profileScale": 400000,
+  "profileCap": 120000,
+  "recruitExpertiseScale": 900000,
+  "chairExpertiseBonus": 100000,
+  "recruitExpertiseRate": 100000
+}

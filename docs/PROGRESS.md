@@ -4,15 +4,13 @@
 
 ## 인계
 
-- **현재 상태 (2026-10-25, C2b 완료)**
-  - main에 C2a가 병합되었습니다(PR #7). C2b는 `phase/c2b`에서 PR로 올립니다. 스키마 5 / phase C2, 인물 모형 C2.1.
-  - C2b 해시 (seed42): 창당 전 `51c01c4079585c89`, 창당 후 `c9ff84240b2bab93`, idle 종료 `82b14997d0fee03e`, 관리/반전 `feb1bf58dd1fe8a3`. 20시드 ×4전략 배치 `df233e725410f8b1`.
-  - 검사: typecheck, lint, unit 96개, `validate:data -- --release`, sim 20시드, build, Playwright 6개 통과.
+- **현재 상태 (2026-10-25, C2c 완료 → Phase C 완료)**
+  - main에 C2a(PR #7), C2b(PR #8)가 병합되었습니다. C2c(PR #9)도 병합되었습니다. 스키마 6 / phase C2.
+  - C2c 해시 (seed42): 창당 전 `1f129a1402e6c47a`, 창당 후 `0f0dfa650430d06c`, idle 종료 `aa609398df9a9663`, 관리 `47a88ba74e23434f`. 20시드 ×5전략 배치 `01768174f88c21dd`.
+  - 검사: typecheck, lint, unit 104개, `validate:data -- --release`, sim 20시드(5전략), build, Playwright 7개 통과.
 - **다음 할 일**
-  - C2c(지역조직, 노출·전문성 채널, C2 봇 5종, 균형 리포트)를 `phase/c2c`에서 시작합니다. 스키마 6으로 올리고, 먼저 실제 C2b 세이브 fixture를 내보냅니다.
-  - 생성기의 `regionWeight` 훅에 `candidate_scouting`을 연결합니다.
-  - 골든은 `tests/fixtures/c2-golden.json`을 지우고 `node --import tsx scripts/generate-c2-golden.ts`로 다시 만듭니다.
-  - DD1은 npm 없이 병행할 수 있습니다.
+  - DD1 완료(`docs/data/law-review-phase-d.json`, PR로 병합). 다음은 D1입니다.
+  - D1 착수 전에 Phase D 지시서를 작성해야 합니다(ROADMAP 첫머리: "D와 E는 착수 전에 지시서를 작성"). ROADMAP §5의 열린 결정 1(0석 분기)은 D4 전에 사용자 확인이 필요합니다.
 - **막힌 점**
   - 2026-10-20~23에는 클라우드 세션에서 `registry.npmjs.org`에 접근할 수 없었습니다. 2026-10-25 세션에서는 접근이 됐습니다.
   - DD2는 사용자 원자료를 기다리고 있습니다.
@@ -25,7 +23,7 @@
 - [ ] DD3 254 Light + Active 30 파생
 - [x] C2a 가상 정치인 생성기 + 스키마 4
 - [x] C2b 영입·약속
-- [ ] C2c 지역조직 → main 병합
+- [x] C2c 지역조직 → main 병합
 - [ ] D1 Ruleset·의석 배분
 - [ ] CAL 모형 교정
 - [ ] D2 지역구 선거·전략투표
@@ -39,4 +37,5 @@
 - 2026-10-25: P0. 로드맵을 개정했습니다. 남은 작업을 C2a–c, DD1–3, D1–4, CAL, E1–2로 나눴습니다. 문서만 바꿨고 코드와 골든은 변경하지 않았습니다.
 - 2026-10-25: C2a. PR #6을 검토하고 병합했습니다. `phase/c2`에서 C2a를 구현했습니다. 실제 C1 세이브 `tests/fixtures/phase-c1-v3.json`을 내보낸 뒤 스키마 4로 올렸습니다. 모든 게이트가 통과했습니다.
 - 2026-10-25: C2a PR #7 병합. C2b 구현(영입·역할·약속·평판, 인재 페이지, 스키마 5).
+- 2026-10-25: C2b PR #8 병합. C2c 구현(8권역 조직, §16 채널, 봇 5종, 균형 리포트, 스키마 6). 시뮬레이션 출력 불변 성능 리팩터.
 - 2026-10-25: DD1. 공직선거법·정당법 현행 조문 대조, 0석 등록취소 위헌 후 대체 입법 없음 확인, ROADMAP 별표 번호 정정.
