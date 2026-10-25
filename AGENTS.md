@@ -3,9 +3,10 @@
 Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md` (Slice Spec). If anything here conflicts with it, the Slice Spec wins, except where `docs/DECISIONS.md` records an explicit user decision. Record every decision in `docs/DECISIONS.md`.
 
 ## Status
-- A/B1/B2 are merged. **CURRENT STEP: C1** implementation is complete; execute no C2 work in the C1 task.
-- C1 implements founding, resources, finance, publication costs, player research, paid internal surveys and the Party page.
-- **Next: C2**, only after C1 is merged and its tests pass. Virtual people/recruitment/promises, regional investments and brand consistency remain C2; nominations/elections/seats remain D; Season Review remains E.
+- A/B1/B2/C1 are merged. C1 implements founding, resources, finance, publication costs, player research, paid internal surveys and the Party page.
+- **Order and splitting of the remaining work: `docs/ROADMAP.md` (rev 2026-10-25). Current position: `docs/PROGRESS.md`.** Each run executes only the first unchecked step there, following the run protocol in ROADMAP §1 (one `npm ci` preflight; on failure log one line and stop, never schedule retries).
+- Remaining steps: C2a politicians → C2b recruitment/promises → C2c regional organization (merge) → D1 Ruleset/seats → CAL model calibration → D2 districts/tactical voting → D3 nominations/list → D4 election/0-seat branch (merge) → E1 Election Night + Season Review → E2 polish incl. brand consistency (moved from C2). DD1–DD3 (Phase D data, Python/docs only) may run in parallel.
+- v1.0 districts are the **real 2024 254 districts** (user decision 2026-10-25); AI candidates stay virtual Light records unless decided otherwise.
 - Reality pack `kr-b2-2026-10-18-r3`; schema3 / phase C; party-management model C1.0. Political model B2.1 remains in use.
 - C1 seed42 hashes: before founding `8c52aa107c0a262d`, founded `80540311e6cc2763`, idle end `5cb48dbde11d429d`, management/reversal `1c3da2a992705758`. 20-seed ×4-strategy batch hash `d64c0602e0255e81` (B2 historical hash `d8d46221df2985db`).
 
@@ -27,9 +28,9 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md` (Slice 
 - Not in v1.0: parliament simulation, local/presidential elections, factions, mergers, live data, LLM outcomes.
 
 ## Process
-- One phase per task (A→E). Each phase ends playable, with tests passing and unimplemented parts labelled in the UI.
+- One ROADMAP step per run, committed to its phase branch (`phase/c2`, `phase/d`, `phase/e`); main is merged once per phase group. Each merge to main ends playable, with tests passing and unimplemented parts labelled in the UI.
 - Reality snapshot ends 2026-10-18; Save simulation starts 2026-10-19 (Mondays through 2028-04-10: 78 dates, 77 `ADVANCE_WEEK`s; election day 2028-04-12 is SCHEDULED, not a confirmed event).
-- Mark unverifiable legal/real-world numbers `UNVERIFIED_ASSUMPTION`; release builds fail while any remain. Currently zero blockers remain for the national pack; Phase D rule values (party-revocation threshold, deposit/reimbursement, dual-candidacy ban, list-gender rule) must be added as `UNVERIFIED_ASSUMPTION` or sourced.
+- Mark unverifiable legal/real-world numbers `UNVERIFIED_ASSUMPTION`; release builds fail while any remain. Currently zero blockers remain for the national pack; Phase D rule values (party revocation, deposit/reimbursement, dual-candidacy ban, list-gender rule) must be sourced in ROADMAP step DD1 or added as `UNVERIFIED_ASSUMPTION`. Note: the 0-seat/under-2% revocation clause (정당법 §44①3) was held unconstitutional on 2014-01-28; see ROADMAP §5 decision 1.
 - Changing the model, the reality pack, or the save schema changes golden hashes. Regenerate `tests/fixtures/*golden*.json` only deliberately, by replaying the same command sequence, and record old→new hashes in `docs/DECISIONS.md`.
 - Older saves are never silently upgraded or filled with generated state: bump the schema/phase discriminator and reject old JSON with Korean guidance to keep it.
 - CI: typecheck/lint → unit tests → data validation → 20-seed × 4-strategy C1 sim → dev build → Playwright; `release` runs `npm run build:release`; `deploy` only from main after both pass. Nightly/manual: 500-seed simulation.
@@ -52,4 +53,4 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md` (Slice 
 - Political/party-management defaults, AI parties, generated player state and polls are GAME MODEL, not official positions or predictions. No subsidy for the out-of-parliament player is a labelled game assumption, not a Reality claim.
 - Election-law state: current law is semi-compensatory; the 3% threshold was struck down 2026-01-29 with no replacement enacted (`law-transition` = UNRESOLVED). The default game ruleset `parallel_46_open` is a GAME ASSUMPTION. Always show the "this save's ruleset" notice.
 - Verified source data does not mean the model fits it: 15 of 20 seed-42 initial calibration comparisons are outside the old ±5pp tolerance. Do not tune targets/tolerances to pass; report honestly.
-- C1 removed the development preview from runtime code/seeds. Real core politicians are deferred for lack of verified Tier2 sources; C2 uses virtual Full objects only. Do not start C2/D/E as part of C1.
+- C1 removed the development preview from runtime code/seeds. Real core politicians are deferred for lack of verified Tier2 sources; C2 uses virtual Full objects only.
