@@ -88,3 +88,17 @@
   .party-expertise td:last-child { grid-column: 1 / -1; padding-top: 0; }
   .party-expertise td[data-label]::before { content: attr(data-label); display: block; font-size: 10px; color: #748276; }
 }
+
+.link-button { background:none; border:0; padding:0; font:inherit; font-weight:600; color:inherit; text-decoration:underline; cursor:pointer; text-align:left; }
+.link-button[aria-pressed="true"] { text-decoration-thickness:3px; }
+.recruit-form { border:1px solid #e0e3de; border-radius:8px; padding:14px 16px; margin:16px 0; min-width:0; }
+.recruit-form label, .check-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:6px 0; }
+.people-list { max-height: 720px; overflow-y: auto; }
+@media (max-width: 700px) {
+  .people-list { max-height: 420px; }
+  .people-table thead { display: none; }
+  .people-table, .people-table tbody { display: block; }
+  .people-table tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2px 12px; padding: 10px 0; border-top: 1px solid #e8ece5; }
+  .people-table th, .people-table td { display: block; padding: 0; border: 0; }
+}
+.attr-table td:nth-child(2) { white-space: nowrap; font-variant-numeric: tabular-nums; }

@@ -48,7 +48,7 @@ Reality pack `kr-b2-2026-10-18-r3`는 변경하지 않았습니다. 검증된 �
 
 정치 모형 계수는 `political-model.json`(B2.1), 새 창당·재정·비용·연구 수치는 엄격한 Zod `party-management.json`(C1.0, GAME_MODEL)입니다. 게임 밸런스 수치를 현실 사실이나 UNVERIFIED_ASSUMPTION으로 추가하지 않습니다. 선언가치는 직접 득표 보너스가 없습니다.
 
-저장은 **스키마 4 / phase C2**입니다. A/B1/B2/C1 JSON은 한국어 보관 안내와 함께 거부하며 묵시적으로 생성·마이그레이션하지 않습니다. 기존 JSON을 보관하세요. 명령 한도 **6,000개**, 가져오기 한도 **UTF-8 8,000,000바이트**입니다. 100건 이후 원장의 합은 `ledgerTruncatedSum`에 보존합니다. 여러 탭 동시 사용은 마지막 쓰기가 우선하며 탭 잠금/병합은 미구현입니다.
+저장은 **스키마 5 / phase C2**입니다. A/B1/B2/C1/C2a JSON은 한국어 보관 안내와 함께 거부하며 묵시적으로 생성·마이그레이션하지 않습니다. 기존 JSON을 보관하세요. 명령 한도 **6,000개**, 가져오기 한도 **UTF-8 8,000,000바이트**입니다. 100건 이후 원장의 합은 `ledgerTruncatedSum`에 보존합니다. 여러 탭 동시 사용은 마지막 쓰기가 우선하며 탭 잠금/병합은 미구현입니다.
 
 ## CI와 다음 작업
 
@@ -56,6 +56,6 @@ Reality pack `kr-b2-2026-10-18-r3`는 변경하지 않았습니다. 검증된 �
 
 [Slice Spec](docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md), [C1/C2 작업 지시](docs/HOUSE_OF_CARDS_KOREA_phase_c_rev1.md), [결정 기록](docs/DECISIONS.md), [검증 결과](docs/VALIDATION.md).
 
-남은 작업의 순서는 [로드맵](docs/ROADMAP.md)에, 현재 위치는 [진행 기록](docs/PROGRESS.md)에 있습니다. C2a(가상 정치인 생성기, 스키마 4)가 구현되었습니다. 다음 단계는 **C2b 영입·약속**입니다. Phase D 데이터 준비(DD1~DD3)는 C2와 병행할 수 있습니다.
+남은 작업의 순서는 [로드맵](docs/ROADMAP.md)에, 현재 위치는 [진행 기록](docs/PROGRESS.md)에 있습니다. C2a(가상 정치인 생성기)와 C2b(영입·역할·약속, 인재 페이지)가 구현되었습니다. 영입한 인물은 아직 지지 계산에 영향을 주지 않습니다. 다음 단계는 **C2c 지역조직**입니다. Phase D 데이터 준비(DD1~DD3)는 C2와 병행할 수 있습니다.
 
 C1 saves는 자동으로 확장하지 않고, C2 스키마/단계 호환 정책을 적용합니다. 실존 핵심 인물은 검증된 Data Tier 2 자료가 없어 유예했으며, C2는 가상 Full 인물만 구현합니다. Phase D/E는 아직 시작하지 않았습니다.

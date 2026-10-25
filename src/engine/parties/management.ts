@@ -46,7 +46,7 @@ export function shortage(state: GameState, cost: Partial<Resources>): string | n
   }
   return null;
 }
-function spend(state: GameState, cost: Partial<Resources>, kind: Finance['ledger'][number]['kind'], ref: string): GameState {
+export function spend(state: GameState, cost: Partial<Resources>, kind: Finance['ledger'][number]['kind'], ref: string): GameState {
   const reason = shortage(state, cost);
   if (reason) throw new Error(reason);
   let next = cost.money ? recordMoney(state, kind, -cost.money, ref) : state;
@@ -86,8 +86,8 @@ export function foundParty(state: GameState, command: Extract<Command, { type: '
     politics: { ...state.politics, parties: [...state.politics.parties, party].sort((a, b) => a.partyId < b.partyId ? -1 : 1), perceptions, pollHouses,
       viability: { ...state.politics.viability, [PLAYER_PARTY_ID]: data.newParty.viability } } };
   next = { ...next, politics: { ...next.politics, analysis: computeAnalysis(next) } };
-  next = generatePoliticians(next, politicianModel.generator.initial);
-  next = postMessage(next, `가상 인재 후보 ${next.politicians.length}명이 등장했습니다`, '가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 영입과 약속은 다음 단계(C2b)에서 열립니다.', 'FYI', '영입 책임자');
+  next = { ...generatePoliticians(next, politicianModel.generator.initial), recruitmentReputation: politicianModel.recruitment.reputationStart };
+  next = postMessage(next, `가상 인재 후보 ${next.politicians.length}명이 등장했습니다`, '가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 인재 페이지에서 영입과 약속을 검토하세요.', 'FYI', '영입 책임자');
   next = postMessage(next, `${shortName} 창당을 환영합니다`, `선언한 핵심가치: ${command.values.join(', ')}. 핵심가치는 득표 보너스가 아니며 연구 우선순위와 정체성에 반영됩니다.`, 'Important', '정책위원장');
   next = postMessage(next, '첫 공약과 내부조사를 준비하세요', '초안을 검토하고 자원을 확인해 공표하세요. 내부조사를 의뢰하면 잠재·현재 지지와 장벽의 시점별 추정을 확인할 수 있습니다.', 'Action Required', '데이터 책임자');
   return next;
