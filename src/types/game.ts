@@ -2,6 +2,7 @@ import type { Cohort, GovernmentPolicy, IssueState, PartyPlatform } from './simu
 import type { OpinionRuleset, PoliticsState } from './politics';
 import type { Finance, InternalSurvey, PlayerParty, Research, Resources } from './party';
 import type { CoreValue, DomainId } from './simulation';
+import type { Politician } from './people';
 export type ISODate = string;
 export interface CalendarConfig {
   startDate: ISODate;
@@ -60,14 +61,16 @@ export interface GameEvent {
   detail: string;
 }
 export interface GameState {
-  schemaVersion: 3;
-  phase: 'C';
+  schemaVersion: 4;
+  phase: 'C2';
   playerParty: PlayerParty | null;
   resources: Resources | null;
   finance: Finance | null;
   regionalOrganization: Record<string, { members: number; level: number }>;
   research: Research[];
   internalSurveys: InternalSurvey[];
+  // Generated virtual Full politicians, id order, at most 80 ever (C2).
+  politicians: Politician[];
   seed: number;
   rngState: Record<string, number>;
   realityPackId: string;

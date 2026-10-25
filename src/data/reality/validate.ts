@@ -3,9 +3,13 @@ import { AGE_BANDS, CORE_VALUES, DOMAIN_IDS, PROFILE_IDS } from '../../types/sim
 import { forbiddenNamesIn } from '../../validation/forbidden-names';
 import leverData from '../policy/levers.json' with { type: 'json' };
 import { politicalModel } from '../seeds/political-model';
+import { politicianModel, politicianModelSchema } from '../seeds/politicians';
+import { denylistSchema, realNameDenylist, type NameDenylist } from '../../validation/real-name-denylist';
+import { nameTableCollisions } from '../../engine/people/generator';
 
 export interface ValidationReport { errors: string[]; warnings: string[] }
-export function validateData(reality: unknown, seeds: unknown, release = false, levers: unknown = leverData, politicalSeeds: typeof politicalModel = politicalModel): ValidationReport {
+export function validateData(reality: unknown, seeds: unknown, release = false, levers: unknown = leverData, politicalSeeds: typeof politicalModel = politicalModel,
+  people: { model: unknown; denylist: unknown } = { model: politicianModel, denylist: realNameDenylist }): ValidationReport {
   const errors: string[] = [];
   const warnings: string[] = [];
   for (const name of forbiddenNamesIn([reality, seeds, levers, politicalSeeds])) errors.push(`Forbidden poll/media name: ${name}`);
@@ -109,5 +113,12 @@ export function validateData(reality: unknown, seeds: unknown, release = false, 
   }
   if (politicalSeeds.governmentApprovalFallback?.status === 'UNVERIFIED_ASSUMPTION') (release ? errors : warnings).push('government-approval-fallback: UNVERIFIED_ASSUMPTION');
   for (const party of pack.parties) if (pack.completeness === 'SIMULATION_FOUNDATIONS' && !politicalSeeds.parties[party.id]) errors.push(`Missing political model seed ${party.id}`);
+  const peopleModel = politicianModelSchema.safeParse(people.model), denylist = denylistSchema.safeParse(people.denylist);
+  if (!peopleModel.success) errors.push(...peopleModel.error.issues.map(issue => `politicians.${issue.path.join('.')}: ${issue.message}`));
+  if (!denylist.success) errors.push(...denylist.error.issues.map(issue => `real-name-denylist.${issue.path.join('.')}: ${issue.message}`));
+  if (peopleModel.success && denylist.success) {
+    // Generated names must never reproduce a Reality name, a denylisted name, or a poll/media name.
+    for (const name of nameTableCollisions(peopleModel.data, denylist.data as NameDenylist)) errors.push(`politicians: generated name collision ${name}`);
+  }
   return { errors, warnings };
 }

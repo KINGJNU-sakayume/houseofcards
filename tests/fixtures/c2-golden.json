@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 4,
+  "phase": "C2",
+  "step": "C2a",
+  "modelVersion": "C1.0",
+  "peopleModelVersion": "C2.0",
+  "seed": 42,
+  "initialHash": "488d1a8dce447688",
+  "foundedHash": "3aa202d2139778b1",
+  "seasonEndHash": "282fa0fcb14ef205",
+  "managementHash": "3ce9810f0e14dbee",
+  "commands": [
+    {
+      "type": "CREATE_PARTY",
+      "name": "내일의 정당",
+      "shortName": "내일",
+      "color": "#8864b5",
+      "values": [
+        "housing",
+        "safety-net",
+        "science"
+      ]
+    },
+    {
+      "type": "SET_PLATFORM_DRAFT",
+      "leverId": "housing.rent-support",
+      "value": 4
+    },
+    {
+      "type": "PUBLISH_PLATFORM",
+      "leverId": "housing.rent-support"
+    },
+    {
+      "type": "COMMISSION_INTERNAL_SURVEY"
+    },
+    {
+      "type": "START_POLICY_RESEARCH",
+      "domain": "housing"
+    },
+    {
+      "type": "SET_STAFF_LEVEL",
+      "level": 1
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "SET_PLATFORM_DRAFT",
+      "leverId": "housing.rent-support",
+      "value": 0
+    },
+    {
+      "type": "PUBLISH_PLATFORM",
+      "leverId": "housing.rent-support"
+    },
+    {
+      "type": "COMMISSION_INTERNAL_SURVEY"
+    }
+  ]
+}

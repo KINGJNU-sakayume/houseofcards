@@ -56,6 +56,6 @@ Reality pack `kr-b2-2026-10-18-r3`는 변경하지 않았습니다. 검증된 �
 
 [Slice Spec](docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md), [C1/C2 작업 지시](docs/HOUSE_OF_CARDS_KOREA_phase_c_rev1.md), [결정 기록](docs/DECISIONS.md), [검증 결과](docs/VALIDATION.md).
 
-남은 작업의 순서는 [로드맵](docs/ROADMAP.md)에, 현재 위치는 [진행 기록](docs/PROGRESS.md)에 있습니다. 다음 단계는 **C2a 가상 정치인**입니다. Phase D 데이터 준비(DD1~DD3)는 C2와 병행할 수 있습니다.
+남은 작업의 순서는 [로드맵](docs/ROADMAP.md)에, 현재 위치는 [진행 기록](docs/PROGRESS.md)에 있습니다. C2a(가상 정치인 생성기, 스키마 4)는 `phase/c2` 브랜치에 구현되어 있고 main에는 C2c 이후 한 번에 병합합니다. 다음 단계는 **C2b 영입·약속**입니다. Phase D 데이터 준비(DD1~DD3)는 C2와 병행할 수 있습니다.
 
 C1 saves는 자동으로 확장하지 않고, C2 스키마/단계 호환 정책을 적용합니다. 실존 핵심 인물은 검증된 Data Tier 2 자료가 없어 유예했으며, C2는 가상 Full 인물만 구현합니다. Phase D/E는 아직 시작하지 않았습니다.

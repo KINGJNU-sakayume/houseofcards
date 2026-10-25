@@ -10,6 +10,7 @@ import { DOMAIN_IDS } from '../src/types/simulation';
 import type { Command, GameState } from '../src/types/game';
 import { platformDiversity } from '../src/engine/parties/ai';
 import { publicationCost, shortage } from '../src/engine/parties/management';
+import { politicianModel as people } from '../src/data/seeds/politicians';
 const strategies = ['idle', 'balanced', 'housing-focused', 'spender'] as const;
 let refused = 0;
 const refusals: Record<string, number> = {};
@@ -44,6 +45,9 @@ function assertState(state: GameState) {
   if (r.money < 0 || r.staffCapacity < 0 || r.staffCapacity > management.finance.baseStaffCapacity + Math.max(...management.staffLevels.map(s => s.capacity)) || r.agendaSlots < 0 || r.agendaSlots > management.finance.agendaCap || f.arrears < 0 || f.ledger.length > 100) throw new Error('Invalid resources');
   if (r.money !== f.initialMoney + f.ledgerTruncatedSum + f.ledger.reduce((sum, e) => sum + e.amount, 0)) throw new Error('Ledger conservation failed');
   if (Object.values(state.regionalOrganization).reduce((sum, region) => sum + region.members, 0) !== f.members) throw new Error('Regional members do not sum');
+  const pool = state.politicians;
+  if (pool.length > people.generator.cap || new Set(pool.map(p => p.name)).size !== pool.length || new Set(pool.map(p => p.id)).size !== pool.length ||
+    (state.date >= people.generator.guaranteeBy && pool.length < people.generator.guaranteeCount) || pool.some(p => p.status !== 'prospect' && p.status !== 'unavailable')) throw new Error('Politician pool invariant failed');
   if (state.internalSurveys.length > 12 || state.inbox.length > 60 || new Set(state.research.map(r => r.domain)).size !== state.research.length) throw new Error('Bounded storage failed');
 }
 function publishBot(state: GameState, domain: string, stress = false): GameState {
@@ -58,7 +62,7 @@ function publishBot(state: GameState, domain: string, stress = false): GameState
 const position = process.argv.indexOf('--seeds');
 const count = position < 0 ? 20 : Number(process.argv[position + 1]);
 if (!Number.isInteger(count) || count < 1 || count > 10000) throw new Error('--seeds must be an integer in [1, 10000]');
-const hashes: string[] = [], results: Record<string, number[]> = {}, money: Record<string, number[]> = {};
+const hashes: string[] = [], results: Record<string, number[]> = {}, money: Record<string, number[]> = {}, pools: Record<string, number[]> = {};
 for (let seed = 0; seed < count; seed++) {
   for (const strategy of strategies) {
     let state = dispatchCommand(createGame(seed), { type: 'CREATE_PARTY', name: '내일의 정당', shortName: '내일', color: management.palette[0]!, values: ['housing', 'safety-net', 'science'] }), month = 0;
@@ -88,13 +92,15 @@ for (let seed = 0; seed < count; seed++) {
       assertState(state);
     }
     const hash = stateHash(state);
-    if (state.tick !== 78 || state.date !== '2028-04-10' || stateHash(deserializeSave(serializeSave(state))) !== hash) throw new Error(`C1 replay/save regression at ${seed}/${strategy}`);
+    if (state.tick !== 78 || state.date !== '2028-04-10' || stateHash(deserializeSave(serializeSave(state))) !== hash) throw new Error(`C2a replay/save regression at ${seed}/${strategy}`);
     if (strategy === 'idle' && (state.finance!.arrears !== 0 || state.resources!.money <= 0)) throw new Error('Idle insolvency');
     if (strategy === 'spender' && refused === refusedBefore) throw new Error('Stress constraints never bound');
+    if (state.politicians.length < people.generator.guaranteeCount) throw new Error('Pool guarantee failed');
+    (pools[strategy] ??= []).push(state.politicians.length);
     hashes.push(hash); (results[strategy] ??= []).push(state.politics.analysis.currentSupport.player!); (money[strategy] ??= []).push(state.resources!.money);
   }
-  if (count >= 20 && (seed + 1) % 5 === 0) console.log(`Verified ${seed + 1}/${count} seeds × four C1 strategies`);
+  if (count >= 20 && (seed + 1) % 5 === 0) console.log(`Verified ${seed + 1}/${count} seeds × four C2a strategies`);
 }
-console.log(JSON.stringify({ phase: 'C1', scope: 'national chain and resources; NOT election balance or prediction', seeds: count, strategies, advancesPerRun: 77, passed: true, refusedCommands: refused, refusals,
+console.log(JSON.stringify({ phase: 'C2a', scope: 'national chain, resources and politician pool; NOT election balance or prediction', seeds: count, strategies, advancesPerRun: 77, passed: true, refusedCommands: refused, refusals,
   playerCurrentSupportRanges: Object.fromEntries(Object.entries(results).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])),
-  finalMoneyRanges: Object.fromEntries(Object.entries(money).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])), batchHash: stateHash(hashes) }, null, 2));
+  finalMoneyRanges: Object.fromEntries(Object.entries(money).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])), generatedPoliticianRanges: Object.fromEntries(Object.entries(pools).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])), batchHash: stateHash(hashes) }, null, 2));
