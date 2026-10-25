@@ -11,6 +11,7 @@ import type { Command, GameState } from '../src/types/game';
 import { platformDiversity } from '../src/engine/parties/ai';
 import { publicationCost, shortage } from '../src/engine/parties/management';
 import { politicianModel as people } from '../src/data/seeds/politicians';
+import { recruitmentInputs, recruitmentProbability, roleHolder } from '../src/engine/people/recruitment';
 const strategies = ['idle', 'balanced', 'housing-focused', 'spender'] as const;
 let refused = 0;
 const refusals: Record<string, number> = {};
@@ -20,7 +21,7 @@ function attempt(state: GameState, command: Command): GameState {
   const before = state, log = state.commandLog, resources = state.resources;
   try { return dispatchCommand(state, command); }
   catch (error) {
-    if (!(error instanceof Error) || !/부족|이미 연구/.test(error.message)) throw error;
+    if (!(error instanceof Error) || !/부족|이미 연구|맡고 있습니다|약속했습니다/.test(error.message)) throw error;
     if (state !== before || state.commandLog !== log || state.resources !== resources || !Object.isFrozen(state) || !Object.isFrozen(log) || !Object.isFrozen(resources)) throw new Error('Refused command mutated state');
     refused++; refusals[command.type] = (refusals[command.type] ?? 0) + 1;
     return state;
@@ -47,7 +48,10 @@ function assertState(state: GameState) {
   if (Object.values(state.regionalOrganization).reduce((sum, region) => sum + region.members, 0) !== f.members) throw new Error('Regional members do not sum');
   const pool = state.politicians;
   if (pool.length > people.generator.cap || new Set(pool.map(p => p.name)).size !== pool.length || new Set(pool.map(p => p.id)).size !== pool.length ||
-    (state.date >= people.generator.guaranteeBy && pool.length < people.generator.guaranteeCount) || pool.some(p => p.status !== 'prospect' && p.status !== 'unavailable')) throw new Error('Politician pool invariant failed');
+    (state.date >= people.generator.guaranteeBy && pool.length < people.generator.guaranteeCount)) throw new Error('Politician pool invariant failed');
+  for (const role of ['policy_chair', 'secretary_general']) if (pool.filter(p => p.status === 'recruited' && p.role === role).length > 1) throw new Error('Role slot exceeded');
+  if (pool.some(p => (p.status === 'recruited') !== (p.role !== null) || (p.status === 'declined') !== (p.cooldownUntil !== null) || p.trust < 0 || p.trust > 100)) throw new Error('Person status invariant failed');
+  if (state.promises.some(pr => pool.find(p => p.id === pr.politicianId)?.status !== 'recruited') || state.recruitmentReputation! < people.recruitment.reputationFloor || state.recruitmentReputation! > 100) throw new Error('Promise/reputation invariant failed');
   if (state.internalSurveys.length > 12 || state.inbox.length > 60 || new Set(state.research.map(r => r.domain)).size !== state.research.length) throw new Error('Bounded storage failed');
 }
 function publishBot(state: GameState, domain: string, stress = false): GameState {
@@ -62,7 +66,7 @@ function publishBot(state: GameState, domain: string, stress = false): GameState
 const position = process.argv.indexOf('--seeds');
 const count = position < 0 ? 20 : Number(process.argv[position + 1]);
 if (!Number.isInteger(count) || count < 1 || count > 10000) throw new Error('--seeds must be an integer in [1, 10000]');
-const hashes: string[] = [], results: Record<string, number[]> = {}, money: Record<string, number[]> = {}, pools: Record<string, number[]> = {};
+const hashes: string[] = [], results: Record<string, number[]> = {}, money: Record<string, number[]> = {}, pools: Record<string, number[]> = {}, recruits: Record<string, number[]> = {};
 for (let seed = 0; seed < count; seed++) {
   for (const strategy of strategies) {
     let state = dispatchCommand(createGame(seed), { type: 'CREATE_PARTY', name: '내일의 정당', shortName: '내일', color: management.palette[0]!, values: ['housing', 'safety-net', 'science'] }), month = 0;
@@ -71,6 +75,12 @@ for (let seed = 0; seed < count; seed++) {
     if (strategy === 'balanced') state = attempt(state, { type: 'SET_STAFF_LEVEL', level: 1 });
     while (state.status === 'active') {
       const monthly = isMonthlyTick(addDays(state.date, 7));
+      if (strategy === 'spender') for (const person of state.politicians.filter(p => p.status === 'prospect')) state = attempt(state, { type: 'RECRUIT_POLITICIAN', politicianId: person.id, role: 'member', promises: [] });
+      if (strategy === 'balanced' && monthly && month % 2 === 0) {
+        const best = state.politicians.filter(p => p.status === 'prospect').sort((a, b) => recruitmentProbability(recruitmentInputs(state, b, 'member', [])) - recruitmentProbability(recruitmentInputs(state, a, 'member', [])) || (a.id < b.id ? -1 : 1))[0];
+        const chair = !roleHolder(state, 'policy_chair');
+        if (best) state = attempt(state, { type: 'RECRUIT_POLITICIAN', politicianId: best.id, role: chair ? 'policy_chair' : 'member', promises: chair ? ['policy_chair'] : [] });
+      }
       if (strategy === 'spender') {
         state = attempt(state, { type: 'SET_STAFF_LEVEL', level: 4 });
         state = publishBot(state, 'housing', true);
@@ -92,15 +102,15 @@ for (let seed = 0; seed < count; seed++) {
       assertState(state);
     }
     const hash = stateHash(state);
-    if (state.tick !== 78 || state.date !== '2028-04-10' || stateHash(deserializeSave(serializeSave(state))) !== hash) throw new Error(`C2a replay/save regression at ${seed}/${strategy}`);
+    if (state.tick !== 78 || state.date !== '2028-04-10' || stateHash(deserializeSave(serializeSave(state))) !== hash) throw new Error(`C2b replay/save regression at ${seed}/${strategy}`);
     if (strategy === 'idle' && (state.finance!.arrears !== 0 || state.resources!.money <= 0)) throw new Error('Idle insolvency');
     if (strategy === 'spender' && refused === refusedBefore) throw new Error('Stress constraints never bound');
     if (state.politicians.length < people.generator.guaranteeCount) throw new Error('Pool guarantee failed');
-    (pools[strategy] ??= []).push(state.politicians.length);
+    (pools[strategy] ??= []).push(state.politicians.length); (recruits[strategy] ??= []).push(state.politicians.filter(p => p.status === 'recruited').length);
     hashes.push(hash); (results[strategy] ??= []).push(state.politics.analysis.currentSupport.player!); (money[strategy] ??= []).push(state.resources!.money);
   }
-  if (count >= 20 && (seed + 1) % 5 === 0) console.log(`Verified ${seed + 1}/${count} seeds × four C2a strategies`);
+  if (count >= 20 && (seed + 1) % 5 === 0) console.log(`Verified ${seed + 1}/${count} seeds × four C2b strategies`);
 }
-console.log(JSON.stringify({ phase: 'C2a', scope: 'national chain, resources and politician pool; NOT election balance or prediction', seeds: count, strategies, advancesPerRun: 77, passed: true, refusedCommands: refused, refusals,
+console.log(JSON.stringify({ phase: 'C2b', scope: 'national chain, resources, politician pool and recruitment; NOT election balance or prediction', seeds: count, strategies, advancesPerRun: 77, passed: true, refusedCommands: refused, refusals,
   playerCurrentSupportRanges: Object.fromEntries(Object.entries(results).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])),
-  finalMoneyRanges: Object.fromEntries(Object.entries(money).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])), generatedPoliticianRanges: Object.fromEntries(Object.entries(pools).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])), batchHash: stateHash(hashes) }, null, 2));
+  finalMoneyRanges: Object.fromEntries(Object.entries(money).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])), generatedPoliticianRanges: Object.fromEntries(Object.entries(pools).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])), recruitedRanges: Object.fromEntries(Object.entries(recruits).map(([id, values]) => [id, [Math.min(...values), Math.max(...values)]])), batchHash: stateHash(hashes) }, null, 2));

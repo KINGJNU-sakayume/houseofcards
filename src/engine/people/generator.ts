@@ -69,7 +69,7 @@ export function generatePoliticians(state: GameState, count: number, options: Ge
     used.add(normalizeName(name));
     created.push({ id: `pol-${String(state.politicians.length + created.length + 1).padStart(3, '0')}`, name, gender, age, background: background.id, regionId,
       origin: 'GENERATED', generatedAt: state.date, attributes, policyExpertise, valueLean: Object.fromEntries(Object.entries(valueLean).sort(([a], [b]) => a < b ? -1 : 1)),
-      domainInterest, status: 'prospect', availableUntil: addDays(state.date, g.availabilityWeeks * 7), cooldownUntil: null, trust: g.initialTrust });
+      domainInterest, status: 'prospect', availableUntil: addDays(state.date, g.availabilityWeeks * 7), cooldownUntil: null, trust: g.initialTrust, role: null, recruitedAt: null });
   }
   return { ...state, politicians: [...state.politicians, ...created], rngState: { ...state.rngState, [key]: rng } };
 }
@@ -92,9 +92,16 @@ export function monthlySupply(state: GameState, options: GeneratorOptions = {}):
   const next = generatePoliticians({ ...state, rngState: { ...state.rngState, [key]: rng } }, count, options);
   return { state: next, added: next.politicians.length - before };
 }
-export function expireProspects(state: GameState): GameState {
-  if (!state.politicians.some(p => p.status === 'prospect' && p.availableUntil < state.date)) return state;
-  return { ...state, politicians: state.politicians.map(p => p.status === 'prospect' && p.availableUntil < state.date ? { ...p, status: 'unavailable' as const } : p) };
+// Weekly: unrecruited people expire after their window; a refusal's cooldown ends
+// back in the prospect list while the person is still available.
+export function updatePoolStatus(state: GameState): GameState {
+  const status = (p: Politician): Politician['status'] => {
+    if (p.status === 'declined' && p.cooldownUntil !== null && p.cooldownUntil <= state.date) return p.availableUntil < state.date ? 'unavailable' : 'prospect';
+    if (p.status === 'prospect' && p.availableUntil < state.date) return 'unavailable';
+    return p.status;
+  };
+  if (state.politicians.every(p => status(p) === p.status)) return state;
+  return { ...state, politicians: state.politicians.map(p => status(p) === p.status ? p : { ...p, status: status(p), cooldownUntil: status(p) === 'declined' ? p.cooldownUntil : null }) };
 }
 // Every name the table can produce; the validator fails CI if any is blocked.
 export function nameTableCollisions(model: PoliticianModel = defaultModel, denylist: NameDenylist = realNameDenylist): string[] {

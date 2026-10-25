@@ -15,7 +15,7 @@ const commands: Command[] = [founding, { type: 'SET_PLATFORM_DRAFT', leverId: 'h
   { type: 'SET_PLATFORM_DRAFT', leverId: 'housing.rent-support', value: 0 }, { type: 'PUBLISH_PLATFORM', leverId: 'housing.rent-support' }, { type: 'COMMISSION_INTERNAL_SURVEY' }];
 const initial = createGame(seed), founded = dispatchCommand(initial, founding);
 let end = founded; for (let i = 0; i < 77; i++) end = dispatchCommand(end, { type: 'ADVANCE_WEEK' });
-const fixture = { schemaVersion: 4, phase: 'C2', step: 'C2a', modelVersion: partyManagement.modelVersion, peopleModelVersion: politicianModel.modelVersion, seed,
+const fixture = { schemaVersion: 4, phase: 'C2', step: 'C2b', modelVersion: partyManagement.modelVersion, peopleModelVersion: politicianModel.modelVersion, seed,
   initialHash: stateHash(initial), foundedHash: stateHash(founded), seasonEndHash: stateHash(end), managementHash: stateHash(replay(seed, commands)), commands };
 writeFileSync(path, JSON.stringify(fixture, null, 2) + '\n');
 console.log(JSON.stringify(fixture, null, 2));

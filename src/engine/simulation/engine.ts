@@ -14,7 +14,8 @@ import { initializePolitics, evolvePerceptions } from '../voters/dynamics';
 import { computeAnalysis } from '../voters/model';
 import { updateGovernmentAI, updatePartyAI } from '../parties/ai';
 import { makePoll } from '../polling';
-import { expireProspects, monthlySupply } from '../people/generator';
+import { updatePoolStatus, monthlySupply } from '../people/generator';
+import { recruitmentCommand, weeklyPromises, monthlyReputation } from '../people/recruitment';
 
 export const REALITY_PACK_ID = realityPack.id;
 export const REALITY_PACK_AS_OF = realityPack.asOf;
@@ -23,7 +24,7 @@ export function createGame(seed: number): GameState {
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('시드는 0~4294967295의 정수여야 합니다.');
   const state = initializePolitics({
     ...initializeSimulation(seed, CALENDAR.startDate),
-    schemaVersion: 4, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], simulationStartDate: CALENDAR.startDate,
+    schemaVersion: 5, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, simulationStartDate: CALENDAR.startDate,
     realityPackId: REALITY_PACK_ID, realityPackAsOf: REALITY_PACK_AS_OF,
     rulesetId: model.scenario.rulesetId,
     rulesetSnapshot: { ...model.scenario, kind: 'opinion_only', status: 'GAME_ASSUMPTION', calendar: { ...CALENDAR } },
@@ -57,6 +58,8 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
   if (state.status === 'active') {
     const managed = managementCommand(state, command);
     if (managed) return finish(managed.state, managed.event, command.type);
+    const recruited = recruitmentCommand(state, command);
+    if (recruited) return finish(recruited.state, recruited.event, recruited.detail);
   } else if (!['ADVANCE_WEEK', 'RESPOND_INBOX'].includes(command.type)) throw new Error('완료된 프리뷰는 변경할 수 없습니다.');
   if (command.type === 'SET_PLATFORM_DRAFT' || command.type === 'PUBLISH_PLATFORM') {
     if (state.status !== 'active') throw new Error('완료된 프리뷰는 공약을 변경할 수 없습니다.');
@@ -96,7 +99,8 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
   const update = monthly ? monthlyUpdate(next) : null;
   if (update) next = update.state;
   // Own stream only: the pool never moves AI, voter or polling draws.
-  next = expireProspects(next);
+  next = weeklyPromises(updatePoolStatus(next));
+  if (monthly) next = monthlyReputation(next);
   const supply = monthly ? monthlySupply(next) : null;
   if (supply) next = supply.state;
   const messages: InboxMessage[] = [];
@@ -113,7 +117,7 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
     if (update.governmentChanges.length) messages.push({ id: `government-${tick}`, date, sender: '정책위원장', title: '정부 정책 집행과 효과 시차', priority: 'Report', read: false,
       body: `SAVE SIMULATION · ${update.governmentChanges.map(id => policyLevers.find(l => l.id === id)!.name).join(', ')} 집행이 결정되었습니다. 각 정책의 구현 시차가 지난 뒤 사회 이슈에 반영됩니다.` });
     if (supply!.added) messages.push({ id: `prospects-${tick}`, date, sender: '영입 책임자', title: `새 인재 후보 ${supply!.added}명`, priority: 'Report', read: false,
-      body: `가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 누적 생성 ${next.politicians.length}명. 영입과 약속은 다음 단계(C2b)에서 열립니다.` });
+      body: `가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 누적 생성 ${next.politicians.length}명. 인재 페이지에서 영입을 검토하세요.` });
     event('MONTH_BOUNDARY', '이슈·인식·AI·전국 지지 갱신');
     event('POLL_PUBLISHED', update.poll.id);
     if (update.aiChanges.length) event('AI_PLATFORM_SHIFT', update.aiChanges.join('|'));

@@ -23,7 +23,7 @@ export function Home() {
   return <>
     <div className="page-heading"><div><p className="eyebrow">PARTY OFFICE / WEEK {String(game.tick).padStart(2, '0')}</p><h1>우리의 다음 페이지.</h1><p className="muted">작은 정당의 시작부터, 새로운 가능성까지.</p></div><span className="outline-badge">시즌 2026 — 2028</span></div>
     <section className="season-card" aria-labelledby="season-title">
-      <div className="season-copy"><span className="light-eyebrow">HOUSE OF CARDS: KOREA</span><h2 id="season-title">정치는 선택의 기록입니다.</h2><p>정책을 만들고, 사람을 모으고, 지역에 뿌리내리세요.<br />2028년을 향한 첫 주가 여기서 시작됩니다.</p><div className="season-tags"><span>C2a · PARTY MANAGEMENT</span><span>창당 · 자원 · 연구 · 인재 생성</span></div></div>
+      <div className="season-copy"><span className="light-eyebrow">HOUSE OF CARDS: KOREA</span><h2 id="season-title">정치는 선택의 기록입니다.</h2><p>정책을 만들고, 사람을 모으고, 지역에 뿌리내리세요.<br />2028년을 향한 첫 주가 여기서 시작됩니다.</p><div className="season-tags"><span>C2b · PARTY MANAGEMENT</span><span>창당 · 자원 · 연구 · 인재 영입</span></div></div>
       <div className="card-architecture" aria-hidden="true"><div className="arch-line" /><i className="playing-card card-one" /><i className="playing-card card-two" /><i className="playing-card card-three" /><i className="playing-card card-four" /><span>BUILD SOMETHING<br />THAT LASTS.</span></div>
     </section>
     <ResourceStrip /><section className="overview-grid" aria-label="시즌 현황">

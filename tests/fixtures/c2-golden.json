@@ -1,14 +1,14 @@
 {
   "schemaVersion": 4,
   "phase": "C2",
-  "step": "C2a",
+  "step": "C2b",
   "modelVersion": "C1.0",
-  "peopleModelVersion": "C2.0",
+  "peopleModelVersion": "C2.1",
   "seed": 42,
-  "initialHash": "488d1a8dce447688",
-  "foundedHash": "3aa202d2139778b1",
-  "seasonEndHash": "282fa0fcb14ef205",
-  "managementHash": "3ce9810f0e14dbee",
+  "initialHash": "51c01c4079585c89",
+  "foundedHash": "c9ff84240b2bab93",
+  "seasonEndHash": "82b14997d0fee03e",
+  "managementHash": "feb1bf58dd1fe8a3",
   "commands": [
     {
       "type": "CREATE_PARTY",
