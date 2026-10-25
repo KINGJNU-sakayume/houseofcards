@@ -22,7 +22,7 @@ describe('B1 snapshot and deterministic saves', () => {
     expect(state.realityPackId).not.toContain('2026-10-19');
     expect(state.simulationStartDate).toBe('2026-10-19');
     expect(state.date).toBe(state.simulationStartDate);
-    expect(state.schemaVersion).toBe(3);
+    expect(state.schemaVersion).toBe(4);
     state = dispatchCommand(state, { type: 'SET_PLATFORM_DRAFT', leverId: 'housing.rent-support', value: 4 });
     state = dispatchCommand(state, { type: 'PUBLISH_PLATFORM', leverId: 'housing.rent-support' });
     for (let i = 0; i < 30; i++) state = dispatchCommand(state, { type: 'ADVANCE_WEEK' });

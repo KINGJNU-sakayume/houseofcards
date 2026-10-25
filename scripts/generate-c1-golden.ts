@@ -1,4 +1,4 @@
-// Run deliberately after reviewing model changes; never called by tests/CI.
+// Historical (C1, schema 3). Kept for the record; the current golden is generate-c2-golden.ts.
 import { existsSync, writeFileSync } from 'node:fs';
 import { createGame, dispatchCommand, replay } from '../src/engine/simulation/engine';
 import { stateHash } from '../src/engine/simulation/determinism';

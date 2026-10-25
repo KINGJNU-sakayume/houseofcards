@@ -1,11 +1,12 @@
 import { expect, it } from 'vitest';
-import golden from './fixtures/c1-golden.json' with { type: 'json' };
+import golden from './fixtures/c2-golden.json' with { type: 'json' };
 import { createGame, dispatchCommand, replay } from '../src/engine/simulation/engine';
 import { stateHash } from '../src/engine/simulation/determinism';
 import { partyManagement } from '../src/data/seeds/party-management';
+import { politicianModel } from '../src/data/seeds/politicians';
 import type { Command } from '../src/types/game';
-it('replays the deliberately reviewed C1 founding, idle season and management/reversal goldens', () => {
-  expect(partyManagement.modelVersion).toBe(golden.modelVersion);
+it('replays the deliberately reviewed C2a founding, idle season and management/reversal goldens', () => {
+  expect([partyManagement.modelVersion, politicianModel.modelVersion]).toEqual([golden.modelVersion, golden.peopleModelVersion]);
   const initial = createGame(golden.seed);
   expect(stateHash(initial)).toBe(golden.initialHash);
   let state = dispatchCommand(initial, golden.commands[0] as Command);

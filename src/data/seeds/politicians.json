@@ -1,0 +1,29 @@
+{
+  "modelVersion": "C2.0",
+  "label": "GAME_MODEL",
+  "generator": {
+    "initial": 30, "monthlyMin": 1, "monthlyMax": 3, "cap": 80,
+    "guaranteeCount": 50, "guaranteeBy": "2027-12-06", "availabilityWeeks": 30,
+    "ageMin": 29, "ageMax": 66, "attributeBase": 25, "attributeSpread": 36,
+    "expertiseBase": 5, "expertiseSpread": 31, "interestSpread": 41,
+    "valueInterestWeight": 3, "leanValues": 2, "leanMin": 560000, "leanMax": 940000, "initialTrust": 40
+  },
+  "surnames": ["김", "이", "박", "최", "정", "강", "조", "윤", "장", "임", "한", "오", "서", "신", "권", "황", "안", "송", "류", "전", "홍", "고", "문", "양", "손", "배", "백", "허", "남", "심"],
+  "givenNames": ["서하", "하진", "지호", "민재", "도윤", "서윤", "하윤", "지안", "예준", "시우", "은우", "유나", "채원", "지유", "수아", "다온", "이안", "로운", "하람", "가온", "나래", "다인", "보람", "새봄", "세린", "소담", "아린", "여름", "온유", "윤슬", "이든", "재하", "주원", "지율", "채윤", "태오", "하늘", "한결", "해솔", "현우", "규리", "나윤", "도하", "라온", "루아", "마루", "미르", "별하", "빛나", "사랑", "선율", "솔빈", "시온", "아윤", "연우", "예린", "우진", "유찬", "은솔", "정우"],
+  "backgrounds": [
+    { "id": "local-councillor", "label": "지방의원", "weight": 12, "attributes": { "localBase": 25, "organization": 15, "campaigning": 10 }, "domains": { "housing": 15, "political-reform": 10 }, "values": ["decentralization", "reform"] },
+    { "id": "policy-researcher", "label": "정책연구원", "weight": 10, "attributes": { "negotiation": 5, "media": 5 }, "domains": { "pension": 25, "family": 20, "industry-ai": 15 }, "values": ["efficiency", "generations"] },
+    { "id": "lawyer", "label": "변호사", "weight": 9, "attributes": { "negotiation": 20, "media": 10 }, "domains": { "political-reform": 30, "housing": 10 }, "values": ["reform", "efficiency"] },
+    { "id": "doctor", "label": "의사", "weight": 6, "attributes": { "recognition": 10, "broadAppeal": 10 }, "domains": { "healthcare": 40 }, "values": ["science", "safety-net"] },
+    { "id": "nurse", "label": "간호사", "weight": 6, "attributes": { "broadAppeal": 15, "organization": 5 }, "domains": { "healthcare": 35, "family": 10 }, "values": ["safety-net", "labour"] },
+    { "id": "engineer", "label": "엔지니어", "weight": 8, "attributes": { "negotiation": 5 }, "domains": { "industry-ai": 40 }, "values": ["science", "climate"] },
+    { "id": "teacher", "label": "교사", "weight": 8, "attributes": { "broadAppeal": 10, "localBase": 10 }, "domains": { "family": 30 }, "values": ["generations", "safety-net"] },
+    { "id": "entrepreneur", "label": "기업가", "weight": 8, "attributes": { "media": 10, "negotiation": 15 }, "domains": { "industry-ai": 25, "housing": 10 }, "values": ["market", "science"] },
+    { "id": "labour-organizer", "label": "노동운동가", "weight": 7, "attributes": { "organization": 25, "campaigning": 15 }, "domains": { "family": 15, "pension": 15 }, "values": ["labour", "safety-net"] },
+    { "id": "civic-activist", "label": "시민단체 활동가", "weight": 9, "attributes": { "campaigning": 20, "organization": 10 }, "domains": { "housing": 20, "political-reform": 15 }, "values": ["housing", "reform", "climate"] },
+    { "id": "former-aide", "label": "전직 보좌진", "weight": 10, "attributes": { "negotiation": 15, "campaigning": 10, "organization": 10 }, "domains": { "political-reform": 20, "pension": 10 }, "values": ["efficiency", "decentralization"] },
+    { "id": "journalist", "label": "전직 기자", "weight": 4, "attributes": { "media": 30, "recognition": 10 }, "domains": { "political-reform": 15, "housing": 10 }, "values": ["reform", "generations"] },
+    { "id": "social-worker", "label": "사회복지사", "weight": 5, "attributes": { "localBase": 15, "broadAppeal": 10 }, "domains": { "pension": 25, "family": 20 }, "values": ["safety-net", "generations"] },
+    { "id": "urban-planner", "label": "도시계획가", "weight": 4, "attributes": { "negotiation": 10 }, "domains": { "housing": 40 }, "values": ["housing", "decentralization", "climate"] }
+  ]
+}
