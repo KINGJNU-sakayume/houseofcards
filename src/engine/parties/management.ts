@@ -15,6 +15,7 @@ import { normalizeMasses } from '../voters/cohorts';
 import { addDays, isMonthlyTick } from '../calendar';
 import { generatePoliticians } from '../people/generator';
 import { politicianModel } from '../../data/seeds/politicians';
+import { organizationModel } from '../../data/seeds/organization';
 
 export const normalizePartyName = (name: string) => name.normalize('NFKC').trim().toLowerCase();
 export function validatePartyName(name: string, min: number, max: number): string {
@@ -63,7 +64,7 @@ export function foundParty(state: GameState, command: Extract<Command, { type: '
   const draw = (max: number) => { const r = randomInt(rng, max); rng = r.state; return r.value; };
   const members = data.newParty.membersMin + draw(data.newParty.membersMax - data.newParty.membersMin + 1);
   const regionMass = normalizeMasses(REGION_IDS.map(id => ({ id, mass: state.cohorts.filter(c => c.regionId === id).reduce((s, c) => s + c.weight, 0) })), members);
-  const regionalOrganization = Object.fromEntries(REGION_IDS.map(id => [id, { members: regionMass[id]!, level: data.newParty.regionalLevelMin + draw(data.newParty.regionalLevelMax - data.newParty.regionalLevelMin + 1) }]));
+  const regionalOrganization = Object.fromEntries(REGION_IDS.map(id => [id, { members: regionMass[id]!, level: data.newParty.regionalLevelMin + draw(data.newParty.regionalLevelMax - data.newParty.regionalLevelMin + 1), office: false, investments: [], lastActivity: state.date, scouting: null, forum: null }]));
   const platform = createPlatform(PLAYER_PARTY_ID, policyLevers);
   const party = { partyId: PLAYER_PARTY_ID, declaredValues: [...command.values], identity: platformIdentity(platform, command.values),
     expertise: { ...data.newParty.expertise }, ownership: Object.fromEntries(DOMAIN_IDS.map(d => [d, data.newParty.ownership])) as typeof data.newParty.expertise,
@@ -114,7 +115,8 @@ export function researchCost(state: GameState, domain: DomainId): Partial<Resour
   return { money: data.research.money, staffCapacity: roundDiv(data.research.staffCapacity * (matched ? SCALE - data.research.affinityDiscount : SCALE), SCALE) };
 }
 export function staffCap(state: GameState): number {
-  const cap = data.finance.baseStaffCapacity + data.staffLevels[state.finance!.staffLevel]!.capacity;
+  const offices = Object.values(state.regionalOrganization).filter(r => r.office).length;
+  const cap = data.finance.baseStaffCapacity + data.staffLevels[state.finance!.staffLevel]!.capacity + offices * organizationModel.officeStaff;
   return state.finance!.arrears > 0 ? Math.floor(cap / 2) : cap;
 }
 export function nextRefillDate(date: string): string {
@@ -123,14 +125,14 @@ export function nextRefillDate(date: string): string {
   return next;
 }
 export function weeklyFinance(state: GameState): { income: number; expenses: number } {
-  return { income: roundDiv(state.finance!.members * data.finance.payingRate * data.finance.monthlyDues * 12, SCALE * 52), expenses: data.staffLevels[state.finance!.staffLevel]!.weeklyPayroll };
+  return { income: roundDiv(state.finance!.members * data.finance.payingRate * data.finance.monthlyDues * 12, SCALE * 52), expenses: data.staffLevels[state.finance!.staffLevel]!.weeklyPayroll + Object.values(state.regionalOrganization).filter(r => r.office).length * organizationModel.officeRent };
 }
 export function settleWeek(state: GameState, monthly: boolean): GameState {
   const { income, expenses } = weeklyFinance(state);
   let next = recordMoney(state, 'dues', income, 'weekly-dues');
   const due = expenses + next.finance!.arrears;
   const paid = Math.min(next.resources!.money, due);
-  next = recordMoney(next, 'payroll', -paid, 'weekly-payroll-and-arrears');
+  next = recordMoney(next, 'payroll', -paid, 'weekly-payroll-rent-and-arrears');
   next = { ...next, finance: { ...next.finance!, arrears: due - paid } };
   if (due > paid) next = postMessage(next, '급여 미지급금이 발생했습니다', `미지급금 ${due - paid}만원. 잔액은 음수가 되지 않으며 미지급금이 남으면 다음 Staff Capacity 충전은 절반입니다.`, 'Critical');
   if (monthly) next = { ...next, resources: { ...next.resources!, staffCapacity: staffCap(next), agendaSlots: data.finance.agendaCap } };

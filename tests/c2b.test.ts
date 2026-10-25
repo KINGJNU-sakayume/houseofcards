@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import legacyC2a from './fixtures/phase-c2a-v4.json' with { type: 'json' };
-import { dispatchCommand, replay, simulationFields } from '../src/engine/simulation/engine';
+import { dispatchCommand, replay } from '../src/engine/simulation/engine';
 import { createFoundedGame } from './helpers';
 import { stateHash } from '../src/engine/simulation/determinism';
 import { deserializeSave, serializeSave } from '../src/persistence/codec';
@@ -105,11 +105,13 @@ describe('C2b recruitment', () => {
     s = dispatchCommand(dispatchCommand(s, { type: 'ASSIGN_ROLE', politicianId: made.id, role: 'policy_chair' }), { type: 'ASSIGN_ROLE', politicianId: made.id, role: 'secretary_general' });
     expect(s.recruitmentReputation).toBeGreaterThanOrEqual(c.reputationFloor);
   });
-  it('recruitment never feeds the voter chain, AI or polls in C2b', () => {
+  it('recruitment acts only through the player own perception channels; AI state is untouched', () => {
     const s = createFoundedGame(42);
     const withRecruit = advance(until(s, 'recruited').state, 5), without = advance(s, 5);
-    const strip = (x: GameState) => { const f = simulationFields(x); return { ...f, rngState: Object.fromEntries(Object.entries(f.rngState).filter(([k]) => !k.includes(RECRUITMENT_STREAM))) }; };
-    expect(strip(withRecruit)).toEqual(strip(without));
+    const ai = (x: GameState) => ({ issues: x.issues, government: x.governmentPolicy, platforms: x.platforms.filter(p => p.partyId !== 'player'),
+      parties: x.politics.parties.filter(p => p.partyId !== 'player'),
+      perceptions: Object.fromEntries(Object.entries(x.politics.perceptions).map(([id, row]) => [id, Object.fromEntries(Object.entries(row).filter(([k]) => k !== 'player'))])) });
+    expect(ai(withRecruit)).toEqual(ai(without));
   });
   it('promises and roster survive save, load and replay; real C2a saves are rejected', () => {
     let s = createFoundedGame(42);
@@ -119,6 +121,6 @@ describe('C2b recruitment', () => {
     expect(stateHash(replay(42, s.commandLog as Command[]))).toBe(stateHash(s));
     expect(s.promises.length).toBeGreaterThan(0);
     expect(legacyC2a.state.schemaVersion).toBe(4); expect(legacyC2a.checksum).toBe(stateHash(legacyC2a.state));
-    expect(() => deserializeSave(JSON.stringify(legacyC2a))).toThrow('C2a 세이브(스키마 4)는 C2b(스키마 5)와 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyC2a))).toThrow('C2a 세이브(스키마 4)는 C2c(스키마 6)와 호환되지 않습니다. 기존 JSON을 보관');
   });
 });
