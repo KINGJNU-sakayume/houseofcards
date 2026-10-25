@@ -8,10 +8,18 @@ import { NONE_ID, type IdentityVector, type PartyPerception, type SupportAnalysi
 import { fixedExp, fixedMultiply, roundDiv, SCALE } from '../simulation/math';
 import { normalizeMasses } from './cohorts';
 
+// Lever grouping by domain, computed once per lever list (same order as filter()).
+const grouped = new WeakMap<readonly LeverDefinition[], Record<string, LeverDefinition[]>>();
+export function leversByDomain(levers: readonly LeverDefinition[] = policyLevers): Record<string, LeverDefinition[]> {
+  let groups = grouped.get(levers);
+  if (!groups) { groups = Object.fromEntries(DOMAIN_IDS.map(domain => [domain, levers.filter(l => l.domain === domain)])); grouped.set(levers, groups); }
+  return groups;
+}
 export function policyFit(cohort: Cohort, platform: PartyPlatform, issues: readonly IssueState[], levers: readonly LeverDefinition[] = policyLevers): number {
   let weighted = 0, total = 0;
+  const groups = leversByDomain(levers);
   for (const domain of DOMAIN_IDS) {
-    const domainLevers = levers.filter(l => l.domain === domain);
+    const domainLevers = groups[domain]!;
     if (!domainLevers.length) continue;
     const fit = roundDiv(domainLevers.reduce((sum, lever) => {
       const value = platform.positions[lever.id]?.publishedValue;
@@ -45,7 +53,7 @@ export function cohortIdentity(cohort: Cohort): IdentityVector {
   })) as IdentityVector;
 }
 export function consistency(platform: PartyPlatform, domain?: string): number {
-  const positions = policyLevers.filter(l => (!domain || l.domain === domain) && platform.positions[l.id]!.publishedValue !== null).map(l => platform.positions[l.id]!);
+  const positions = (domain ? leversByDomain()[domain] ?? [] : policyLevers).filter(l => platform.positions[l.id]!.publishedValue !== null).map(l => platform.positions[l.id]!);
   return SCALE - (positions.length ? roundDiv(positions.reduce((sum, p) => sum + p.reversalPenalty * 100, 0), positions.length) : 0);
 }
 export function fiscalCredibility(platform: PartyPlatform): number {

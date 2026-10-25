@@ -1,14 +1,15 @@
 {
   "schemaVersion": 4,
   "phase": "C2",
-  "step": "C2b",
+  "step": "C2c",
   "modelVersion": "C1.0",
   "peopleModelVersion": "C2.1",
+  "organizationModelVersion": "C2.0",
   "seed": 42,
-  "initialHash": "51c01c4079585c89",
-  "foundedHash": "c9ff84240b2bab93",
-  "seasonEndHash": "82b14997d0fee03e",
-  "managementHash": "feb1bf58dd1fe8a3",
+  "initialHash": "1f129a1402e6c47a",
+  "foundedHash": "0f0dfa650430d06c",
+  "seasonEndHash": "aa609398df9a9663",
+  "managementHash": "47a88ba74e23434f",
   "commands": [
     {
       "type": "CREATE_PARTY",
@@ -64,6 +65,26 @@
     },
     {
       "type": "COMMISSION_INTERNAL_SURVEY"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "RECRUIT_POLITICIAN",
+      "politicianId": "pol-001",
+      "role": "member",
+      "promises": [
+        "primary_guarantee"
+      ]
+    },
+    {
+      "type": "INVEST_REGION",
+      "regionId": "seoul",
+      "kind": "policy_forum",
+      "intensity": 1
     }
   ]
 }

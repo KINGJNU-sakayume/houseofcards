@@ -16,6 +16,8 @@ import { updateGovernmentAI, updatePartyAI } from '../parties/ai';
 import { makePoll } from '../polling';
 import { updatePoolStatus, monthlySupply } from '../people/generator';
 import { recruitmentCommand, weeklyPromises, monthlyReputation } from '../people/recruitment';
+import { monthlyOrganization, organizationCommand, recruitExpertise, weeklyOrganization } from '../organization';
+import { scoutingWeight } from '../organization/channels';
 
 export const REALITY_PACK_ID = realityPack.id;
 export const REALITY_PACK_AS_OF = realityPack.asOf;
@@ -24,7 +26,7 @@ export function createGame(seed: number): GameState {
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('시드는 0~4294967295의 정수여야 합니다.');
   const state = initializePolitics({
     ...initializeSimulation(seed, CALENDAR.startDate),
-    schemaVersion: 5, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, simulationStartDate: CALENDAR.startDate,
+    schemaVersion: 6, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, simulationStartDate: CALENDAR.startDate,
     realityPackId: REALITY_PACK_ID, realityPackAsOf: REALITY_PACK_AS_OF,
     rulesetId: model.scenario.rulesetId,
     rulesetSnapshot: { ...model.scenario, kind: 'opinion_only', status: 'GAME_ASSUMPTION', calendar: { ...CALENDAR } },
@@ -39,7 +41,7 @@ function monthlyUpdate(initial: GameState) {
   const ai = updatePartyAI(state); state = ai.state;
   const government = updateGovernmentAI(state); state = government.state;
   const issues = updateIssues(state.issues, state.governmentPolicy, policyLevers, seedPack.issueConfigs, state.seed, state.date, state.rngState);
-  state = evolvePerceptions({ ...state, issues: issues.issues, rngState: issues.rngState });
+  state = evolvePerceptions(recruitExpertise({ ...state, issues: issues.issues, rngState: issues.rngState }));
   const analysis = computeAnalysis(state);
   const house = state.politics.pollHouses[state.politics.polls.length % state.politics.pollHouses.length]!;
   const polling = makePoll(analysis, house, state.seed, state.date, state.rngState, state.politics.polls.length);
@@ -60,6 +62,8 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
     if (managed) return finish(managed.state, managed.event, command.type);
     const recruited = recruitmentCommand(state, command);
     if (recruited) return finish(recruited.state, recruited.event, recruited.detail);
+    const invested = organizationCommand(state, command);
+    if (invested) return finish(invested.state, invested.event, invested.detail);
   } else if (!['ADVANCE_WEEK', 'RESPOND_INBOX'].includes(command.type)) throw new Error('완료된 프리뷰는 변경할 수 없습니다.');
   if (command.type === 'SET_PLATFORM_DRAFT' || command.type === 'PUBLISH_PLATFORM') {
     if (state.status !== 'active') throw new Error('완료된 프리뷰는 공약을 변경할 수 없습니다.');
@@ -95,13 +99,14 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
   const tick = state.tick + 1, monthly = isMonthlyTick(date);
   const key = streamKey('calendar-reports', date);
   const draw = randomInt(state.rngState[key] ?? deriveStream(state.seed, 'calendar-reports', date), 3);
-  let next: GameState = settleWeek({ ...state, date, tick }, monthly);
+  let next: GameState = weeklyOrganization(settleWeek({ ...state, date, tick }, monthly));
   const update = monthly ? monthlyUpdate(next) : null;
   if (update) next = update.state;
   // Own stream only: the pool never moves AI, voter or polling draws.
   next = weeklyPromises(updatePoolStatus(next));
-  if (monthly) next = monthlyReputation(next);
-  const supply = monthly ? monthlySupply(next) : null;
+  if (monthly) next = monthlyOrganization(monthlyReputation(next));
+  const pool = next;
+  const supply = monthly ? monthlySupply(next, { regionWeight: id => scoutingWeight(pool, id) }) : null;
   if (supply) next = supply.state;
   const messages: InboxMessage[] = [];
   const events: GameEvent[] = [...next.events, { id: `event-${next.events.length}`, date, type: 'WEEK_ADVANCED', detail: `${tick}주차` }];
