@@ -7,7 +7,7 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md` (Slice 
 - **Order and splitting of the remaining work: `docs/ROADMAP.md` (rev 2026-10-25). Current position: `docs/PROGRESS.md`.** Each run executes only the first unchecked step there, following the run protocol in ROADMAP §1 (one `npm ci` preflight; on failure log one line and stop, never schedule retries).
 - Remaining steps: C2a politicians → C2b recruitment/promises → C2c regional organization (merge) → D1 Ruleset/seats → CAL model calibration → D2 districts/tactical voting → D3 nominations/list → D4 election/0-seat branch (merge) → E1 Election Night + Season Review → E2 polish incl. brand consistency (moved from C2). DD1–DD3 (Phase D data, Python/docs only) may run in parallel.
 - v1.0 districts are the **real 2024 254 districts** (user decision 2026-10-25); AI candidates stay virtual Light records unless decided otherwise.
-- **On branch `phase/c2` (not yet on main):** C2a done — virtual politician generator, schema4 / phase C2 (C1 saves rejected), people model C2.0, name-denylist validator. Next on `phase/c2`: C2b. Current C2a hashes are in `docs/PROGRESS.md`.
+- C2a done — virtual politician generator, schema4 / phase C2 (C1 saves rejected), people model C2.0, name-denylist validator. Next: C2b. Current C2a hashes are in `docs/PROGRESS.md`.
 - main: Reality pack `kr-b2-2026-10-18-r3`; schema3 / phase C; party-management model C1.0. Political model B2.1 remains in use.
 - C1 seed42 hashes: before founding `8c52aa107c0a262d`, founded `80540311e6cc2763`, idle end `5cb48dbde11d429d`, management/reversal `1c3da2a992705758`. 20-seed ×4-strategy batch hash `d64c0602e0255e81` (B2 historical hash `d8d46221df2985db`).
 
@@ -29,7 +29,7 @@ Source of truth: `docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md` (Slice 
 - Not in v1.0: parliament simulation, local/presidential elections, factions, mergers, live data, LLM outcomes.
 
 ## Process
-- One ROADMAP step per run, committed to its phase branch (`phase/c2`, `phase/d`, `phase/e`); main is merged once per phase group. Each merge to main ends playable, with tests passing and unimplemented parts labelled in the UI.
+- One ROADMAP step per PR (user decision 2026-10-25): each step gets its own branch and PR and is merged to main once CI passes. Every state-shape change bumps `schemaVersion` and rejects the previous schema with Korean keep-JSON guidance. Each merge to main ends playable, with tests passing and unimplemented parts labelled in the UI.
 - Reality snapshot ends 2026-10-18; Save simulation starts 2026-10-19 (Mondays through 2028-04-10: 78 dates, 77 `ADVANCE_WEEK`s; election day 2028-04-12 is SCHEDULED, not a confirmed event).
 - Mark unverifiable legal/real-world numbers `UNVERIFIED_ASSUMPTION`; release builds fail while any remain. Currently zero blockers remain for the national pack; Phase D rule values (party revocation, deposit/reimbursement, dual-candidacy ban, list-gender rule) must be sourced in ROADMAP step DD1 or added as `UNVERIFIED_ASSUMPTION`. Note: the 0-seat/under-2% revocation clause (정당법 §44①3) was held unconstitutional on 2014-01-28; see ROADMAP §5 decision 1.
 - Changing the model, the reality pack, or the save schema changes golden hashes. Regenerate `tests/fixtures/*golden*.json` only deliberately, by replaying the same command sequence, and record old→new hashes in `docs/DECISIONS.md`.
