@@ -1,0 +1,128 @@
+{
+  "id": "law-review-phase-d",
+  "step": "DD1",
+  "asOf": "2026-10-18",
+  "verifiedAt": "2026-10-25",
+  "note": "Phase D 규칙 값의 1차 법령 대조 기록. 아직 Reality pack이나 Ruleset 데이터가 아니다. D1이 이 기록을 데이터로 옮길 때 pack 기준일(2026-10-18)보다 늦은 verifiedAt 처리 방식을 정해야 한다(validator는 pack 사실의 verifiedAt > asOf를 거부한다).",
+  "sources": {
+    "publicOfficialElectionAct": {
+      "title": "공직선거법 [시행 2026. 10. 2.] [법률 제22052호, 2026. 9. 29., 일부개정]",
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=290229",
+      "retrieval": "POST https://www.law.go.kr/LSW/lsInfoR.do lsiSeq=290229&efYd=20261002&chrClsCd=010202&ancYnChk=0 (2026-10-25)",
+      "sha256OfRetrievedHtml": "65c9ff9889e24d1b8a4d3ab47135feae3e937b8c8ef8355ddcbc59cf2fb1a887"
+    },
+    "politicalPartiesAct": {
+      "title": "정당법 [시행 2026. 7. 29.] [법률 제21605호, 2026. 4. 28., 일부개정]",
+      "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=285683",
+      "retrieval": "POST https://www.law.go.kr/LSW/lsInfoR.do lsiSeq=285683&efYd=20260729&chrClsCd=010202&ancYnChk=0 (2026-10-25)",
+      "sha256OfRetrievedHtml": "2feea9d5fb3d9e4519e5c901aff5a30d870e74e4c93c738b8c48ae47a2469beb"
+    }
+  },
+  "items": [
+    {
+      "id": "party-registration-revocation",
+      "status": "REAL_FACT",
+      "source": "politicalPartiesAct §44①3 + annotation",
+      "text": "제44조①3. 임기만료에 의한 국회의원선거에 참여하여 의석을 얻지 못하고 유효투표총수의 100분의 2 이상을 득표하지 못한 때 — [단순위헌, 2012헌마431, 2012헌가19(병합) 2014. 1. 28.]",
+      "finding": "2026-07-29 시행본에도 조문은 남아 있으나 단순위헌 주석이 붙어 있고 대체 조항은 없다. 0석·2% 미만을 이유로 한 등록취소는 현행 법적 근거가 없다.",
+      "gameImplication": "ROADMAP §5 결정 1의 기본안(실제 법 기반 프리셋에서는 0석이어도 원외 정당으로 존속, 등록취소는 '가상 입법 시나리오' 파라미터)을 뒷받침한다. 최종 확정은 D4 전에 사용자가 한다.",
+      "otherClauses": "§44①1(법정 시·도당수·당원수 요건 흠결)과 ①2(최근 4년간 국회의원·지방선거 불참)는 유효하다. 게임은 창당 절차를 추상화하므로 ①1을 모델링하지 않고, ①2는 시즌 안에서 발생하지 않는다."
+    },
+    {
+      "id": "deposit-district",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §56①2",
+      "value": {
+        "amountKrw": 15000000
+      },
+      "text": "2. 지역구국회의원선거는 1천500만원",
+      "modifiers": "장애인 또는 선거일 현재 29세 이하 50%, 30~39세 70% (감액비율 중복 미적용, §56④)."
+    },
+    {
+      "id": "deposit-list",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §56①2의2",
+      "value": {
+        "amountKrwPerCandidate": 5000000
+      },
+      "text": "2의2. 비례대표국회의원선거는 500만원",
+      "modifiers": "후보자 1명마다 납부(§56① 본문). 감액 규정은 위와 같다."
+    },
+    {
+      "id": "deposit-refund",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §57①",
+      "value": {
+        "districtFullAbove": 150000,
+        "districtHalfAbove": 100000,
+        "districtYoungOrDisabledFullAbove": 100000,
+        "districtYoungOrDisabledHalfAbove": 50000,
+        "listFullIfAnyElected": true
+      },
+      "unit": "Q6 vote share (유효투표총수 대비)",
+      "text": "지역구: 당선·사망 또는 15% 이상 전액, 10% 이상 15% 미만 50% (장애인·39세 이하 10%/5%). 비례: 명부 후보 중 당선인이 있으면 전액(당선인 결정 전 사퇴·등록무효 후보 제외)."
+    },
+    {
+      "id": "campaign-cost-reimbursement",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §122의2①",
+      "value": {
+        "districtFullAbove": 150000,
+        "districtHalfAbove": 100000,
+        "listFullIfAnyElected": true
+      },
+      "unit": "Q6 vote share",
+      "text": "지역구: 당선·사망 또는 15% 이상 선거비용 전액, 10% 이상 15% 미만 50%. 비례: 명부 후보 중 당선인이 있으면 정당이 지출한 선거비용 전액. 제122조 공고 제한액 범위, §122의2② 제외 비용 있음."
+    },
+    {
+      "id": "dual-candidacy",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §52③",
+      "value": {
+        "dualCandidacy": false
+      },
+      "text": "③후보자가 같은 선거의 다른 선거구나 다른 선거의 후보자로 등록된 때에는 그 등록은 모두 무효로 한다.",
+      "finding": "지역구국회의원선거와 비례대표국회의원선거에 동시에 등록하면 두 등록이 모두 무효가 되므로 중복입후보는 허용되지 않는다. 지역구와 비례를 '다른 선거'로 보는 것은 조문 구조(§49②, §56①2·2의2의 별도 선거 구분)에 따른 해석이다."
+    },
+    {
+      "id": "list-gender-rule",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §47③, §52①2",
+      "value": {
+        "listGenderRule": "odd_positions_female",
+        "listFemaleShareAtLeast": 500000
+      },
+      "text": "③정당이 비례대표국회의원선거 및 비례대표지방의회의원선거에 후보자를 추천하는 때에는 그 후보자 중 100분의 50 이상을 여성으로 추천하되, 그 후보자명부의 순위의 매 홀수에는 여성을 추천하여야 한다.",
+      "finding": "위반 시 등록무효(§52①2). 지역구 여성 30%는 노력 의무(§47④)이며 강제 규정이 아니다."
+    },
+    {
+      "id": "seats-current",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §21①",
+      "value": {
+        "districtSeats": 254,
+        "listSeats": 46
+      },
+      "text": "① 국회의 의원정수는 지역구국회의원 254명과 비례대표국회의원 46명을 합하여 300명으로 한다. <개정 2020. 1. 14., 2024. 3. 8.>",
+      "finding": "기존 pack 기록과 같다. 현행 정수이며 2028 정수의 확정이 아니다."
+    },
+    {
+      "id": "districting-2028",
+      "status": "REAL_FACT",
+      "resolution": "UNRESOLVED",
+      "source": "publicOfficialElectionAct §25③, [별표 1], §24⑪, §24의2①",
+      "text": "국회의원지역구의 명칭과 구역은 별표 1(국회의원지역선거구구역표, 지역구 254)과 같이 한다. 획정위원회는 선거일 전 13개월까지 획정안을 제출하고, 국회는 선거일 전 1년까지 지역구를 확정하여야 한다.",
+      "finding": "2026-10-02 시행본의 별표 1은 254개 지역구다. 2028-04-12 예정 선거 기준 법정 기한(획정안 2027-03-12, 확정 2027-04-12)은 기준일 이후이므로 2028 선거구는 미확정이다. ROADMAP의 '별표 2'는 시·도의회의원 선거구표이며, 국회의원 지역구표는 별표 1이다.",
+      "gameImplication": "사용자 결정대로 v1.0은 2024년 기준 실제 254개 지역구를 쓰고 UI에 '2024년 기준'을 항상 표시한다. DD2 원자료가 필요하다."
+    },
+    {
+      "id": "list-allocation-threshold",
+      "status": "REAL_FACT",
+      "resolution": "UNRESOLVED",
+      "source": "기존 law-review-2026-10-18.json / law-transition",
+      "finding": "2026-10-02 시행본 제189조 끝에 '[단순위헌, 2020헌마956,2024헌마271(병합), 2026. 1. 29, … 제189조 제1항은 헌법에 위반된다.]' 주석이 있고 ①(3% 또는 지역구 5석) 문언은 남아 있다. 대체 기준은 본문에 없다. 기존 law-transition(UNRESOLVED) 기록과 같으며 이번 검토에서 바꾼 것은 없다."
+    }
+  ],
+  "unverified": [],
+  "limits": "조문 원문은 국가법령정보센터 본문 응답을 내려받아 대조했다. 중앙선관위의 행정해석·질의회신은 확인하지 않았다. 선거비용제한액(§122)의 2028 공고액은 선거 직전에 정해지므로 기록하지 않았다. 게임 화폐 단위(만원)로의 환산과 게임 내 사용 여부는 D1·D3·D4에서 정한다."
+}
