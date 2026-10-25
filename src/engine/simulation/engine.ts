@@ -7,6 +7,7 @@ import { deriveStream, randomInt, streamKey } from './rng';
 import { initializeSimulation, PLAYER_PARTY_ID } from './initialize';
 import { policyLevers, realityPack, seedPack } from '../../data/reality';
 import { politicalModel as model } from '../../data/seeds/political-model';
+import { rulesetPreset, rulesets } from '../../data/rulesets';
 import { decayConsistency, editDraft, publishPlatform, publishedPlatform, isPublicationReversal } from '../policy';
 import { updateIssues } from '../issues';
 import { DOMAIN_LABELS } from '../../types/simulation';
@@ -22,14 +23,18 @@ import { scoutingWeight } from '../organization/channels';
 export const REALITY_PACK_ID = realityPack.id;
 export const REALITY_PACK_AS_OF = realityPack.asOf;
 export const MAX_COMMANDS = 6000;
-export function createGame(seed: number): GameState {
+export function createGame(seed: number, rulesetId: string = rulesets.defaultRulesetId): GameState {
+  const preset = rulesetPreset(rulesetId);
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('시드는 0~4294967295의 정수여야 합니다.');
   const state = initializePolitics({
     ...initializeSimulation(seed, CALENDAR.startDate),
-    schemaVersion: 6, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, simulationStartDate: CALENDAR.startDate,
+    schemaVersion: 7, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, simulationStartDate: CALENDAR.startDate,
     realityPackId: REALITY_PACK_ID, realityPackAsOf: REALITY_PACK_AS_OF,
-    rulesetId: model.scenario.rulesetId,
-    rulesetSnapshot: { ...model.scenario, kind: 'opinion_only', status: 'GAME_ASSUMPTION', calendar: { ...CALENDAR } },
+    rulesetId: preset.rulesetId,
+    // The opinion model reads only these ruleset values (viability knee and threshold).
+    rulesetSnapshot: { rulesetId: preset.rulesetId, label: preset.label, kind: 'opinion_only', status: 'GAME_ASSUMPTION', calendar: { ...CALENDAR },
+      listSeats: preset.listSeats, legalThresholdVoteShare: preset.legalThreshold?.voteShare ?? 0, electabilityKnee: model.scenario.electabilityKnee },
+    electionRuleset: { ...preset, electionDate: CALENDAR.electionDate, currentLaw: rulesets.currentLaw },
     date: CALENDAR.startDate, tick: 1, status: 'founding',
     inbox: [],
     events: [{ id: 'event-0', date: CALENDAR.startDate, type: 'SESSION_STARTED', detail: 'C2 창당 전 전국 정치 세계 시작' }], commandLog: [],
@@ -137,4 +142,4 @@ export function simulationFields(state: GameState) {
   return { date: state.date, issues: state.issues, cohorts: state.cohorts, governmentPolicy: state.governmentPolicy, politics: state.politics,
     platforms: state.platforms.map(platform => ({ partyId: platform.partyId, positions: publishedPlatform(platform) })), rngState: state.rngState };
 }
-export function replay(seed: number, commands: readonly Command[]): GameState { return commands.reduce(dispatchCommand, createGame(seed)); }
+export function replay(seed: number, commands: readonly Command[], rulesetId: string = rulesets.defaultRulesetId): GameState { return commands.reduce(dispatchCommand, createGame(seed, rulesetId)); }

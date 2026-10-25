@@ -5,6 +5,7 @@ import { indexSchema, isoDate, leverValueSchema, REGION_IDS } from '../data/real
 import { AGE_BANDS, CORE_VALUES, DOMAIN_IDS, PROFILE_IDS } from '../types/simulation';
 import { ATTRIBUTE_IDS, PROMISE_TYPES, ROLE_IDS, type AttributeId } from '../types/people';
 import { INVESTMENT_KINDS } from '../types/party';
+import { currentLawSchema, presetSchema, rulesets } from '../data/rulesets';
 import { deepFreeze, stateHash } from '../engine/simulation/determinism';
 import { MAX_COMMANDS, REALITY_PACK_ID, replay } from '../engine/simulation/engine';
 
@@ -35,7 +36,7 @@ const politicianSchema = z.strictObject({ id: z.string().regex(/^pol-\d{3}$/), n
 const promiseSchema = z.strictObject({ id: z.string().regex(/^promise-\d{3}$/), politicianId: z.string().regex(/^pol-\d{3}$/), type: z.enum(PROMISE_TYPES), madeAt: isoDate,
   due: z.union([isoDate, z.literal('NOMINATION')]), status: z.enum(['pending', 'kept', 'broken']), resolvedAt: isoDate.nullable() });
 const stateSchema = z.strictObject({
-  schemaVersion: z.literal(6), phase: z.literal('C2'), seed: z.number().int().min(0).max(0xffffffff),
+  schemaVersion: z.literal(7), phase: z.literal('C2'), seed: z.number().int().min(0).max(0xffffffff),
   playerParty: z.strictObject({ id: z.literal('player'), name: z.string(), shortName: z.string(), color: z.string(),
     values: z.tuple([z.enum(CORE_VALUES), z.enum(CORE_VALUES), z.enum(CORE_VALUES)]), foundedAt: isoDate }).nullable(),
   resources: z.strictObject({ money: z.number().int().nonnegative(), staffCapacity: z.number().int().nonnegative(), agendaSlots: z.number().int().nonnegative() }).nullable(),
@@ -64,9 +65,10 @@ const stateSchema = z.strictObject({
     partyAttachment: z.record(z.string(), probability), politicalAttention: indexSchema, turnoutTendency: indexSchema,
     tacticalVotingTendency: indexSchema, governmentEvaluationSensitivity: indexSchema,
   })).length(96),
-  rulesetId: z.literal('parallel_46_open'),
+  rulesetId: z.enum(rulesets.presets.map(p => p.rulesetId) as [string, ...string[]]),
+  electionRuleset: presetSchema.extend({ electionDate: isoDate, currentLaw: currentLawSchema }).strict(),
   rulesetSnapshot: z.strictObject({
-    rulesetId: z.literal('parallel_46_open'), kind: z.literal('opinion_only'), label: z.string(),
+    rulesetId: z.string(), kind: z.literal('opinion_only'), label: z.string(),
     status: z.literal('GAME_ASSUMPTION'), listSeats: z.number().int().positive(), legalThresholdVoteShare: probability, electabilityKnee: probability,
     calendar: z.strictObject({ startDate: isoDate, lastWeeklyDate: isoDate, electionDate: isoDate }),
   }),
@@ -90,22 +92,25 @@ export function deserializeSave(text: string): GameState {
   try { raw = JSON.parse(text); } catch { throw new Error('올바른 JSON 파일이 아닙니다.'); }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' &&
     'schemaVersion' in raw.state && raw.state.schemaVersion === 1) {
-    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 C2(스키마 6)와 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 D1(스키마 7)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'phase' in raw.state && raw.state.phase === 'B1') {
     throw new Error('B1 개발 프리뷰 세이브는 C2 정치 모형과 호환되지 않습니다. 기존 JSON을 보관하고 새 C2 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 2) {
-    throw new Error('B2 세이브(스키마 2)는 C2(스키마 6)와 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('B2 세이브(스키마 2)는 D1(스키마 7)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 3) {
-    throw new Error('C1 세이브(스키마 3)는 C2(스키마 6)와 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C1 세이브(스키마 3)는 D1(스키마 7)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 4) {
-    throw new Error('C2a 세이브(스키마 4)는 C2c(스키마 6)와 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C2a 세이브(스키마 4)는 D1(스키마 7)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 5) {
-    throw new Error('C2b 세이브(스키마 5)는 C2c(스키마 6)와 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C2b 세이브(스키마 5)는 D1(스키마 7)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+  }
+  if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 6) {
+    throw new Error('C2c 세이브(스키마 6)는 D1(스키마 7)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   const parsed = envelopeSchema.safeParse(raw);
   if (!parsed.success) throw new Error('지원하지 않는 세이브 버전이거나 파일 구조가 잘못되었습니다.');
@@ -113,7 +118,7 @@ export function deserializeSave(text: string): GameState {
   if (stateHash(state) !== checksum) throw new Error('세이브 무결성 검사에 실패했습니다. 파일이 변경되었거나 손상되었습니다.');
   if (state.realityPackId !== REALITY_PACK_ID) throw new Error('현실 데이터 기준이 다른 개발 프리뷰 세이브입니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   let replayed: GameState;
-  try { replayed = replay(state.seed, state.commandLog); } catch { throw new Error('세이브 명령 기록이 유효하지 않습니다.'); }
+  try { replayed = replay(state.seed, state.commandLog, state.rulesetId); } catch { throw new Error('세이브 명령 기록이 유효하지 않습니다.'); }
   if (stateHash(replayed) !== checksum) throw new Error('세이브 상태와 명령 재생 결과가 다릅니다.');
   return deepFreeze(state);
 }

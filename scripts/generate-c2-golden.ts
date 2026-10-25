@@ -5,6 +5,7 @@ import { stateHash } from '../src/engine/simulation/determinism';
 import { partyManagement } from '../src/data/seeds/party-management';
 import { politicianModel } from '../src/data/seeds/politicians';
 import { organizationModel } from '../src/data/seeds/organization';
+import { rulesets } from '../src/data/rulesets';
 import type { Command } from '../src/types/game';
 const path = 'tests/fixtures/c2-golden.json';
 if (existsSync(path)) throw new Error('C2 fixture already exists. Review and remove it explicitly before regeneration.');
@@ -18,7 +19,7 @@ const commands: Command[] = [founding, { type: 'SET_PLATFORM_DRAFT', leverId: 'h
   { type: 'RECRUIT_POLITICIAN', politicianId: 'pol-001', role: 'member', promises: ['primary_guarantee'] }, { type: 'INVEST_REGION', regionId: 'seoul', kind: 'policy_forum', intensity: 1 }];
 const initial = createGame(seed), founded = dispatchCommand(initial, founding);
 let end = founded; for (let i = 0; i < 77; i++) end = dispatchCommand(end, { type: 'ADVANCE_WEEK' });
-const fixture = { schemaVersion: 4, phase: 'C2', step: 'C2c', modelVersion: partyManagement.modelVersion, peopleModelVersion: politicianModel.modelVersion, organizationModelVersion: organizationModel.modelVersion, seed,
+const fixture = { schemaVersion: 4, phase: 'C2', step: 'D1', modelVersion: partyManagement.modelVersion, peopleModelVersion: politicianModel.modelVersion, organizationModelVersion: organizationModel.modelVersion, rulesetsVersion: rulesets.modelVersion, rulesetId: rulesets.defaultRulesetId, seed,
   initialHash: stateHash(initial), foundedHash: stateHash(founded), seasonEndHash: stateHash(end), managementHash: stateHash(replay(seed, commands)), commands };
 writeFileSync(path, JSON.stringify(fixture, null, 2) + '\n');
 console.log(JSON.stringify(fixture, null, 2));

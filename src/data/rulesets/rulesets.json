@@ -1,0 +1,67 @@
+{
+  "modelVersion": "D1.0",
+  "defaultRulesetId": "parallel_46_open",
+  "currentLaw": {
+    "status": "REAL_FACT",
+    "reviewId": "law-review-phase-d",
+    "statute": "공직선거법 [시행 2026. 10. 2.] 법률 제22052호",
+    "verifiedAt": "2026-10-25",
+    "note": "모든 프리셋에 공통인 현행 법정 값. docs/data/law-review-phase-d.json과 같아야 하며 validator가 대조한다.",
+    "districtRule": "plurality_single_member",
+    "districtTieBreak": "older_candidate",
+    "officialCampaignDays": 13,
+    "dualCandidacy": false,
+    "listGenderRule": "odd_positions_female",
+    "listFemaleShareAtLeast": 500000,
+    "deposit": { "perDistrictCandidateKrw": 15000000, "perListCandidateKrw": 5000000, "refundFullAbove": 150000, "refundHalfAbove": 100000, "listRefundIfAnyElected": true },
+    "campaignCostReimbursement": { "fullAbove": 150000, "halfAbove": 100000, "listFullIfAnyElected": true },
+    "listRemainderTieBreak": "lottery"
+  },
+  "presets": [
+    {
+      "rulesetId": "parallel_46_open",
+      "label": "병립형 46 · 법정 문턱 없음 (게임용 가정)",
+      "status": "GAME_ASSUMPTION",
+      "uiEnabled": true,
+      "districtSeats": 254,
+      "listSeats": 46,
+      "listMethod": "parallel",
+      "listAllocation": "hare_largest_remainder",
+      "legalThreshold": null,
+      "semiCompensatory": null,
+      "listSizeUi": { "min": 10, "max": 15 },
+      "partyRevocation": null,
+      "description": "지역구 254석과 비례 46석을 따로 배분합니다. 법정 문턱은 없지만 46석 배분에서 사실상의 문턱(약 1/46 전후)이 생깁니다."
+    },
+    {
+      "rulesetId": "parallel_46_threshold_3",
+      "label": "병립형 46 · 3% 문턱 복원 시나리오 (게임용 가정)",
+      "status": "GAME_ASSUMPTION",
+      "uiEnabled": true,
+      "districtSeats": 254,
+      "listSeats": 46,
+      "listMethod": "parallel",
+      "listAllocation": "hare_largest_remainder",
+      "legalThreshold": { "voteShare": 30000, "orDistrictSeats": 5 },
+      "semiCompensatory": null,
+      "listSizeUi": { "min": 10, "max": 15 },
+      "partyRevocation": null,
+      "description": "2026-01-29 위헌 결정된 '3% 또는 지역구 5석' 의석할당요건을 다시 입법했다고 가정한 시나리오입니다. 현행법이 아닙니다."
+    },
+    {
+      "rulesetId": "semi_compensatory_30",
+      "label": "준연동형 · 연동 상한 30 (게임용 가정, 위성정당 없음)",
+      "status": "GAME_ASSUMPTION",
+      "uiEnabled": false,
+      "districtSeats": 254,
+      "listSeats": 46,
+      "listMethod": "semi_compensatory",
+      "listAllocation": "hare_largest_remainder",
+      "legalThreshold": null,
+      "semiCompensatory": { "coupling": 500000, "cap": 30, "satelliteMode": "none" },
+      "listSizeUi": { "min": 10, "max": 15 },
+      "partyRevocation": null,
+      "description": "연동 배분 30석과 병립 16석. AI 정당의 위성정당 행동이 없으므로 새 게임 선택지에는 아직 노출하지 않습니다(v1.1)."
+    }
+  ]
+}

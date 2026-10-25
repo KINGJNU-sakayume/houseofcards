@@ -19,7 +19,7 @@ interface Store {
   saveManual: () => Promise<void>;
   loadManual: () => Promise<void>;
   importText: (text: string) => Promise<void>;
-  newGame: (seed: number) => Promise<void>;
+  newGame: (seed: number, rulesetId?: string) => Promise<void>;
   clearError: () => void;
 }
 let client: EngineClient | undefined;
@@ -73,8 +73,8 @@ export const useGameStore = create<Store>((set, get) => {
       set({ game, notice: '세이브를 가져왔습니다. 무결성과 명령 재생을 확인했습니다.' });
       await persist(game);
     }),
-    newGame: seed => perform(async () => {
-      const game = createGame(seed);
+    newGame: (seed, rulesetId) => perform(async () => {
+      const game = createGame(seed, rulesetId);
       set({ game, notice: '새 C2 프리뷰를 시작했습니다.' });
       await persist(game);
     }),
