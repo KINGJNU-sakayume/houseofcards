@@ -535,3 +535,47 @@ footer { display: flex; justify-content: space-between; gap: 16px; padding: 14px
   .roster td:nth-child(2), .roster td:nth-child(5), .roster td:nth-child(6), .roster td:nth-child(7) { display: none !important; }
 }
 dialog.modal, dialog.save-dialog { margin: auto; }
+
+/* U6 지역조직 */
+.region-map { display: grid; gap: 8px; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: "gi se gw" "cc cc tk" "hn . pk" "jj . ."; }
+.region-tile { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-height: 92px; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: linear-gradient(0deg, color-mix(in srgb, var(--party) var(--lv), var(--surface)) 0%, color-mix(in srgb, var(--party) var(--lv), var(--surface)) 100%); text-align: left; }
+.region-tile strong { font-size: 13px; }
+.region-tile .lv { font-size: 26px; font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1; }
+.region-tile:hover { border-color: var(--ink-3); }
+.region-tile.selected { outline: 3px solid var(--accent); outline-offset: 1px; }
+.invest-form { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; min-width: 0; }
+.invest-form label { display: flex; align-items: center; gap: 8px; font-weight: 650; font-size: 13px; }
+.invest-effect { font-size: 13px; color: var(--ink-2); background: var(--surface-2); border-radius: var(--radius-sm); padding: 8px 10px; }
+.segmented { display: inline-flex; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); overflow: hidden; width: max-content; max-width: 100%; }
+.segmented button { border: 0; background: var(--surface); padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.segmented button + button { border-left: 1px solid var(--line-strong); }
+.segmented button.active { background: var(--accent); color: #fff; }
+.block-line { display: block; }
+.selected-row { background: var(--accent-soft); }
+
+/* U6 선거 */
+.stepper { list-style: none; margin: 0 0 16px; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+.stepper li { position: relative; padding: 10px 12px 10px 16px; border-right: 1px solid var(--line); min-width: 0; }
+.stepper li:last-child { border-right: 0; }
+.stepper li::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--line); }
+.stepper li.done::before { background: var(--gain); }
+.stepper li.next { background: var(--accent-soft); }
+.stepper li.next::before { background: var(--accent); }
+.stepper strong { display: block; font-size: 13px; }
+.stepper span { display: block; font-size: 11px; color: var(--ink-3); }
+@media (max-width: 850px) { .stepper { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stepper li { border-bottom: 1px solid var(--line); } }
+
+/* U6 시즌 결과 */
+.night-board { background: #121a26; color: #e8edf4; border-color: #121a26; }
+.night-board h2, .night-board h3, .night-board strong { color: #fff; }
+.night-board .muted { color: #9fb0c4; }
+.night-board .night-steps { color: #7d8ea3; }
+.night-board .night-steps li.reached { color: #8fb4ff; }
+.night-board .button { background: #1f2b3b; border-color: #34465c; color: #e8edf4; }
+.night-board .button.primary { background: var(--accent); border-color: var(--accent); }
+.night-board .chart text { fill: #c6d1de; }
+.night-board .chart-legend { color: #c6d1de; }
+.night-hemicycle { max-width: 520px; margin: 10px auto 0; }
+.review-card { background: var(--surface); box-shadow: var(--shadow); }
+.review-card h3 { margin: 8px 0 4px; }
+.review-card strong { font-size: 18px; }
