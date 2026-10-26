@@ -76,7 +76,7 @@ export interface GameEvent {
   detail: string;
 }
 export interface GameState {
-  schemaVersion: 10;
+  schemaVersion: 11;
   phase: 'C2';
   playerParty: PlayerParty | null;
   resources: Resources | null;
@@ -89,6 +89,8 @@ export interface GameState {
   promises: PartyPromise[];
   // 0–100, null before founding; lowered by broken promises, recovers monthly.
   recruitmentReputation: number | null;
+  // E2 brand consistency (Q6): 0 = consistent; scales only the player's trust.
+  brandInconsistency: number;
   nominations: Nominations;
   finalPush: FinalPush;
   election: ElectionResult | null;

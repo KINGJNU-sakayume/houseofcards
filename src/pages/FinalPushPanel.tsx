@@ -47,7 +47,7 @@ export function ElectionResults() {
     return { region, wins: ds.filter(r => r.winner === PLAYER_PARTY_ID).length, share: Math.round(votes * 1_000_000 / Math.max(1, all)) };
   });
   const person = (id: string) => game.politicians.find(p => p.id === id)?.name ?? id;
-  return <section className="sim-card" data-testid="election-results"><h2>{e.date} 총선 결과 <span className="outline-badge">SAVE SIMULATION</span></h2>
+  return <section className="sim-card" data-testid="election-results"><h2>{e.date} 총선 결과 <span className="outline-badge">SAVE SIMULATION · 가상 시뮬레이션</span></h2>
     <p className="muted small">이 세이브의 모형 결과입니다. 실제 선거 결과나 예측이 아닙니다. 지역구 유권자 규모는 2024년 투표자 수를 씁니다. 선거일 변동은 정해진 시드 스트림으로 결정됩니다.</p>
     <p data-testid="player-result"><strong>{game.playerParty?.shortName} {e.totalSeats[PLAYER_PARTY_ID] ?? 0}석</strong> · 정당득표 {percent(Math.round(share(PLAYER_PARTY_ID)))}% · 지역구 {e.districtSeats[PLAYER_PARTY_ID] ?? 0}석 · 비례 {e.listSeats[PLAYER_PARTY_ID] ?? 0}석 · {e.outcome === 'in_parliament' ? '원내 진입' : '원외 정당으로 존속 (현행법상 0석 등록취소 없음)'}</p>
     <div className="table-scroll"><table className="sim-table"><thead><tr><th>정당</th><th>정당득표</th><th>지역구</th><th>비례</th><th>합계</th></tr></thead><tbody>{parties.map(id => <tr key={id}><th>{partyName(id)}</th><td>{percent(Math.round(share(id)))}%{e.eligible.includes(id) ? '' : ' (배분 제외)'}</td><td>{e.districtSeats[id] ?? 0}</td><td>{e.listSeats[id] ?? 0}</td><td>{e.totalSeats[id] ?? 0}</td></tr>)}</tbody></table></div>

@@ -10,7 +10,7 @@ import { politicalModel } from '../src/data/seeds/political-model';
 import { nominationModel } from '../src/data/seeds/nomination';
 import { electionModel } from '../src/data/seeds/election';
 import type { Command } from '../src/types/game';
-it('replays the deliberately reviewed D4 founding, idle season, management/reversal, nomination and election goldens', () => {
+it('replays the deliberately reviewed E2 founding, idle season, management/reversal, nomination and election goldens', () => {
   expect([partyManagement.modelVersion, politicianModel.modelVersion, organizationModel.modelVersion, rulesets.modelVersion, rulesets.defaultRulesetId, politicalModel.modelVersion, nominationModel.modelVersion, electionModel.modelVersion]).toEqual([golden.modelVersion, golden.peopleModelVersion, golden.organizationModelVersion, golden.rulesetsVersion, golden.rulesetId, golden.politicalModelVersion, golden.nominationModelVersion, golden.electionModelVersion]);
   const initial = createGame(golden.seed);
   expect(stateHash(initial)).toBe(golden.initialHash);

@@ -6,6 +6,10 @@ import { researchCost, shortage, staffCap, weeklyFinance } from '../engine/parti
 import { DOMAIN_IDS, DOMAIN_LABELS } from '../types/simulation';
 import { VALUE_LABELS } from './Founding';
 import { PROMISE_LABELS, ROLE_LABELS } from '../engine/people/recruitment';
+import { brandAlignment } from '../engine/parties/brand';
+
+// Labels, not scores: where the evidence leans relative to the declared value.
+const lean = (x: number | null) => x === null ? '아직 근거 없음' : x >= 600000 ? '가치 쪽으로 기움' : x >= 400000 ? '중립에 가까움' : '가치와 반대로 기움';
 export function Party() {
   const { game, dispatch, busy } = useGameStore();
   const party = game.playerParty!, finance = game.finance!, perception = game.politics.parties.find(p => p.partyId === party.id)!;
@@ -19,6 +23,10 @@ export function Party() {
     <section className="sim-card" data-testid="party-roster"><h2>인재와 약속</h2><p>영입 {game.politicians.filter(p => p.status === 'recruited').length}명 · 영입 평판 {game.recruitmentReputation}/100</p>
       <ul>{game.politicians.filter(p => p.status === 'recruited').map(p => <li key={p.id}>{p.name} · {ROLE_LABELS[p.role ?? 'member']}</li>)}</ul>
       {game.promises.length ? <ul>{game.promises.map(p => <li key={p.id}>{game.politicians.find(x => x.id === p.politicianId)!.name}: {PROMISE_LABELS[p.type]} · {p.status === 'pending' ? (p.due === 'NOMINATION' ? '대기 (등록 마감에 판정)' : `대기 (기한 ${p.due})`) : p.status === 'kept' ? '지킴' : '깨짐'}</li>)}</ul> : <p className="muted">아직 약속이 없습니다.</p>}
-      <p className="muted small">가상 인물입니다. 브랜드 일관성은 Phase E2에서 구현됩니다.</p></section>
+      <p className="muted small">가상 인물입니다.</p></section>
+    <section className="sim-card" data-testid="brand-consistency"><h2>브랜드 일관성 <span className="outline-badge">GAME MODEL</span></h2>
+      <p className="muted small">창당 때 내세운 세 가치를 공표한 공약의 방향과 영입 인재의 성향에 비춰 봅니다. 반대로 기울면 유권자의 신뢰 평가가 매월 서서히 낮아지고(최대 {data.brand.maxTrustPenalty / 10000}%), 바로잡으면 서서히 회복합니다. 득표를 직접 바꾸지 않으며 다른 정당에는 적용되지 않습니다.</p>
+      <div className="table-scroll"><table className="sim-table"><thead><tr><th>핵심가치</th><th>공표한 공약</th><th>영입 인재</th></tr></thead><tbody>{brandAlignment(game).map(r => <tr key={r.value}><th>{VALUE_LABELS[r.value]}</th><td>{lean(r.platform)}</td><td>{lean(r.recruits)}</td></tr>)}</tbody></table></div>
+      <p>현재 신뢰 조정: {game.brandInconsistency < 50000 ? '거의 없음' : game.brandInconsistency < data.brand.warning ? '약함' : '뚜렷함'}</p></section>
     <section className="sim-card"><h2>내부조사 이력</h2>{game.internalSurveys.length ? <ul>{[...game.internalSurveys].reverse().map((s, i) => <li key={i}>{s.date} · 모형 설명 범위 ±{s.margin / 10000}%p · 데이터 허브에서 최근 결과 확인</li>)}</ul> : <p>아직 내부조사를 의뢰하지 않았습니다. 데이터 허브에서 의뢰할 수 있습니다.</p>}</section></>;
 }

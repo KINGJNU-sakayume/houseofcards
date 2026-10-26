@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGameStore } from '../state/store';
-import { SimulationNotice, PollTable, estimateRange } from '../components/Simulation';
+import { SimulationNotice, PollTable, estimateRange, partyName } from '../components/Simulation';
 import { ResourceStrip, moneyLabel } from '../components/Resources';
 import { partyManagement } from '../data/seeds/party-management';
 import { shortage } from '../engine/parties/management';
@@ -28,6 +28,8 @@ export function DataHub() {
         <div className="support-comparison"><article><span>현재 지지</span><strong data-testid="current-support">{band(analysis.currentSupport[player]!)}</strong><small>조사일의 고려 장벽 반영</small></article><article><span>잠재 지지</span><strong data-testid="potential-support">{band(analysis.potentialSupport[player]!)}</strong><small>모든 정당의 인지도·생존가능성 중립화</small></article></div>
         <h3>장벽을 하나씩 바꾸면</h3><p className="muted small">인지도·생존가능성은 현재 대비, 기존 충성은 잠재 조건에서 추가 중립화한 차이입니다. 독립 반사실이며 상호작용 때문에 합산할 수 없습니다.</p><div className="table-scroll"><table className="sim-table"><thead><tr><th>가정 변경</th><th>변화 범위</th></tr></thead><tbody>{([['awareness', '인지도 장벽 제거'], ['viability', '생존가능성 중립화'], ['priorLoyalty', '잠재 조건에서 기존 충성 중립화'], ['policyMismatch', '공약 적합 최대로'], ['ownership', '신뢰·이슈 소유 최대로']] as const).map(([id, label]) => <tr key={id}><th>{label}</th><td>{band(analysis.barriers![id], true)}</td></tr>)}</tbody></table></div>
         <div className="sim-grid">{([{ title: '연령별 내부 현재 지지', groups: analysis.byAge }, { title: '권역별 내부 현재 지지', groups: analysis.byRegion }]).map(({ title, groups }) => <section key={title}><h3>{title}</h3><ul>{Object.entries(groups).map(([id, vector]) => <li key={id}>{REGION_LABELS[id] ?? `${id}세`}: {band(vector[player]!)}</li>)}</ul></section>)}</div>
+        <section data-testid="vote-flow"><h3>Vote Flow · 기존 충성 → 조사일 선택 (추정)</h3><p className="muted small">직전 선거에서 이어진 정당 충성(코호트 attachment)에서 조사일의 선택으로 옮겨 간 몫을, 코호트마다 '최소 이동'(각 정당은 겹치는 만큼 유지하고 잃은 몫은 늘어난 쪽에 비례 배분)으로 추정해 전체 유권자 대비로 합쳤습니다. 개인 단위 이동이 아닌 모형 추정이며 범위로 표시합니다.</p>
+          <div className="table-scroll"><table className="sim-table"><thead><tr><th>기존 → 지금</th>{Object.keys(Object.values(survey!.voteFlow)[0] ?? {}).map(q => <th key={q}>{partyName(q)}</th>)}</tr></thead><tbody>{Object.entries(survey!.voteFlow).filter(([, row]) => Object.values(row).some(v => v > 0)).map(([p, row]) => <tr key={p}><th>{partyName(p)}</th>{Object.entries(row).map(([q, v]) => <td key={q}>{v ? band(v) : '—'}</td>)}</tr>)}</tbody></table></div></section>
       </>}
     </section> : <>
       <div className="sim-toolbar"><label>가상 조사 선택 <select value={pollId} onChange={event => setPollId(event.target.value)}><option value="latest">가장 최근 조사</option>{[...politics.polls].reverse().map(p => <option key={p.id} value={p.id}>{p.date} · {p.houseName}</option>)}</select></label><span className="muted small">{poll.date} · {poll.houseName} · 전국 표본 {poll.national.sampleSize}명</span></div>

@@ -112,3 +112,4 @@
 .review-headline dt { font-size:11px; color:#737a6e; } .review-headline dd { margin:0; font-size:22px; font-weight:650; }
 .review-cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:10px; margin:14px 0; }
 .review-card { border:1px solid #dcded3; border-radius:6px; padding:12px; background:#fbfbf7; } .review-card strong { display:block; margin:6px 0; }
+.list-warning { background:#f5e9df; color:#7a3b2a; border:1px solid #e2cbbb; border-radius:4px; padding:10px 12px; font-size:12px; margin:8px 0; }

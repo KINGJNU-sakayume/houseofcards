@@ -8,6 +8,7 @@ import { PROMISE_LABELS, ROLE_LABELS, recruitmentBand, recruitmentCost, recruitm
 import { ATTRIBUTE_IDS, PROMISE_TYPES, ROLE_IDS, type AttributeId, type Politician, type PromiseType, type RoleId } from '../types/people';
 import { DOMAIN_IDS, DOMAIN_LABELS, type DomainId } from '../types/simulation';
 import { VALUE_LABELS } from './Founding';
+import { ListWarning } from './NominationPanel';
 
 const ATTRIBUTE_LABELS: Record<AttributeId, string> = { recognition: '인지도(Recognition)', localBase: '지역 기반(LocalBase)', campaigning: '선거운동(Campaigning)', organization: '조직력(Organization)', media: '미디어(Media)', negotiation: '협상(Negotiation)', broadAppeal: '대중 호감(BroadAppeal)' };
 // Honest usage notes per §16; Phase D-only attributes are stored and shown only.
@@ -50,7 +51,7 @@ export function Politicians() {
       <label>정렬 <select value={sort} onChange={e => setSort(e.target.value as SortKey)}><option value="name">이름</option><option value="age">나이</option><option value="recognition">인지도</option><option value="expertise">최고 전문성</option></select></label>
     </div>
     <div className="sim-grid">
-      <section className="sim-card"><h2>{view === 'roster' ? '영입한 인재' : '영입 후보'}</h2>{!rows.length ? <p>{view === 'roster' ? '아직 영입한 인재가 없습니다.' : '조건에 맞는 영입 후보가 없습니다.'}</p> :
+      <section className="sim-card"><h2>{view === 'roster' ? '영입한 인재' : '영입 후보'}</h2>{view === 'roster' && <ListWarning />}{!rows.length ? <p>{view === 'roster' ? '아직 영입한 인재가 없습니다.' : '조건에 맞는 영입 후보가 없습니다.'}</p> :
         <div className="table-scroll people-list"><table className="sim-table people-table"><thead><tr><th>이름</th><th>배경 · 권역</th><th>주요 전문</th><th>상태</th></tr></thead><tbody>{rows.map(p => <tr key={p.id}>
           <th><button className="link-button" aria-pressed={selected?.id === p.id} onClick={() => setSelectedId(p.id)}>{p.name}</button><br /><small className="muted">{p.age}세 · {p.gender === 'female' ? '여' : '남'}</small></th>
           <td>{backgroundLabel(p.background)}<br /><small className="muted">{REGION_LABELS[p.regionId]}</small></td><td>{DOMAIN_LABELS[topDomain(p)]} {p.policyExpertise[topDomain(p)]}</td>

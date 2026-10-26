@@ -122,6 +122,8 @@ export function evaluateSupport(state: GameState) {
   const prepared: PreparedCohort[] = [];
   const groupTotals: Record<string, SupportVector> = {};
   const groupMass: Record<string, number> = {};
+  // E2 brand consistency: a bounded factor on the player's trust only (AI parties: none).
+  const brandFactor = SCALE - fixedMultiply(state.brandInconsistency, partyManagement.brand.maxTrustPenalty);
   for (const cohort of state.cohorts) {
     const identity = cohortIdentity(cohort);
     const inputs = ids.map(id => {
@@ -129,7 +131,7 @@ export function evaluateSupport(state: GameState) {
       const party = state.politics.parties.find(p => p.partyId === id)!;
       const perception = state.politics.perceptions[cohort.id]![id]!;
       return { fit: policyFit(cohort, platform, state.issues), identity: SCALE - roundDiv(CORE_VALUES.reduce((sum, tag) => sum + Math.abs(identity[tag] - party.identity[tag]), 0), CORE_VALUES.length),
-        trust: trust(cohort, platform, party, state.issues), loyalty: perception.loyalty,
+        trust: id === PLAYER_PARTY_ID ? fixedMultiply(trust(cohort, platform, party, state.issues), brandFactor) : trust(cohort, platform, party, state.issues), loyalty: perception.loyalty,
         government: governmentTerm(cohort.governmentEvaluationSensitivity * 100, state.politics.governmentApproval, id, state.governmentPolicy.partyId, ids), viability: state.politics.viability[id]!,
       };
     });

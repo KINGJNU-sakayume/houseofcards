@@ -29,8 +29,8 @@ export function Review() {
   return <>
     <div className="page-heading"><div><p className="eyebrow">ELECTION NIGHT · SEASON REVIEW / E1</p><h1>{e.date} 총선</h1><p className="muted">{game.electionRuleset.label}</p></div></div>
     <SimulationNotice>이 세이브의 가상 선거입니다. 실제 선거 결과나 예측이 아니며, 실제 방송사나 조사기관의 출구조사가 아닙니다. 지역구는 2024년 기준입니다.</SimulationNotice>
-    <section className="sim-card" data-testid="election-night"><h2>Election Night <span className="outline-badge">SAVE SIMULATION</span></h2>
-      <ol className="night-steps">{STEPS.map((s, i) => <li key={s} className={i <= step ? 'reached' : ''}>{s}</li>)}</ol>
+    <section className="sim-card" data-testid="election-night" aria-live="polite"><h2>Election Night <span className="outline-badge">SAVE SIMULATION · 가상 시뮬레이션</span></h2>
+      <ol className="night-steps" aria-label="Election Night 진행 단계">{STEPS.map((s, i) => <li key={s} className={i <= step ? 'reached' : ''} aria-current={i === step ? 'step' : undefined}>{s}</li>)}</ol>
       {step >= 1 && <div data-testid="exit-poll"><h3>가상 출구조사 (별도 오차 ±{percent(20000)}%p)</h3><p className="muted small">{Object.keys(poll).sort((a, b) => poll[b]!.point - poll[a]!.point).map(id => `${partyName(id)} ${percent(poll[id]!.low)}–${percent(poll[id]!.high)}%`).join(' · ')}</p></div>}
       {step >= 2 && <div data-testid="count"><h3>{step >= 3 ? '지역구 당선 확정' : '개표 중 · 격차가 큰 곳부터 확정'} ({called}/{order.length})</h3><p>{Object.entries(counted).sort((a, b) => b[1] - a[1]).map(([id, n]) => `${partyName(id)} ${n}`).join(' · ')}</p>
         {step >= 3 && <p className="muted small">마지막까지 접전: {order.slice(-3).map(id => `${nameOf(id)}(${percent(marginOf(e.districts.find(r => r.id === id)!.votes))}%p)`).join(', ')}</p>}</div>}
