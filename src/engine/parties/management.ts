@@ -1,3 +1,4 @@
+import { voteFlow } from '../voters/voteFlow';
 import { partyManagement as data } from '../../data/seeds/party-management';
 import { politicalModel } from '../../data/seeds/political-model';
 import { policyLevers, realityPack } from '../../data/reality';
@@ -163,7 +164,7 @@ export function managementCommand(state: GameState, command: Command): { state: 
     let next = spend(state, data.survey, 'survey', 'internal-survey');
     // Separate frozen snapshot; never fed into public polling or AI.
     const analysis = computeAnalysis(state);
-    next = { ...next, internalSurveys: [...state.internalSurveys, { date: state.date, margin: data.survey.margin, analysis }].slice(-12) };
+    next = { ...next, internalSurveys: [...state.internalSurveys, { date: state.date, margin: data.survey.margin, analysis, voteFlow: voteFlow(state) }].slice(-12) };
     next = postMessage(next, '내부조사 결과 도착', '데이터 허브에서 조사일 기준 잠재·현재 지지와 장벽을 확인하세요. 표시 범위는 통계적 신뢰구간이 아닌 세이브 모형 추정입니다.', 'Report', '데이터 책임자');
     return { state: next, event: 'SURVEY_COMMISSIONED' };
   }

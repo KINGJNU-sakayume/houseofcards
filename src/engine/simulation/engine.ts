@@ -23,6 +23,7 @@ import { scoutingWeight } from '../organization/channels';
 import { emptyNominations, nominationCommand, weeklyNominations } from '../election/nominations';
 import { emptyFinalPush, finalPushCommand, weeklyFinalPush } from '../election/finalPush';
 import { holdElection } from '../election/election';
+import { monthlyBrand } from '../parties/brand';
 
 export const REALITY_PACK_ID = realityPack.id;
 export const REALITY_PACK_AS_OF = realityPack.asOf;
@@ -34,7 +35,7 @@ export function createGame(seed: number, rulesetId: string = rulesets.defaultRul
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('시드는 0~4294967295의 정수여야 합니다.');
   const state = initializePolitics({
     ...initializeSimulation(seed, CALENDAR.startDate, calibration.seeds),
-    schemaVersion: 10, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, nominations: emptyNominations(), finalPush: emptyFinalPush(), election: null, simulationStartDate: CALENDAR.startDate,
+    schemaVersion: 11, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, brandInconsistency: 0, nominations: emptyNominations(), finalPush: emptyFinalPush(), election: null, simulationStartDate: CALENDAR.startDate,
     realityPackId: REALITY_PACK_ID, realityPackAsOf: REALITY_PACK_AS_OF,
     rulesetId: preset.rulesetId,
     // The opinion model reads only these ruleset values (viability knee and threshold).
@@ -52,7 +53,7 @@ function monthlyUpdate(initial: GameState) {
   const ai = updatePartyAI(state); state = ai.state;
   const government = updateGovernmentAI(state); state = government.state;
   const issues = updateIssues(state.issues, state.governmentPolicy, policyLevers, seedPack.issueConfigs, state.seed, state.date, state.rngState);
-  state = evolvePerceptions(recruitExpertise({ ...state, issues: issues.issues, rngState: issues.rngState }));
+  state = evolvePerceptions(monthlyBrand(recruitExpertise({ ...state, issues: issues.issues, rngState: issues.rngState })));
   const analysis = computeAnalysis(state);
   const house = state.politics.pollHouses[state.politics.polls.length % state.politics.pollHouses.length]!;
   const polling = makePoll(analysis, house, state.seed, state.date, state.rngState, state.politics.polls.length);

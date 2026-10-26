@@ -3,7 +3,7 @@ import { useGameStore } from '../state/store';
 import { districtPack } from '../data/reality/districts';
 import { REGION_LABELS } from '../data/content/labels';
 import { nominationModel as nm } from '../data/seeds/nomination';
-import { candidacyOf, districtDeposit, listDeposit, listRefusal, METHOD_LABELS, nominationRefusal, nominationStage, primaryCost, targetRefusal } from '../engine/election/nominations';
+import { candidacyOf, districtDeposit, listDeposit, listReadiness, listRefusal, METHOD_LABELS, nominationRefusal, nominationStage, primaryCost, targetRefusal } from '../engine/election/nominations';
 import type { NominationMethod } from '../types/game';
 
 const STAGE_LABELS = { closed: `선거 준비 전 — ${nm.gates.targets}부터 집중 지역 선택`, targets: `1단계 집중 지역 선택 — 공천은 ${nm.gates.nominations}부터`, nominations: `2단계 공천 — 비례명부는 ${nm.gates.list}부터`, list: `3단계 비례명부 — 등록 마감 ${nm.gates.registration}`, registered: '후보 등록 마감됨' } as const;
@@ -29,13 +29,14 @@ export function NominationPanel() {
   const move = (i: number, d: number) => { const next = [...list]; [next[i], next[i + d]] = [next[i + d]!, next[i]!]; setDraft(next); };
   return <section className="sim-card" data-testid="nomination-panel"><h2>공천과 비례명부 <span className="outline-badge">SAVE SIMULATION</span></h2>
     <p data-testid="nomination-stage"><strong>{STAGE_LABELS[stage]}</strong></p>
+    <ListWarning />
     <p className="muted small">일정은 게임 단순화입니다(실제 후보 등록 기간과 다름). 공천 후보는 영입한 가상 인물입니다. 다른 정당의 후보는 정당 단위 가상 레코드이며 실존 후보가 아닙니다. 기탁금은 현행법 값(지역구 {districtDeposit(game).toLocaleString()}만원, 비례 1인 {listDeposit(game).toLocaleString()}만원)으로 공천 시 내고, 마감 전 철회하면 돌려받습니다. 득표에 따른 반환은 선거 결과에서 계산합니다(지역구 15% 이상 전액, 10% 이상 반액; 비례는 당선인이 있으면 전액).</p>
     <h3>집중 지역 (Active 30 중 최대 {nm.targets.max}곳 · {n.targets.length}곳 선택)</h3>
     <div className="table-scroll"><table className="sim-table" data-testid="target-table"><thead><tr><th>지역구</th><th>집중</th><th>우리 후보</th></tr></thead><tbody>{active.map(d => {
       const on = n.targets.includes(d.id), nomination = n.districts[d.id], reason = targetRefusal(game, d.id, !on);
       return <tr key={d.id}><th>{d.name}<br /><small className="muted">{d.sido} · {REGION_LABELS[d.regionId]}</small></th>
-        <td><label className="check-row"><input type="checkbox" checked={on} disabled={disabled || !!reason} title={reason ?? undefined} onChange={() => void dispatch({ type: 'SET_TARGET_DISTRICT', districtId: d.id, targeted: !on })} />{on ? '집중' : '—'}</label></td>
-        <td>{nomination ? <>{name(nomination.politicianId)} · {METHOD_LABELS[nomination.method]}{nomination.participants.length ? ` (${nomination.participants.length}명 경선)` : ''} <button className="link-button" disabled={disabled || !!nominationRefusal(game, d.id, 'none', [])} onClick={() => void dispatch({ type: 'NOMINATE_DISTRICT', districtId: d.id, method: 'none', candidateIds: [] })}>철회</button></> : on ? '후보 없음' : ''}</td></tr>;
+        <td><label className="check-row"><input type="checkbox" aria-label={`${d.name} 집중 지역`} checked={on} disabled={disabled || !!reason} title={reason ?? undefined} onChange={() => void dispatch({ type: 'SET_TARGET_DISTRICT', districtId: d.id, targeted: !on })} />{on ? '집중' : '—'}</label></td>
+        <td>{nomination ? <>{name(nomination.politicianId)} · {METHOD_LABELS[nomination.method]}{nomination.participants.length ? ` (${nomination.participants.length}명 경선)` : ''} <button className="link-button" aria-label={`${d.name} 공천 철회`} disabled={disabled || !!nominationRefusal(game, d.id, 'none', [])} onClick={() => void dispatch({ type: 'NOMINATE_DISTRICT', districtId: d.id, method: 'none', candidateIds: [] })}>철회</button></> : on ? '후보 없음' : ''}</td></tr>;
     })}</tbody></table></div>
     <h3>공천</h3>
     <div className="sim-toolbar"><label>지역구 <select value={chosen} onChange={e => setDistrictId(e.target.value)}><option value="">선택</option>{n.targets.filter(id => !n.districts[id]).map(id => <option key={id} value={id}>{active.find(d => d.id === id)!.name}</option>)}</select></label>
@@ -47,10 +48,19 @@ export function NominationPanel() {
     <h3>비례대표 명부 ({list.length}명 · {game.electionRuleset.listSizeUi.min}~{game.electionRuleset.listSizeUi.max}명)</h3>
     <p className="muted small">홀수 순위 여성, 여성 50% 이상(공직선거법 §47③), 지역구와 중복입후보 불가(§52③). 명부가 있어야 정당투표에 우리 정당이 오르며, 비례 의석은 명부 순서대로 배정됩니다. 명부의 브랜딩 효과는 구현하지 않았습니다.</p>
     <ol data-testid="list-draft">{list.map((id, i) => <li key={id}>{name(id)} · {game.politicians.find(p => p.id === id)?.gender === 'female' ? '여' : '남'}
-      <button className="link-button" disabled={i === 0} onClick={() => move(i, -1)}>위로</button><button className="link-button" disabled={i === list.length - 1} onClick={() => move(i, 1)}>아래로</button>
-      <button className="link-button" onClick={() => setDraft(list.filter(x => x !== id))}>빼기</button></li>)}</ol>
+      <button className="link-button" aria-label={`${name(id)} 위로`} disabled={i === 0} onClick={() => move(i, -1)}>위로</button><button className="link-button" aria-label={`${name(id)} 아래로`} disabled={i === list.length - 1} onClick={() => move(i, 1)}>아래로</button>
+      <button className="link-button" aria-label={`${name(id)} 명부에서 빼기`} onClick={() => setDraft(list.filter(x => x !== id))}>빼기</button></li>)}</ol>
     <div className="sim-toolbar"><label>추가 <select value="" onChange={e => e.target.value && setDraft([...list, e.target.value])}><option value="">영입 인재 선택</option>{recruits.filter(p => !list.includes(p.id) && candidacyOf(game, p.id)?.kind !== 'district').map(p => <option key={p.id} value={p.id}>{p.name} ({p.gender === 'female' ? '여' : '남'})</option>)}</select></label>
       <button className="button primary" disabled={disabled || !!listReason || draft === null} onClick={() => { void dispatch({ type: 'SET_LIST', politicianIds: list }); setDraft(null); }}>명부 저장</button></div>
     {listReason && <p className="muted small" data-testid="list-refusal">{listReason}</p>}
   </section>;
+}
+// Without a registered list the party is not on the party ballot; warn early (user decision 2026-10-26).
+export function ListWarning() {
+  const { game } = useGameStore();
+  if (!game.playerParty || game.nominations.list.length) return null;
+  const r = listReadiness(game);
+  return <p className={r.ready ? 'muted small' : 'list-warning'} role="note" data-testid="list-warning">
+    비례대표 명부를 등록하지 않으면 정당투표에 우리 정당이 오르지 않습니다. 명부는 {nm.gates.list}부터 {r.min}명 이상(홀수 순위 여성, 여성 {r.womenNeeded}명 이상)이 필요합니다.
+    지역구 후보가 아닌 영입 인재 {r.available}명 · 여성 {r.women}명{r.ready ? ' — 최소 명부를 만들 수 있습니다.' : ` — ${Math.max(0, r.min - r.available)}명(여성 ${Math.max(0, r.womenNeeded - r.women)}명) 더 필요합니다. 지역구 공천과 같은 사람을 쓸 수 없습니다.`}</p>;
 }

@@ -55,6 +55,15 @@ export function candidateQuality(person: Politician, district: District): number
   const local = person.regionId === district.regionId ? a.localBase : 0;
   return roundDiv(local * w.localBase + a.campaigning * w.campaigning + a.broadAppeal * w.broadAppeal, 100);
 }
+// List readiness (E2 warning): recruits not standing in a district, and how many
+// people and women a minimum-size list needs (women at odd positions).
+export function listReadiness(state: GameState) {
+  const min = state.electionRuleset.listSizeUi.min;
+  const free = state.politicians.filter(p => p.status === 'recruited' && candidacyOf(state, p.id)?.kind !== 'district');
+  const women = free.filter(p => p.gender === 'female').length;
+  const womenNeeded = Math.ceil(min / 2);
+  return { min, available: free.length, women, womenNeeded, ready: free.length >= min && women >= womenNeeded };
+}
 export function primaryCost(): Partial<Resources> { return { money: nm.primary.money, staffCapacity: nm.primary.staffCapacity }; }
 export function strategicCost(): Partial<Resources> { return { staffCapacity: nm.strategic.staffCapacity }; }
 

@@ -1,5 +1,5 @@
 {
-  "modelVersion": "C1.0",
+  "modelVersion": "E2.0",
   "label": "GAME_MODEL",
   "palette": ["#8864b5", "#26998d", "#ba8745", "#a86683", "#738345", "#687d90", "#a67654", "#60646d"],
   "newParty": {
@@ -19,6 +19,7 @@
   "publication": {"agendaSlots": 1, "baseStaff": 1, "reversalStaff": 2, "consistentGain": 10000},
   "research": {"money": 12000, "staffCapacity": 4, "weeks": 4, "gain": 100000, "expertiseCap": 850000, "affinityDiscount": 250000},
   "survey": {"money": 8000, "staffCapacity": 3, "margin": 15000},
+  "brand": {"note": "phase_c §16 brand consistency (E2): declared values vs published platform value mass vs recruits' valueLean; a bounded multiplicative factor on the player's trust only", "platformWeight": 700000, "recruitWeight": 300000, "monthlyRate": 250000, "maxTrustPenalty": 300000, "warning": 150000},
   "valueDomainAffinity": {
     "reform": ["political-reform"], "housing": ["housing"], "generations": ["family", "pension"],
     "market": ["industry-ai", "housing"], "safety-net": ["pension", "healthcare", "family"],

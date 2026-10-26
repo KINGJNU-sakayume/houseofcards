@@ -11,7 +11,8 @@ export interface Finance {
   ledger: { date: string; kind: 'dues' | 'payroll' | 'hiring' | 'research' | 'survey' | 'recruitment' | 'organization' | 'nomination' | 'deposit' | 'campaign' | 'reimbursement'; amount: number; balanceAfter: number; ref: string }[];
 }
 export interface Research { domain: DomainId; startedAt: string; completesAt: string }
-export interface InternalSurvey { date: string; margin: number; analysis: SupportAnalysis }
+// voteFlow: E2 Vote Flow estimate at the survey date (from → to, Q6 of the electorate).
+export interface InternalSurvey { date: string; margin: number; analysis: SupportAnalysis; voteFlow: Record<string, Record<string, number>> }
 export const INVESTMENT_KINDS = ['member_drive', 'local_office', 'candidate_scouting', 'policy_forum'] as const;
 export type InvestmentKind = typeof INVESTMENT_KINDS[number];
 export interface RegionInvestment { kind: InvestmentKind; intensity: number; startedAt: string; completesAt: string }
