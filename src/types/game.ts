@@ -22,7 +22,22 @@ export type Command = { type: 'ADVANCE_WEEK' } | { type: 'RESPOND_INBOX'; messag
   | { type: 'PUBLISH_PLATFORM'; leverId: string }
   | { type: 'RECRUIT_POLITICIAN'; politicianId: string; role: RoleId; promises: PromiseType[] }
   | { type: 'ASSIGN_ROLE'; politicianId: string; role: RoleId }
-  | { type: 'INVEST_REGION'; regionId: string; kind: InvestmentKind; intensity: number };
+  | { type: 'INVEST_REGION'; regionId: string; kind: InvestmentKind; intensity: number }
+  | { type: 'SET_TARGET_DISTRICT'; districtId: string; targeted: boolean }
+  | { type: 'NOMINATE_DISTRICT'; districtId: string; method: NominationMethod | 'none'; candidateIds: string[] }
+  | { type: 'SET_LIST'; politicianIds: string[] };
+export type NominationMethod = 'primary' | 'strategic';
+// D3 (Slice §26): the player's targets, district nominees and list. Deposits
+// are charged when a candidate is named and returned if the nomination is
+// withdrawn before registration closes.
+export interface DistrictNomination { politicianId: string; method: NominationMethod; participants: string[]; nominatedAt: ISODate }
+export interface Nominations {
+  targets: string[];
+  districts: Record<string, DistrictNomination>;
+  list: string[];
+  primaryParticipants: string[];
+  registeredAt: ISODate | null;
+}
 export interface InboxMessage {
   id: string;
   date: ISODate;
@@ -35,11 +50,11 @@ export interface InboxMessage {
 export interface GameEvent {
   id: string;
   date: ISODate;
-  type: 'SESSION_STARTED' | 'WEEK_ADVANCED' | 'MONTH_BOUNDARY' | 'INBOX_READ' | 'PLATFORM_DRAFTED' | 'PLATFORM_PUBLISHED' | 'AI_PLATFORM_SHIFT' | 'GOVERNMENT_ENACTED' | 'POLL_PUBLISHED' | 'PARTY_CREATED' | 'STAFF_CHANGED' | 'RESEARCH_STARTED' | 'RESEARCH_COMPLETED' | 'SURVEY_COMMISSIONED' | 'RECRUITMENT_ACCEPTED' | 'RECRUITMENT_DECLINED' | 'ROLE_ASSIGNED' | 'PROMISE_KEPT' | 'PROMISE_BROKEN' | 'INVESTMENT_STARTED' | 'INVESTMENT_COMPLETED' | 'ORGANIZATION_DECAYED';
+  type: 'SESSION_STARTED' | 'WEEK_ADVANCED' | 'MONTH_BOUNDARY' | 'INBOX_READ' | 'PLATFORM_DRAFTED' | 'PLATFORM_PUBLISHED' | 'AI_PLATFORM_SHIFT' | 'GOVERNMENT_ENACTED' | 'POLL_PUBLISHED' | 'PARTY_CREATED' | 'STAFF_CHANGED' | 'RESEARCH_STARTED' | 'RESEARCH_COMPLETED' | 'SURVEY_COMMISSIONED' | 'RECRUITMENT_ACCEPTED' | 'RECRUITMENT_DECLINED' | 'ROLE_ASSIGNED' | 'PROMISE_KEPT' | 'PROMISE_BROKEN' | 'INVESTMENT_STARTED' | 'INVESTMENT_COMPLETED' | 'ORGANIZATION_DECAYED' | 'TARGET_SET' | 'PRIMARY_HELD' | 'NOMINATED' | 'NOMINATION_WITHDRAWN' | 'LIST_SET' | 'REGISTRATION_CLOSED';
   detail: string;
 }
 export interface GameState {
-  schemaVersion: 8;
+  schemaVersion: 9;
   phase: 'C2';
   playerParty: PlayerParty | null;
   resources: Resources | null;
@@ -52,6 +67,7 @@ export interface GameState {
   promises: PartyPromise[];
   // 0–100, null before founding; lowered by broken promises, recovers monthly.
   recruitmentReputation: number | null;
+  nominations: Nominations;
   seed: number;
   rngState: Record<string, number>;
   realityPackId: string;

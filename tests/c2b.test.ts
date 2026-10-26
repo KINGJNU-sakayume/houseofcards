@@ -76,9 +76,9 @@ describe('C2b recruitment', () => {
     expect(() => dispatchCommand(second.state, { type: 'ASSIGN_ROLE', politicianId: second.id, role: 'policy_chair' })).toThrow('맡고 있습니다');
     const sg = dispatchCommand(second.state, { type: 'ASSIGN_ROLE', politicianId: second.id, role: 'secretary_general' });
     expect(sg.politicians.find(p => p.id === second.id)!.role).toBe('secretary_general');
-    // Nomination promises stay pending to the end of the season (Phase D resolves them).
+    // Nomination promises wait for registration (D3); with no primary held the guarantee is broken then.
     const end = advance(sg, 77);
-    expect(end.promises.find(p => p.type === 'primary_guarantee')!.status).toBe('pending');
+    expect(end.promises.find(p => p.type === 'primary_guarantee')).toMatchObject({ status: 'broken', resolvedAt: '2028-03-20' });
   });
   it('policy_chair promise: kept on appointment, broken on removal or when the window lapses; penalties bounded', () => {
     const made = until(rich(createFoundedGame(12)), 'recruited', 'member', ['policy_chair']);
@@ -121,6 +121,6 @@ describe('C2b recruitment', () => {
     expect(stateHash(replay(42, s.commandLog as Command[]))).toBe(stateHash(s));
     expect(s.promises.length).toBeGreaterThan(0);
     expect(legacyC2a.state.schemaVersion).toBe(4); expect(legacyC2a.checksum).toBe(stateHash(legacyC2a.state));
-    expect(() => deserializeSave(JSON.stringify(legacyC2a))).toThrow('C2a 세이브(스키마 4)는 현재 버전(스키마 8)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyC2a))).toThrow('C2a 세이브(스키마 4)는 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

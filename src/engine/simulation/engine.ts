@@ -20,6 +20,7 @@ import { updatePoolStatus, monthlySupply } from '../people/generator';
 import { recruitmentCommand, weeklyPromises, monthlyReputation } from '../people/recruitment';
 import { monthlyOrganization, organizationCommand, recruitExpertise, weeklyOrganization } from '../organization';
 import { scoutingWeight } from '../organization/channels';
+import { emptyNominations, nominationCommand, weeklyNominations } from '../election/nominations';
 
 export const REALITY_PACK_ID = realityPack.id;
 export const REALITY_PACK_AS_OF = realityPack.asOf;
@@ -31,7 +32,7 @@ export function createGame(seed: number, rulesetId: string = rulesets.defaultRul
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('시드는 0~4294967295의 정수여야 합니다.');
   const state = initializePolitics({
     ...initializeSimulation(seed, CALENDAR.startDate, calibration.seeds),
-    schemaVersion: 8, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, simulationStartDate: CALENDAR.startDate,
+    schemaVersion: 9, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, nominations: emptyNominations(), simulationStartDate: CALENDAR.startDate,
     realityPackId: REALITY_PACK_ID, realityPackAsOf: REALITY_PACK_AS_OF,
     rulesetId: preset.rulesetId,
     // The opinion model reads only these ruleset values (viability knee and threshold).
@@ -72,6 +73,8 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
     if (recruited) return finish(recruited.state, recruited.event, recruited.detail);
     const invested = organizationCommand(state, command);
     if (invested) return finish(invested.state, invested.event, invested.detail);
+    const nominated = nominationCommand(state, command);
+    if (nominated) return finish(nominated.state, nominated.event, nominated.detail);
   } else if (!['ADVANCE_WEEK', 'RESPOND_INBOX'].includes(command.type)) throw new Error('완료된 프리뷰는 변경할 수 없습니다.');
   if (command.type === 'SET_PLATFORM_DRAFT' || command.type === 'PUBLISH_PLATFORM') {
     if (state.status !== 'active') throw new Error('완료된 프리뷰는 공약을 변경할 수 없습니다.');
@@ -111,7 +114,7 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
   const update = monthly ? monthlyUpdate(next) : null;
   if (update) next = update.state;
   // Own stream only: the pool never moves AI, voter or polling draws.
-  next = weeklyPromises(updatePoolStatus(next));
+  next = weeklyNominations(weeklyPromises(updatePoolStatus(next)));
   if (monthly) next = monthlyOrganization(monthlyReputation(next));
   const pool = next;
   const supply = monthly ? monthlySupply(next, { regionWeight: id => scoutingWeight(pool, id) }) : null;
@@ -136,7 +139,7 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
     if (update.aiChanges.length) event('AI_PLATFORM_SHIFT', update.aiChanges.join('|'));
     if (update.governmentChanges.length) event('GOVERNMENT_ENACTED', update.governmentChanges.join('|'));
   }
-  if (['2027-07-05', '2027-10-04', '2027-12-06', '2028-01-17', '2028-03-20'].includes(date)) next = postMessage(next, '후속 선거 일정 안내', '이 기능은 아직 구현되지 않았습니다. 공천·선거 기능은 Phase D에서 구현됩니다.', 'FYI');
+  if (date === '2028-01-17') next = postMessage(next, 'Final Push 일정 안내', '이 기능은 아직 구현되지 않았습니다. Final Push와 선거 실행은 D4에서 구현됩니다.', 'FYI');
   return deepFreeze({ ...next, status: date === state.rulesetSnapshot.calendar.lastWeeklyDate ? 'phase_complete' : 'active',
     rngState: { ...next.rngState, [key]: draw.state }, inbox: [...messages, ...next.inbox].slice(0, 60), events, commandLog: [...state.commandLog, { ...command }],
   });

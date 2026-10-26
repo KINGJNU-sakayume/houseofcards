@@ -2,7 +2,7 @@
 
 Repository: `KINGJNU-sakayume/houseofcards`
 
-> **Status (2026-10-26):** D1 (§2), CAL and D2 (§2a) are implemented. D3–D4 are outlined only (§3). Before starting a later step, expand its section here from the code as it then stands, and record decisions in `docs/DECISIONS.md`.
+> **Status (2026-10-26):** D1 (§2), CAL and D2 (§2a) and D3 (§2b) are implemented. D4 is outlined only (§3). Before starting a later step, expand its section here from the code as it then stands, and record decisions in `docs/DECISIONS.md`.
 
 Order, dependencies and the run protocol come from `docs/ROADMAP.md`; progress is in `docs/PROGRESS.md`. Precedence: explicit user decisions in `docs/DECISIONS.md` → Slice Spec (`docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md`, §7, §17–19, §26–27) → this document → `AGENTS.md` conventions. Each step is its own PR and is merged to main once CI passes (user decision 2026-10-25); state-shape changes bump `schemaVersion` and reject the previous schema with Korean keep-JSON guidance.
 
@@ -33,9 +33,22 @@ Order, dependencies and the run protocol come from `docs/ROADMAP.md`; progress i
 - **UI.** Election page district explorer (Active 30 / all 254, region filter), labelled "2024년 기준" and "save-model estimate before nominations".
 - Old saves (pack r3) are rejected by the pack-id check with Korean keep-JSON guidance.
 
+## 2b. D3 — Nominations and list (implemented 2026-10-26)
+
+- **Data.** `src/data/seeds/nomination.json` (strict zod, `D3.0`, GAME_MODEL): gates 2027-07-05 targets / 2027-10-04 nominations / 2027-12-06 list / 2028-03-20 registration (validated as weekly ticks), target maximum 20, primary and strategic parameters, candidate-effect weights.
+- **State (schema 9).** `nominations = { targets, districts: {districtId → {politicianId, method, participants, nominatedAt}}, list, primaryParticipants, registeredAt }`.
+- **Commands** (`src/engine/election/nominations.ts`, atomic refusals with Korean reasons):
+  - `SET_TARGET_DISTRICT {districtId, targeted}` — Active 30 only, at most 20; a nominated district cannot be untargeted.
+  - `NOMINATE_DISTRICT {districtId, method: primary|strategic|none, candidateIds}` — targeted districts, recruited people not already standing (no dual candidacy). `primary`: 2–3 people, score = LocalBase (home region only) .3 + Recognition .2 + Campaigning .2 + BroadAppeal .2 + Negotiation .1 plus ±8 points from the `primary` stream; participant trust +5, winner +5 more, regional organization +2; Money 2000, Staff 3. `strategic`: one person, Staff 1; passed-over regional recruits lose up to 12 trust (halved at Negotiation 100), regional organization −1 if anyone was passed over. `none` withdraws and refunds the deposit.
+  - `SET_LIST {politicianIds}` — 0 or `listSizeUi` (10–15) names; `currentLaw` gender rule (odd positions women, ≥ 50% women) and dual-candidacy ban.
+  - Deposits from `currentLaw` (₩15,000,000 / ₩5,000,000 per list candidate) are charged when named and refunded on withdrawal before registration (ledger `deposit`; primary cost ledger `nomination`).
+- **Registration.** On the 2028-03-20 tick: `registeredAt` is set, later nomination commands are refused, and `primary_guarantee` (kept if the person took part in a primary) and `regional_priority` (kept if the person stands in a district of their home region) are resolved.
+- **District projection.** From the nomination stage the player stands only where nominated; elsewhere cohorts choose among the other parties. In a nominated district the player's cohort utility gains (quality − 50) × 0.5 (quality = LocalBase home-only .4, Campaigning .3, BroadAppeal .3) and awareness is at least max(base, Recognition × .5 + regional organization × .3). AI parties are party-level virtual candidates everywhere (GAME ASSUMPTION).
+- **UI.** `/election` nomination panel: stage line, Active 30 target table with nominee and withdraw, nomination form with method explanations and refusal reasons, list editor (order, add/remove, save). The district explorer shows '후보 없음' and the nominee.
+- **Not yet.** List vote/branding effects, the Organization attribute, local-issue fit and deposit refunds by result are D4.
+
 ## 3. Later steps (outline; expand before starting)
 
-- **D3.** Nomination windows (2027-07/10/12), three nomination methods, list of 10–15 with the verified gender rule, no dual candidacy; resolves Phase C nomination promises; uses LocalBase/Campaigning/BroadAppeal/Negotiation where Slice §20.4 says so.
 - **D4.** Final Push from 2028-01-17, election on 2028-04-12 using `allocateList`/`totalSeats`, deposits and reimbursements from `currentLaw`, the 0-seat branch per the user's confirmed decision, results saved.
 
 ## 4. Blockers recorded on 2026-10-25

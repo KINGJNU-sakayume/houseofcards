@@ -1,0 +1,20 @@
+{
+  "modelVersion": "D3.0",
+  "label": "GAME_MODEL",
+  "note": "Slice §6, §17 Target District, §20.4, §26. Dates are the Slice §6 game calendar (registration is a game simplification, not the statutory deadline). All weights are GAME_MODEL values.",
+  "gates": { "targets": "2027-07-05", "nominations": "2027-10-04", "list": "2027-12-06", "registration": "2028-03-20" },
+  "targets": { "max": 20, "note": "Slice §17: the player focuses on 10–20 districts; only the maximum is enforced" },
+  "primary": {
+    "minCandidates": 2, "maxCandidates": 3, "money": 2000, "staffCapacity": 3,
+    "weights": { "localBase": 300000, "recognition": 200000, "campaigning": 200000, "broadAppeal": 200000, "negotiation": 100000 },
+    "noise": 80000, "participantTrust": 5, "winnerTrust": 5, "organizationLevel": 2
+  },
+  "strategic": { "staffCapacity": 1, "passedOverTrust": 12, "negotiationSoftening": 500000, "organizationLevel": 1 },
+  "candidate": {
+    "note": "Player nominee only (AI candidates stay virtual Light records). Quality = LocalBase (home region only), Campaigning and BroadAppeal; it enters district utility, centred on 50. Recognition and regional organization set a district awareness floor.",
+    "quality": { "localBase": 400000, "campaigning": 300000, "broadAppeal": 300000 },
+    "utilityWeight": 500000,
+    "awarenessFromRecognition": 500000,
+    "awarenessFromOrganization": 300000
+  }
+}

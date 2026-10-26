@@ -88,7 +88,7 @@ function newPromise(state: GameState, personId: string, type: PromiseType, kept:
   return { id: `promise-${String(state.promises.length + 1).padStart(3, '0')}`, politicianId: personId, type, madeAt: state.date,
     due: type === 'policy_chair' ? addDays(state.date, config().promiseWindowWeeks * 7) : 'NOMINATION', status: kept ? 'kept' : 'pending', resolvedAt: kept ? state.date : null };
 }
-function breakPromise(state: GameState, promise: PartyPromise, reason: string): GameState {
+export function breakPromise(state: GameState, promise: PartyPromise, reason: string): GameState {
   const c = config();
   let next: GameState = { ...state, promises: state.promises.map(p => p.id === promise.id ? { ...p, status: 'broken' as const, resolvedAt: state.date } : p),
     recruitmentReputation: Math.max(c.reputationFloor, state.recruitmentReputation! - c.brokenReputation) };
@@ -97,7 +97,7 @@ function breakPromise(state: GameState, promise: PartyPromise, reason: string): 
   next = postMessage(next, `${person.name}에게 한 약속을 지키지 못했습니다`, `${PROMISE_LABELS[promise.type]} 약속이 ${reason}. 개인 신뢰와 당의 영입 평판이 떨어졌으며 평판은 매월 조금씩 회복합니다.`, 'Important', '영입 책임자');
   return event(next, 'PROMISE_BROKEN', promise.id);
 }
-function keepPromise(state: GameState, promise: PartyPromise): GameState {
+export function keepPromise(state: GameState, promise: PartyPromise): GameState {
   const next: GameState = { ...state, promises: state.promises.map(p => p.id === promise.id ? { ...p, status: 'kept' as const, resolvedAt: state.date } : p) };
   return event(next, 'PROMISE_KEPT', promise.id);
 }
