@@ -16,13 +16,13 @@ import { organizationModel as organization } from '../src/data/seeds/organizatio
 import { REGION_IDS } from '../src/data/reality/schema';
 import { roundDiv } from '../src/engine/simulation/math';
 import type { Politician } from '../src/types/people';
-import type { CoreValue } from '../src/types/simulation';
+import type { CoreValue, DomainId } from '../src/types/simulation';
 import { districtPack } from '../src/data/reality/districts';
 import { electionModel } from '../src/data/seeds/election';
 import { nominationModel } from '../src/data/seeds/nomination';
-import { candidacyOf, candidateQuality, nominationStage } from '../src/engine/election/nominations';
+import { candidacyOf, candidateQuality, listReadiness, nominationStage } from '../src/engine/election/nominations';
 import { PLAYER_PARTY_ID } from '../src/types/party';
-const strategies = ['idle', 'balanced', 'housing-focused', 'regional', 'spender', 'ai-only'] as const;
+const strategies = ['idle', 'balanced', 'housing-focused', 'regional', 'spender', 'ai-only', 'focused'] as const;
 let refused = 0;
 const refusals: Record<string, number> = {};
 function attempt(state: GameState, command: Command): GameState {
@@ -78,7 +78,7 @@ const position = process.argv.indexOf('--seeds');
 const count = position < 0 ? 20 : Number(process.argv[position + 1]);
 if (!Number.isInteger(count) || count < 1 || count > 10000) throw new Error('--seeds must be an integer in [1, 10000]');
 type Strategy = typeof strategies[number];
-const VALUES: Record<Strategy, [CoreValue, CoreValue, CoreValue]> = { idle: ['housing', 'safety-net', 'science'], balanced: ['housing', 'safety-net', 'science'], 'housing-focused': ['housing', 'decentralization', 'safety-net'], regional: ['housing', 'safety-net', 'science'], spender: ['housing', 'safety-net', 'science'], 'ai-only': ['reform', 'safety-net', 'market'] };
+const VALUES: Record<Strategy, [CoreValue, CoreValue, CoreValue]> = { idle: ['housing', 'safety-net', 'science'], balanced: ['housing', 'safety-net', 'science'], 'housing-focused': ['housing', 'decentralization', 'safety-net'], regional: ['housing', 'safety-net', 'science'], spender: ['housing', 'safety-net', 'science'], 'ai-only': ['reform', 'safety-net', 'market'], focused: ['housing', 'safety-net', 'science'] };
 const KINDS = ['member_drive', 'policy_forum', 'candidate_scouting', 'local_office'] as const;
 function recruitBest(state: GameState, pick: (p: Politician) => number, filter: (p: Politician) => boolean = () => true): GameState {
   const best = state.politicians.filter(p => p.status === 'prospect' && filter(p)).sort((a, b) => pick(b) - pick(a) || (a.id < b.id ? -1 : 1))[0];
@@ -87,7 +87,46 @@ function recruitBest(state: GameState, pick: (p: Politician) => number, filter: 
   return attempt(state, { type: 'RECRUIT_POLITICIAN', politicianId: best.id, role: chair ? 'policy_chair' : 'member', promises: chair ? ['policy_chair'] : [] });
 }
 const match = (state: GameState) => (p: Politician) => recruitmentProbability(recruitmentInputs(state, p, 'member', []));
+// F1 'focused' measurement bot (Slice §30 ceiling check): a platform near the electorate's salience-weighted
+// preferences (never reversed), high-profile recruits, one focus region, and few, strong, well-funded nominees.
+function electorateTarget(state: GameState, leverId: string, domain: string): number {
+  let num = 0, den = 0;
+  for (const c of state.cohorts) { const m = c.weight * c.turnoutTendency * c.salience[domain as DomainId]; num += c.preferences[leverId]! * m; den += m; }
+  return roundDiv(num, Math.max(1, den));
+}
+const profileScore = (p: Politician) => p.attributes.recognition + p.attributes.media + p.attributes.localBase + p.attributes.campaigning;
+function focusRegion(state: GameState): string {
+  const best = state.politicians.filter(p => p.status === 'recruited').sort((a, b) => profileScore(b) - profileScore(a) || (a.id < b.id ? -1 : 1))[0];
+  return best?.regionId ?? 'seoul';
+}
+function focusedPlay(state: GameState, month: number): GameState {
+  // Acts right after the monthly Staff/Agenda refill (the founding day counts as fresh).
+  if (isMonthlyTick(state.date) || state.tick === 1) {
+    const prospects = state.politicians.filter(p => p.status === 'prospect').sort((a, b) => profileScore(b) * match(state)(b) - profileScore(a) * match(state)(a) || (a.id < b.id ? -1 : 1));
+    for (const p of prospects.slice(0, 2)) {
+      if (state.resources!.money < 60000) break;
+      const chair = !roleHolder(state, 'policy_chair');
+      state = attempt(state, { type: 'RECRUIT_POLITICIAN', politicianId: p.id, role: chair ? 'policy_chair' : 'member', promises: chair ? ['policy_chair'] : [] });
+    }
+    // Keep a reserve for deposits and the Final Push.
+    const region = focusRegion(state), reserve = 60000, r = state.regionalOrganization[region]!;
+    const busy = (kind: string) => r.investments.some(i => i.kind === kind);
+    if (state.resources!.money > reserve && !busy('policy_forum') && !(r.forum && r.forum.until > addDays(state.date, 28))) state = attempt(state, { type: 'INVEST_REGION', regionId: region, kind: 'policy_forum', intensity: 2 });
+    if (state.resources!.money > reserve + 40000 && month % 2 === 0 && !busy('member_drive')) state = attempt(state, { type: 'INVEST_REGION', regionId: region, kind: 'member_drive', intensity: 2 });
+  }
+  // Publication uses what Staff and Agenda Slots are left this week.
+  const domains = [...DOMAIN_IDS].sort((a, b) => state.issues.find(i => i.id === b)!.salience - state.issues.find(i => i.id === a)!.salience || (a < b ? -1 : 1));
+  for (const domain of domains) for (const lever of policyLevers.filter(l => l.domain === domain)) {
+    const position = state.platforms.find(p => p.partyId === 'player')!.positions[lever.id]!;
+    if (position.publishedValue !== null) continue;
+    const want = electorateTarget(state, lever.id, domain);
+    if (position.draftValue !== want) state = dispatchCommand(state, { type: 'SET_PLATFORM_DRAFT', leverId: lever.id, value: want });
+    if (!shortage(state, publicationCost(state, lever.id))) state = attempt(state, { type: 'PUBLISH_PLATFORM', leverId: lever.id });
+  }
+  return state;
+}
 function play(state: GameState, strategy: Strategy, month: number, monthly: boolean): GameState {
+  if (strategy === 'focused') return focusedPlay(state, month);
   if (strategy === 'spender') {
     for (const person of state.politicians.filter(p => p.status === 'prospect')) state = attempt(state, { type: 'RECRUIT_POLITICIAN', politicianId: person.id, role: 'member', promises: [] });
     for (const regionId of REGION_IDS) for (const kind of KINDS) state = attempt(state, { type: 'INVEST_REGION', regionId, kind, intensity: kind === 'local_office' ? 1 : 3 });
@@ -134,6 +173,7 @@ function pickList(state: GameState, people: readonly Politician[]): string[] {
 function electoralPlay(state: GameState, strategy: Strategy): GameState {
   if (strategy === 'idle') return state;
   const stage = nominationStage(state), n = state.nominations;
+  if (strategy === 'focused') return stage === 'registered' && state.date < electionModel.finalPush.start ? state : focusedElectoral(state, stage, districtPack.districts.filter(d => d.active));
   const free = () => state.politicians.filter(p => p.status === 'recruited' && !candidacyOf(state, p.id)).sort((a, b) => a.id < b.id ? -1 : 1);
   if (state.date >= '2027-01-04' && state.date < nominationModel.gates.list) {
     const women = state.politicians.filter(p => p.status === 'recruited' && p.gender === 'female').length;
@@ -166,6 +206,45 @@ function electoralPlay(state: GameState, strategy: Strategy): GameState {
   }
   return state;
 }
+// Focused: list first, then at most three strategic nominees whose quality in the district is at least 0.55,
+// all campaign money on them (intensity 3), the leader in the best one, the most salient published domain as message.
+function focusedElectoral(state: GameState, stage: ReturnType<typeof nominationStage>, active: typeof districtPack.districts): GameState {
+  const open = stage !== 'closed';
+  const free = () => state.politicians.filter(p => p.status === 'recruited' && !candidacyOf(state, p.id)).sort((a, b) => a.id < b.id ? -1 : 1);
+  // Fill the list before its gate: one recruit a week, women first while short (needs 15 people, 8 women).
+  const ready = listReadiness(state);
+  if (state.date < nominationModel.gates.list && state.resources!.money > 30000 && (ready.available < 15 || ready.women < 8)) {
+    const prospects = state.politicians.filter(p => p.status === 'prospect').sort((a, b) => (ready.women < 8 ? Number(b.gender === 'female') - Number(a.gender === 'female') : 0) || profileScore(b) * match(state)(b) - profileScore(a) * match(state)(a) || (a.id < b.id ? -1 : 1));
+    if (prospects[0]) state = attempt(state, { type: 'RECRUIT_POLITICIAN', politicianId: prospects[0].id, role: 'member', promises: [] });
+  }
+  if (open && stage !== 'registered' && state.nominations.targets.length < 10) {
+    const region = focusRegion(state);
+    for (const d of [...active.filter(x => x.regionId === region), ...active]) if (state.nominations.targets.length < 10 && !state.nominations.targets.includes(d.id)) state = attempt(state, { type: 'SET_TARGET_DISTRICT', districtId: d.id, targeted: true });
+  }
+  if (stage === 'list' && !state.nominations.list.length) {
+    const list = pickList(state, free());
+    if (list.length) state = attempt(state, { type: 'SET_LIST', politicianIds: list });
+  }
+  if ((stage === 'nominations' || stage === 'list') && Object.keys(state.nominations.districts).length < 3) {
+    const reserve = new Set(state.nominations.list.length ? [] : pickList(state, free()));
+    const options = state.nominations.targets.filter(id => !state.nominations.districts[id]).flatMap(id => free().filter(p => !reserve.has(p.id)).map(p => ({ id, p, q: candidateQuality(p, active.find(x => x.id === id)!) })))
+      .filter(o => o.q >= 550000).sort((a, b) => b.q - a.q || (a.id < b.id ? -1 : 1));
+    const used = new Set<string>();
+    for (const o of options) {
+      if (Object.keys(state.nominations.districts).length >= 3 || used.has(o.p.id) || state.nominations.districts[o.id]) continue;
+      state = attempt(state, { type: 'NOMINATE_DISTRICT', districtId: o.id, method: 'strategic', candidateIds: [o.p.id] }); used.add(o.p.id);
+    }
+  }
+  if (state.date >= electionModel.finalPush.start && !state.election) {
+    const platform = state.platforms.find(p => p.partyId === 'player')!;
+    const domains = [...DOMAIN_IDS].filter(d => policyLevers.some(l => l.domain === d && platform.positions[l.id]!.publishedValue !== null)).sort((a, b) => state.issues.find(i => i.id === b)!.salience - state.issues.find(i => i.id === a)!.salience || (a < b ? -1 : 1));
+    if (!state.finalPush.nationalMessage && domains[0]) state = attempt(state, { type: 'SET_MESSAGES', national: domains[0], secondary: domains.slice(1, 3) });
+    const nominees = Object.entries(state.nominations.districts).map(([id, nom]) => ({ id, q: candidateQuality(state.politicians.find(p => p.id === nom.politicianId)!, active.find(x => x.id === id)!) })).sort((a, b) => b.q - a.q || (a.id < b.id ? -1 : 1));
+    if (nominees[0] && !state.finalPush.leaderFocus) state = attempt(state, { type: 'SET_LEADER_FOCUS', districtId: nominees[0].id });
+    for (const { id } of nominees) if (!state.finalPush.campaign[id]) state = attempt(state, { type: 'SET_CAMPAIGN', districtId: id, intensity: electionModel.finalPush.maxIntensity });
+  }
+  return state;
+}
 const hashes: string[] = [];
 const elections: Record<string, { firstParty: Record<string, number>; majorityRuns: number; thirdPartySeats: number[]; playerBands: Record<string, number> }> = {};
 const metrics: Record<string, Record<string, number[]>> = {};
@@ -175,7 +254,7 @@ for (let seed = 0; seed < count; seed++) {
     let state = dispatchCommand(createGame(seed), { type: 'CREATE_PARTY', name: '내일의 정당', shortName: '내일', color: management.palette[0]!, values: VALUES[strategy] }), month = 0;
     const refusedBefore = refused;
     assertState(state);
-    if (strategy === 'balanced' || strategy === 'regional') state = attempt(state, { type: 'SET_STAFF_LEVEL', level: 1 });
+    if (strategy === 'balanced' || strategy === 'regional' || strategy === 'focused') state = attempt(state, { type: 'SET_STAFF_LEVEL', level: 1 });
     while (state.status === 'active') {
       const monthly = isMonthlyTick(addDays(state.date, 7));
       state = electoralPlay(play(state, strategy, month, monthly), strategy);

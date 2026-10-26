@@ -30,7 +30,7 @@ test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round
   await expect(page.getByRole('heading', { name: '어떤 입장을 공표할까요?' })).toBeVisible();
   await page.getByRole('button', { name: '저장 / 불러오기' }).click();
   await page.getByText('저장 무결성 정보').click();
-  await expect(page.getByText('스키마 12 · 엔진 Web Worker', { exact: false })).toBeVisible();
+  await expect(page.getByText('스키마 13 · 엔진 Web Worker', { exact: false })).toBeVisible();
   const advanced = dispatchCommand(createGame(20261019), { type: 'ADVANCE_WEEK' });
   await expect(page.getByTestId('state-hash')).toHaveText(stateHash(advanced));
   await page.getByRole('button', { name: '수동 저장', exact: true }).click();
@@ -93,7 +93,7 @@ test('main-thread fallback and small screens remain functional', async ({ page }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.getByRole('button', { name: '저장 / 불러오기' }).click();
   await page.getByText('저장 무결성 정보').click();
-  await expect(page.getByText('스키마 12 · 엔진 메인 스레드', { exact: false })).toBeVisible();
+  await expect(page.getByText('스키마 13 · 엔진 메인 스레드', { exact: false })).toBeVisible();
 });
 
 test('C1 policy drafts, publication, issue cards and analysis remain command driven', async ({ page }) => {

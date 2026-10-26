@@ -119,6 +119,6 @@ describe('D1 game integration', () => {
   });
   it('rejects real C2c saves with Korean keep-JSON guidance', () => {
     expect(legacyC2c.state.schemaVersion).toBe(6); expect(legacyC2c.checksum).toBe(stateHash(legacyC2c.state));
-    expect(() => deserializeSave(JSON.stringify(legacyC2c))).toThrow('C2c 세이브(스키마 6)는 현재 버전(스키마 12)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyC2c))).toThrow('C2c 세이브(스키마 6)는 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

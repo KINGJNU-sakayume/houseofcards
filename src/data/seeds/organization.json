@@ -1,5 +1,5 @@
 {
-  "modelVersion": "C2.0",
+  "modelVersion": "C2.1",
   "label": "GAME_MODEL",
   "kinds": {
     "member_drive": { "money": 4000, "staffCapacity": 2, "weeks": 4, "maxIntensity": 3, "level": 3, "members": 400 },
@@ -17,7 +17,7 @@
   "levelExposure": 4000,
   "forumExposure": 60000,
   "profileScale": 400000,
-  "profileCap": 120000,
+  "profileCap": 300000,
   "recruitExpertiseScale": 900000,
   "chairExpertiseBonus": 100000,
   "recruitExpertiseRate": 100000

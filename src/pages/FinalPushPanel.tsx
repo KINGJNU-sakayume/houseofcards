@@ -19,6 +19,7 @@ export function FinalPushPanel() {
   const setMessages = (national: DomainId | null, secondary: DomainId[]) => void dispatch({ type: 'SET_MESSAGES', national, secondary });
   return <section className="sim-card" data-testid="final-push"><h2>Final Push <span className="outline-badge">SAVE SIMULATION</span></h2>
     <p className="muted small">{em.finalPush.start}부터 매주 배분합니다(법정 공식 선거운동 13일과 다른 게임 개념). 메시지는 해당 영역을 중요하게 여기는 코호트에게 우리 정당이 노출되는 정도(인지도)만 바꾸며, 공표한 공약이 있는 영역만 고를 수 있습니다. 메시지 변경마다 Agenda Slots {em.finalPush.messageAgendaSlots}. 유세 강도 1당 매주 Money {em.finalPush.weeklyMoneyPerIntensity}만원·Staff {em.finalPush.weeklyStaffPerIntensity}, 지도부 집중은 Staff {em.finalPush.leaderStaff}. 유세 누적은 후보의 Organization 속성에 따라 효율이 다르고(체감), 그 지역구 효용과 인지 하한에만 들어갑니다. 득표를 직접 더하지 않습니다.</p>
+    <p className="muted small">언론 보도: 모든 정당은 최근 공개 조사 지지에 비례하는 전국 노출을 받습니다(상한 있음). 이 기간에는 투표용지에 오른 정당(우리 정당은 비례명부나 지역구 후보가 있을 때)이 같은 선거운동 노출을 더 받습니다. 둘 다 인지도에만 작용합니다(GAME MODEL).</p>
     {!open ? <p data-testid="final-push-status"><strong>{game.election ? '선거가 끝났습니다.' : `${em.finalPush.start}부터 열립니다.`}</strong></p> : <>
       <p data-testid="final-push-status"><strong>진행 중 · 이번 배분의 주간 비용 Money {cost.money ?? 0}만원 · Staff {cost.staffCapacity ?? 0}</strong></p>
       <div className="sim-toolbar"><label>전국 메시지 <select value={f.nationalMessage ?? ''} disabled={disabled} onChange={e => setMessages((e.target.value || null) as DomainId | null, f.secondaryMessages.filter(d => d !== e.target.value))}>
