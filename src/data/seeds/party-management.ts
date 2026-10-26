@@ -5,7 +5,7 @@ import { deepFreeze } from '../../engine/simulation/determinism';
 const n = z.number().int().nonnegative().max(1_000_000_000);
 const q = z.number().int().min(0).max(1_000_000);
 export const partyManagementSchema = z.strictObject({
-  modelVersion: z.literal('E2.0'), label: z.literal('GAME_MODEL'),
+  modelVersion: z.literal('F2.0'), label: z.literal('GAME_MODEL'),
   palette: z.array(z.string().regex(/^#[0-9a-f]{6}$/)).min(8),
   newParty: z.strictObject({ money: n, staffCapacity: n, agendaSlots: n, membersMin: n, membersMax: n,
     regionalLevelMin: z.number().int().min(0).max(100), regionalLevelMax: z.number().int().min(0).max(100),
@@ -14,6 +14,7 @@ export const partyManagementSchema = z.strictObject({
   staffLevels: z.array(z.strictObject({ level: n, weeklyPayroll: n, capacity: n, hiringCost: n })).length(5),
   publication: z.strictObject({ agendaSlots: n, baseStaff: n, reversalStaff: n, consistentGain: q }),
   research: z.strictObject({ money: n, staffCapacity: n, weeks: z.number().int().min(1).max(52), gain: q, expertiseCap: q, affinityDiscount: q.max(250000) }),
+  donations: z.strictObject({ note: z.string(), monthlyPerSupport: n }),
   survey: z.strictObject({ money: n, staffCapacity: n, margin: q }),
   brand: z.strictObject({ note: z.string(), platformWeight: q, recruitWeight: q, monthlyRate: q, maxTrustPenalty: q.max(500000), warning: q }),
   valueDomainAffinity: z.record(z.enum(CORE_VALUES), z.array(z.enum(DOMAIN_IDS)).min(1)),

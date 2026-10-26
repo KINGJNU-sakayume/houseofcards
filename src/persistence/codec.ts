@@ -59,12 +59,12 @@ const politicianSchema = z.strictObject({ id: z.string().regex(/^pol-\d{3}$/), n
 const promiseSchema = z.strictObject({ id: z.string().regex(/^promise-\d{3}$/), politicianId: z.string().regex(/^pol-\d{3}$/), type: z.enum(PROMISE_TYPES), madeAt: isoDate,
   due: z.union([isoDate, z.literal('NOMINATION')]), status: z.enum(['pending', 'kept', 'broken']), resolvedAt: isoDate.nullable() });
 const stateSchema = z.strictObject({
-  schemaVersion: z.literal(13), phase: z.literal('C2'), seed: z.number().int().min(0).max(0xffffffff),
+  schemaVersion: z.literal(14), phase: z.literal('C2'), seed: z.number().int().min(0).max(0xffffffff),
   playerParty: z.strictObject({ id: z.literal('player'), name: z.string(), shortName: z.string(), color: z.string(),
     values: z.tuple([z.enum(CORE_VALUES), z.enum(CORE_VALUES), z.enum(CORE_VALUES)]), foundedAt: isoDate }).nullable(),
   resources: z.strictObject({ money: z.number().int().nonnegative(), staffCapacity: z.number().int().nonnegative(), agendaSlots: z.number().int().nonnegative() }).nullable(),
   finance: z.strictObject({ members: z.number().int().nonnegative(), initialMoney: z.number().int().nonnegative(), arrears: z.number().int().nonnegative(), staffLevel: z.number().int().min(0).max(4), ledgerTruncatedSum: z.number().int(),
-    ledger: z.array(z.strictObject({ date: isoDate, kind: z.enum(['dues', 'payroll', 'hiring', 'research', 'survey', 'recruitment', 'organization', 'nomination', 'deposit', 'campaign', 'reimbursement']), amount: z.number().int(), balanceAfter: z.number().int().nonnegative(), ref: z.string() })).max(100) }).nullable(),
+    ledger: z.array(z.strictObject({ date: isoDate, kind: z.enum(['dues', 'donations', 'payroll', 'hiring', 'research', 'survey', 'recruitment', 'organization', 'nomination', 'deposit', 'campaign', 'reimbursement']), amount: z.number().int(), balanceAfter: z.number().int().nonnegative(), ref: z.string() })).max(100) }).nullable(),
   regionalOrganization: z.record(z.enum(REGION_IDS), z.strictObject({ members: z.number().int().nonnegative(), level: z.number().int().min(0).max(100), office: z.boolean(),
     investments: z.array(z.strictObject({ kind: z.enum(INVESTMENT_KINDS), intensity: z.number().int().min(1).max(3), startedAt: isoDate, completesAt: isoDate })).max(4), lastActivity: isoDate,
     scouting: z.strictObject({ until: isoDate, intensity: z.number().int().min(1).max(3) }).nullable(), forum: z.strictObject({ until: isoDate, intensity: z.number().int().min(1).max(3) }).nullable() })).or(z.strictObject({})),
@@ -117,43 +117,46 @@ export function deserializeSave(text: string): GameState {
   try { raw = JSON.parse(text); } catch { throw new Error('올바른 JSON 파일이 아닙니다.'); }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' &&
     'schemaVersion' in raw.state && raw.state.schemaVersion === 1) {
-    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'phase' in raw.state && raw.state.phase === 'B1') {
     throw new Error('B1 개발 프리뷰 세이브는 C2 정치 모형과 호환되지 않습니다. 기존 JSON을 보관하고 새 C2 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 2) {
-    throw new Error('B2 세이브(스키마 2)는 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('B2 세이브(스키마 2)는 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 3) {
-    throw new Error('C1 세이브(스키마 3)는 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C1 세이브(스키마 3)는 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 4) {
-    throw new Error('C2a 세이브(스키마 4)는 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C2a 세이브(스키마 4)는 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 5) {
-    throw new Error('C2b 세이브(스키마 5)는 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C2b 세이브(스키마 5)는 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 6) {
-    throw new Error('C2c 세이브(스키마 6)는 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C2c 세이브(스키마 6)는 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 7) {
     throw new Error('D1 세이브(스키마 7)는 교정된 정치 모형 B3(스키마 8)와 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 8) {
-    throw new Error('D2 세이브(스키마 8)는 공천·명부가 추가된 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('D2 세이브(스키마 8)는 공천·명부가 추가된 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 9) {
-    throw new Error('D3 세이브(스키마 9)는 Final Push와 선거 결과가 추가된 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('D3 세이브(스키마 9)는 Final Push와 선거 결과가 추가된 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 10) {
-    throw new Error('E1 세이브(스키마 10)는 브랜드 일관성이 추가된 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('E1 세이브(스키마 10)는 브랜드 일관성이 추가된 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 11) {
-    throw new Error('E2 세이브(스키마 11)는 선거일 변동이 바뀐 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('E2 세이브(스키마 11)는 선거일 변동이 바뀐 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 12) {
-    throw new Error('E3 세이브(스키마 12)는 언론 보도·선거운동 기간 인지도가 추가된 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('E3 세이브(스키마 12)는 언론 보도·선거운동 기간 인지도가 추가된 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+  }
+  if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 13) {
+    throw new Error('F1 세이브(스키마 13)는 후원금 수입이 추가된 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   const parsed = envelopeSchema.safeParse(raw);
   if (!parsed.success) throw new Error('지원하지 않는 세이브 버전이거나 파일 구조가 잘못되었습니다.');
