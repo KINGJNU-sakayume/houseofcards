@@ -97,7 +97,7 @@ describe('D4 election', () => {
     }
     // No registered list → not on the list ballot.
     expect(e.listVotes.player).toBeUndefined(); expect(e.listSeats.player ?? 0).toBe(0);
-    for (const v of Object.values(e.nationalSwing)) expect(Math.abs(v)).toBeLessThanOrEqual(em.electionDay.nationalSwing);
+    for (const v of Object.values(e.nationalSwing)) expect(Math.abs(v)).toBeLessThanOrEqual(em.electionDay.nationalSwingRelative);
     expect(end.events.filter(x => x.type === 'ELECTION_HELD')).toHaveLength(1);
     expect(dispatchCommand(end, { type: 'ADVANCE_WEEK' })).toBe(end);
     expect(() => run(end, { type: 'SET_CAMPAIGN', districtId: district.id, intensity: 1 })).toThrow();
@@ -123,7 +123,7 @@ describe('D4 election', () => {
   });
   it('rejects real D3 saves (schema 9) with Korean keep-JSON guidance', () => {
     expect(legacyD3.state.schemaVersion).toBe(9); expect(legacyD3.checksum).toBe(stateHash(legacyD3.state));
-    expect(() => deserializeSave(JSON.stringify(legacyD3))).toThrow('D3 세이브(스키마 9)는 Final Push와 선거 결과가 추가된 현재 버전(스키마 11)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyD3))).toThrow('D3 세이브(스키마 9)는 Final Push와 선거 결과가 추가된 현재 버전(스키마 12)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });
 
