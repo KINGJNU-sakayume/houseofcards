@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { formatDate } from '../../src/components/format';
 import { createFoundedGame } from '../helpers';
 import { dispatchCommand } from '../../src/engine/simulation/engine';
 import { stateHash } from '../../src/engine/simulation/determinism';
@@ -40,13 +41,13 @@ test('D4: Final Push allocation, the election on the last week and the saved res
   await push.getByLabel('전국 메시지').selectOption('housing');
   await expect(push.getByLabel('전국 메시지')).toHaveValue('housing');
   await push.getByLabel(`${name} 유세 강도`).selectOption('2');
-  await expect(page.getByTestId('final-push-status')).toContainText(`Money ${2 * em.finalPush.weeklyMoneyPerIntensity}만원`);
+  await expect(page.getByTestId('final-push-status')).toContainText(`자금 ${(2 * em.finalPush.weeklyMoneyPerIntensity).toLocaleString('ko-KR')}만원`);
   let expected = dispatchCommand(state, { type: 'SET_MESSAGES', national: 'housing', secondary: [] });
   expected = dispatchCommand(expected, { type: 'SET_CAMPAIGN', districtId, intensity: 2 });
   while (expected.status === 'active') {
     await page.getByRole('button', { name: '다음 주로' }).click();
     expected = dispatchCommand(expected, { type: 'ADVANCE_WEEK' });
-    await expect(page.locator('.topbar-date strong')).toContainText(expected.date.replaceAll('-', '.'), { timeout: 20_000 });
+    await expect(page.getByTestId('topbar-date')).toContainText(formatDate(expected.date), { timeout: 20_000 });
   }
   await page.getByRole('link', { name: '선거', exact: false }).click();
   const results = page.getByTestId('election-results');

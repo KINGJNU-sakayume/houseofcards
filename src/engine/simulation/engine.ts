@@ -35,7 +35,7 @@ export function createGame(seed: number, rulesetId: string = rulesets.defaultRul
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('시드는 0~4294967295의 정수여야 합니다.');
   const state = initializePolitics({
     ...initializeSimulation(seed, CALENDAR.startDate, calibration.seeds),
-    schemaVersion: 14, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, brandInconsistency: 0, nominations: emptyNominations(), finalPush: emptyFinalPush(), election: null, simulationStartDate: CALENDAR.startDate,
+    schemaVersion: 15, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, brandInconsistency: 0, nominations: emptyNominations(), finalPush: emptyFinalPush(), election: null, simulationStartDate: CALENDAR.startDate,
     realityPackId: REALITY_PACK_ID, realityPackAsOf: REALITY_PACK_AS_OF,
     rulesetId: preset.rulesetId,
     // The opinion model reads only these ruleset values (viability knee and threshold).
@@ -94,7 +94,7 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
       if (already && !warning) paid = growExpertise(paid, domain, partyManagement.publication.consistentGain);
     }
     const inbox = warning ? [{ id: `consistency-${state.commandLog.length}`, date: state.date, sender: '정책위원장', title: '최근 공약의 방향이 바뀌었습니다',
-      body: 'SAVE SIMULATION · 최근 방향성 공표와 반대되는 입장을 발표했습니다. 일관성 부담이 신뢰 모형에 반영되며 매월 감소합니다. 정책 변경이 직접 득표를 더하거나 빼지는 않습니다.', priority: 'Important' as const, read: false }, ...state.inbox].slice(0, 60) : state.inbox;
+      body: '가상 시뮬레이션 · 최근 방향성 공표와 반대되는 입장을 발표했습니다. 일관성 부담이 신뢰 모형에 반영되며 매월 감소합니다. 정책 변경이 직접 득표를 더하거나 빼지는 않습니다.', priority: 'Important' as const, read: false }, ...state.inbox].slice(0, 60) : state.inbox;
     return deepFreeze({ ...paid, platforms: state.platforms.map(p => p.partyId === PLAYER_PARTY_ID ? next : p), inbox,
       events: [...state.events, { id: `event-${state.events.length}`, date: state.date, type: command.type === 'SET_PLATFORM_DRAFT' ? 'PLATFORM_DRAFTED' : 'PLATFORM_PUBLISHED', detail: command.leverId }],
       commandLog: [...state.commandLog, { ...command }],
@@ -131,14 +131,14 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
   const event = (type: GameEvent['type'], detail: string) => events.push({ id: `event-${events.length}`, date, type, detail });
   if (update) {
     messages.push({ id: `issues-${tick}`, date, sender: '정책위원장', title: '월간 사회 이슈 보고', priority: 'Report', read: false,
-      body: `SAVE SIMULATION · 게임 모델 지수 (현실 통계 아님). ${next.issues.map(issue => `${DOMAIN_LABELS[issue.id]}: 심각도 ${issue.severity / 100}, 관심도 ${issue.salience / 100}`).join(' / ')}.` });
+      body: `가상 시뮬레이션 · 게임 모형 지수 (현실 통계 아님). ${next.issues.map(issue => `${DOMAIN_LABELS[issue.id]}: 심각도 ${issue.severity / 100}, 관심도 ${issue.salience / 100}`).join(' / ')}.` });
     const result = update.poll.national.results[PLAYER_PARTY_ID];
     messages.push({ id: `poll-${tick}`, date, sender: '데이터 책임자', title: '가상 전국 지지 조사 발표', priority: 'Report', read: false,
       body: `가상 시뮬레이션 · ${update.poll.houseName}, 표본 ${update.poll.national.sampleSize}명. ${state.playerParty!.shortName} 전국 지지 ${result ? `${result.low / 10000}~${result.high / 10000}%` : '첫 조사 대기'}. 현실 여론조사나 선거 예측이 아닙니다. 잠재 지지는 별도의 내부 분석입니다.` });
     if (update.aiChanges.length) messages.push({ id: `ai-${tick}`, date, sender: '정책위원장', title: '비플레이어 정당 공약 변화', priority: 'Report', read: false,
-      body: `SAVE SIMULATION · ${update.aiChanges.map(change => { const [id, lever] = change.split(':'); return `${realityPack.parties.find(p => p.id === id)?.shortName.value ?? '기타 세력 묶음'}: ${policyLevers.find(l => l.id === lever)!.name}`; }).join(' / ')}. 공식 입장 발표가 아닌 게임 모델의 선택입니다.` });
+      body: `가상 시뮬레이션 · ${update.aiChanges.map(change => { const [id, lever] = change.split(':'); return `${realityPack.parties.find(p => p.id === id)?.shortName.value ?? '기타 세력 묶음'}: ${policyLevers.find(l => l.id === lever)!.name}`; }).join(' / ')}. 공식 입장 발표가 아닌 게임 모형의 선택입니다.` });
     if (update.governmentChanges.length) messages.push({ id: `government-${tick}`, date, sender: '정책위원장', title: '정부 정책 집행과 효과 시차', priority: 'Report', read: false,
-      body: `SAVE SIMULATION · ${update.governmentChanges.map(id => policyLevers.find(l => l.id === id)!.name).join(', ')} 집행이 결정되었습니다. 각 정책의 구현 시차가 지난 뒤 사회 이슈에 반영됩니다.` });
+      body: `가상 시뮬레이션 · ${update.governmentChanges.map(id => policyLevers.find(l => l.id === id)!.name).join(', ')} 집행이 결정되었습니다. 각 정책의 구현 시차가 지난 뒤 사회 이슈에 반영됩니다.` });
     if (supply!.added) messages.push({ id: `prospects-${tick}`, date, sender: '영입 책임자', title: `새 인재 후보 ${supply!.added}명`, priority: 'Report', read: false,
       body: `가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 누적 생성 ${next.politicians.length}명. 인재 페이지에서 영입을 검토하세요.` });
     event('MONTH_BOUNDARY', '이슈·인식·AI·전국 지지 갱신');
@@ -146,7 +146,7 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
     if (update.aiChanges.length) event('AI_PLATFORM_SHIFT', update.aiChanges.join('|'));
     if (update.governmentChanges.length) event('GOVERNMENT_ENACTED', update.governmentChanges.join('|'));
   }
-  if (date === '2028-01-17') next = postMessage(next, 'Final Push 시작', '선거 12주 전입니다. 선거 페이지에서 전국·보조 메시지, 지도부 집중 지역, 후보별 유세 강도를 정하세요. 배분은 매주 정산됩니다.', 'Action Required');
+  if (date === '2028-01-17') next = postMessage(next, '막판 총력전 시작', '선거 12주 전입니다. 선거 페이지에서 전국·보조 메시지, 지도부 집중 지역, 후보별 유세 강도를 정하세요. 배분은 매주 정산됩니다.', 'Action Required');
 
   return deepFreeze({ ...next, status: date === state.rulesetSnapshot.calendar.lastWeeklyDate ? 'phase_complete' : 'active',
     rngState: { ...next.rngState, [key]: draw.state }, inbox: [...messages, ...next.inbox].slice(0, 60), events, commandLog: [...state.commandLog, { ...command }],

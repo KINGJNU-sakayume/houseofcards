@@ -96,6 +96,6 @@ export function holdElection(state: GameState): GameState {
   const seats = result.totalSeats[PLAYER_PARTY_ID] ?? 0;
   const listTotal = Object.values(result.listVotes).reduce((a, b) => a + b, 0);
   const share = roundDiv((result.listVotes[PLAYER_PARTY_ID] ?? 0) * 1000, Math.max(1, listTotal)) / 10;
-  next = postMessage(next, `${result.date} 총선 결과: ${seats}석`, `SAVE SIMULATION · 정당득표 ${share}%, 지역구 ${result.districtSeats[PLAYER_PARTY_ID] ?? 0}석, 비례 ${result.listSeats[PLAYER_PARTY_ID] ?? 0}석. ${result.outcome === 'in_parliament' ? '원내에 진입했습니다.' : '의석은 없지만 현행법상 등록취소 없이 원외 정당으로 존속합니다(정당법 §44①3 위헌 결정, 대체 조항 없음).'} 실제 선거 결과나 예측이 아닙니다.`, 'Critical', '선거대책위원장');
+  next = postMessage(next, `${result.date} 총선 결과: ${seats}석`, `가상 시뮬레이션 · 정당득표 ${share}%, 지역구 ${result.districtSeats[PLAYER_PARTY_ID] ?? 0}석, 비례 ${result.listSeats[PLAYER_PARTY_ID] ?? 0}석. ${result.outcome === 'in_parliament' ? '원내에 진입했습니다.' : '의석은 없지만 현행법상 등록취소 없이 원외 정당으로 존속합니다(정당법 §44①3 위헌 결정, 대체 조항 없음).'} 실제 선거 결과나 예측이 아닙니다.`, 'Critical', '선거대책위원장');
   return { ...next, events: [...next.events, { id: `event-${next.events.length}`, date: next.date, type: 'ELECTION_HELD', detail: `${seats}` }] };
 }

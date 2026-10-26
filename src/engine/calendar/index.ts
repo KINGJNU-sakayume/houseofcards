@@ -8,9 +8,9 @@ export const MILESTONES = Object.freeze([
   { date: '2027-07-05', label: '목표 지역구 탐색', phase: 'D' },
   { date: '2027-10-04', label: '후보 탐색 · 공천 준비', phase: 'C / D' },
   { date: '2027-12-06', label: '비례명부 편성', phase: 'D' },
-  { date: '2028-01-17', label: 'Final Push', phase: 'D' },
+  { date: '2028-01-17', label: '막판 총력전', phase: 'D' },
   { date: '2028-03-20', label: '후보 등록 마감', phase: 'D' },
-  { date: '2028-04-12', label: '선거일 · Election Night', phase: 'D' },
+  { date: '2028-04-12', label: '선거일 · 개표의 밤', phase: 'D' },
 ]);
 // Pure memo of validated dates (hot path in perception updates); bounded size.
 const parsed = new Map<string, number>();

@@ -39,7 +39,7 @@ test('E2: list warning, Vote Flow after a survey, and named controls on every pa
   await expect(page.getByTestId('list-warning')).toContainText('정당투표에 우리 정당이 오르지 않습니다');
   await page.getByRole('link', { name: '데이터 허브', exact: false }).click();
   await page.getByRole('button', { name: /내부조사 의뢰/ }).click();
-  await expect(page.getByTestId('vote-flow')).toContainText('Vote Flow');
+  await expect(page.getByTestId('vote-flow')).toContainText('표의 이동');
   await expect(page.getByTestId('vote-flow').locator('tbody tr').first()).toBeVisible();
   for (const path of ['', 'korea', 'policy', 'party', 'politicians', 'organization', 'election', 'data', 'review']) {
     await page.goto(`./#/${path}`);

@@ -34,7 +34,7 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
     setConfirm(null);
   }
   return <dialog ref={dialog} onCancel={onClose} className="save-dialog" aria-labelledby="save-title">
-    <div className="dialog-heading"><div><p className="eyebrow">YOUR SEASON, SAVED</p><h2 id="save-title">세이브 관리</h2></div><button className="icon-button" onClick={onClose} aria-label="세이브 관리 닫기"><Icon name="close" /></button></div>
+    <div className="dialog-heading"><div><p className="eyebrow">저장과 불러오기</p><h2 id="save-title">세이브 관리</h2></div><button className="icon-button" onClick={onClose} aria-label="세이브 관리 닫기"><Icon name="close" /></button></div>
     <p className="muted">진행 상황은 이 브라우저에 자동저장됩니다. 다른 기기에서도 이어가려면 JSON 파일로 내보내세요.</p>
     <div className="save-summary"><span>{store.game.date} · {store.game.tick}주차</span><span>시드 {store.game.seed}</span></div>
     <div className="save-grid">

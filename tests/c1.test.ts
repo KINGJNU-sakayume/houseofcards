@@ -88,7 +88,7 @@ describe('C1 atomic resources, weekly finance and publication', () => {
     let reversed = dispatchCommand(published, { type: 'SET_PLATFORM_DRAFT', leverId: 'housing.rent-support', value: 0 });
     expect(publicationCost(reversed, 'housing.rent-support').staffCapacity).toBe(7);
     reversed = { ...reversed, resources: { ...reversed.resources!, staffCapacity: 6 } };
-    const hash = stateHash(reversed); expect(() => dispatchCommand(reversed, { type: 'PUBLISH_PLATFORM', leverId: 'housing.rent-support' })).toThrow('Staff Capacity'); expect(stateHash(reversed)).toBe(hash);
+    const hash = stateHash(reversed); expect(() => dispatchCommand(reversed, { type: 'PUBLISH_PLATFORM', leverId: 'housing.rent-support' })).toThrow('실무 인력이 부족'); expect(stateHash(reversed)).toBe(hash);
     reversed = advance(reversed); const paid = applyPublicationCost(reversed, 'housing.rent-support'); expect(paid.resources!.staffCapacity).toBe(reversed.resources!.staffCapacity - 7);
   });
   it('refills to a cap rather than accumulating and applies staff-level capacity only on refill', () => {
@@ -138,7 +138,7 @@ describe('C1 expertise, surveys, lagged viability and inbox', () => {
     const snapshot = survey.internalSurveys[0]!, hash = stateHash(snapshot);
     expect(Object.isFrozen(snapshot.analysis)).toBe(true); expect(advance(survey).politics).toEqual(advance(s).politics); expect(stateHash(snapshot)).toBe(hash);
     const poor = { ...s, resources: { ...s.resources!, money: 0 } }; const before = stateHash(poor);
-    expect(() => dispatchCommand(poor, { type: 'COMMISSION_INTERNAL_SURVEY' })).toThrow('Money'); expect(stateHash(poor)).toBe(before);
+    expect(() => dispatchCommand(poor, { type: 'COMMISSION_INTERNAL_SURVEY' })).toThrow('자금이 부족'); expect(stateHash(poor)).toBe(before);
     let current = s;
     for (let i = 0; i < 13; i++) { current = dispatchCommand(current, { type: 'COMMISSION_INTERNAL_SURVEY' }); current = advance(current, 5); }
     expect(current.internalSurveys).toHaveLength(12); expect(current.internalSurveys[0]!.date).not.toBe(s.date);

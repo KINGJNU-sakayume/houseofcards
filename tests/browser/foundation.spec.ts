@@ -30,7 +30,7 @@ test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round
   await expect(page.getByRole('heading', { name: '어떤 입장을 공표할까요?' })).toBeVisible();
   await page.getByRole('button', { name: '저장 / 불러오기' }).click();
   await page.getByText('저장 무결성 정보').click();
-  await expect(page.getByText('스키마 14 · 엔진 Web Worker', { exact: false })).toBeVisible();
+  await expect(page.getByText('스키마 15 · 엔진 Web Worker', { exact: false })).toBeVisible();
   const advanced = dispatchCommand(createGame(20261019), { type: 'ADVANCE_WEEK' });
   await expect(page.getByTestId('state-hash')).toHaveText(stateHash(advanced));
   await page.getByRole('button', { name: '수동 저장', exact: true }).click();
@@ -70,14 +70,14 @@ test('real Worker, calendar, IndexedDB reload, hash-route refresh and JSON round
 
 test('C1 monthly reports stay labelled and persist across several months', async ({ page }) => {
   await page.goto('./');
-  await expect(page.getByText('개발 프리뷰입니다. 모든 지지·조사·선거 결과는 가상 시뮬레이션', { exact: false })).toBeVisible();
+  await expect(page.getByText('가상 시뮬레이션 · 실제 예측 아님', { exact: false })).toBeVisible();
   for (let i = 0; i < 15; i++) {
     await page.getByRole('button', { name: '다음 주로' }).click();
     await expect(page.getByRole('status').filter({ hasText: '자동저장 완료' })).toBeVisible();
   }
   await expect(page.getByTestId('game-date')).toHaveText('2027.02.01');
   await page.getByRole('button').filter({ hasText: '월간 사회 이슈 보고' }).first().click();
-  await expect(page.locator('.letter-body')).toContainText('게임 모델 지수 (현실 통계 아님)');
+  await expect(page.locator('.letter-body')).toContainText('게임 모형 지수 (현실 통계 아님)');
   await expect(page.locator('.letter-body')).toContainText('심각도');
   await expect(page.locator('.letter-body')).toContainText('관심도');
   await page.reload();
@@ -93,7 +93,7 @@ test('main-thread fallback and small screens remain functional', async ({ page }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.getByRole('button', { name: '저장 / 불러오기' }).click();
   await page.getByText('저장 무결성 정보').click();
-  await expect(page.getByText('스키마 14 · 엔진 메인 스레드', { exact: false })).toBeVisible();
+  await expect(page.getByText('스키마 15 · 엔진 메인 스레드', { exact: false })).toBeVisible();
 });
 
 test('C1 policy drafts, publication, issue cards and analysis remain command driven', async ({ page }) => {

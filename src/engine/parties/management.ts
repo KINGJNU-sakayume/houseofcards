@@ -34,17 +34,19 @@ export function postMessage(state: GameState, title: string, body: string, prior
 }
 export function recordMoney(state: GameState, kind: Finance['ledger'][number]['kind'], amount: number, ref: string): GameState {
   const resources = { ...state.resources!, money: state.resources!.money + amount };
-  if (!Number.isSafeInteger(resources.money) || resources.money < 0) throw new Error('Money 잔액이 올바르지 않습니다.');
+  if (!Number.isSafeInteger(resources.money) || resources.money < 0) throw new Error('자금 잔액이 올바르지 않습니다.');
   const ledger = [...state.finance!.ledger, { date: state.date, kind, amount, balanceAfter: resources.money, ref }];
   const dropped = ledger.splice(0, Math.max(0, ledger.length - 100));
   return { ...state, resources, finance: { ...state.finance!, ledger,
     ledgerTruncatedSum: state.finance!.ledgerTruncatedSum + dropped.reduce((s, e) => s + e.amount, 0) } };
 }
+// Thousands separators without locale data, so stored text is identical in every engine.
+const groupDigits = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 export function shortage(state: GameState, cost: Partial<Resources>): string | null {
   if (!state.resources) return '먼저 정당을 창당하세요.';
-  for (const [key, label] of [['money', 'Money'], ['staffCapacity', 'Staff Capacity'], ['agendaSlots', 'Agenda Slots']] as const) {
+  for (const [key, label, unit] of [['money', '자금', '만원'], ['staffCapacity', '실무 인력', ''], ['agendaSlots', '의제 슬롯', '']] as const) {
     const needed = cost[key] ?? 0;
-    if (state.resources[key] < needed) return `${label}가 부족합니다 (필요 ${needed}, 보유 ${state.resources[key]})`;
+    if (state.resources[key] < needed) return `${label}이 부족합니다 (필요 ${groupDigits(needed)}${unit}, 보유 ${groupDigits(state.resources[key])}${unit})`;
   }
   return null;
 }
@@ -141,7 +143,7 @@ export function settleWeek(state: GameState, monthly: boolean): GameState {
   const paid = Math.min(next.resources!.money, due);
   next = recordMoney(next, 'payroll', -paid, 'weekly-payroll-rent-and-arrears');
   next = { ...next, finance: { ...next.finance!, arrears: due - paid } };
-  if (due > paid) next = postMessage(next, '급여 미지급금이 발생했습니다', `미지급금 ${due - paid}만원. 잔액은 음수가 되지 않으며 미지급금이 남으면 다음 Staff Capacity 충전은 절반입니다.`, 'Critical');
+  if (due > paid) next = postMessage(next, '급여 미지급금이 발생했습니다', `미지급금 ${due - paid}만원. 잔액은 음수가 되지 않으며 미지급금이 남으면 다음 실무 인력 충전은 절반입니다.`, 'Critical');
   if (monthly) next = { ...next, resources: { ...next.resources!, staffCapacity: staffCap(next), agendaSlots: data.finance.agendaCap } };
   const completed = next.research.filter(r => r.completesAt <= state.date);
   for (const r of completed) {
