@@ -11,6 +11,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { forbiddenNamesIn } from '../src/validation/forbidden-names';
 import { nominationModel } from '../src/data/seeds/nomination';
+import { electionModel } from '../src/data/seeds/election';
 import { CALENDAR, addDays, daysBetween } from '../src/engine/calendar';
 
 const report = validateData(realityPack, seedPack, process.argv.includes('--release'));
@@ -26,9 +27,11 @@ report.errors.push(...validateDistricts(districtData, realityPack.id, rulesets.p
 report.errors.push(...validateRulesets(rulesetData, JSON.parse(readFileSync('docs/data/law-review-phase-d.json', 'utf8'))));
 for (const name of forbiddenNamesIn(readFileSync('src/validation/real-name-denylist.json', 'utf8'))) report.errors.push(`real-name-denylist: forbidden poll/media name ${name}`);
 // D3 gates must be weekly tick dates (Mondays from the start) inside the season.
-for (const [gate, date] of Object.entries(nominationModel.gates))
+for (const [gate, date] of [...Object.entries(nominationModel.gates), ['finalPush', electionModel.finalPush.start] as const])
   if (date <= CALENDAR.startDate || date > CALENDAR.lastWeeklyDate || daysBetween(CALENDAR.startDate, date) % 7 !== 0 || addDays(date, 0) !== date) report.errors.push(`nomination gate ${gate} ${date} is not a weekly tick inside the season`);
+// v1.0: no preset may revoke a party's registration (user decision 2026-10-26, current law).
+for (const preset of rulesets.presets) if (preset.partyRevocation !== null) report.errors.push(`${preset.rulesetId}: partyRevocation must stay null in v1.0`);
 for (const warning of report.warnings) console.warn(`WARNING: ${warning}`);
 for (const error of report.errors) console.error(`ERROR: ${error}`);
 if (report.errors.length) process.exitCode = 1;
-else console.log(`Data validation passed (D3 ${nominationModel.modelVersion} / ${partyManagement.modelVersion} / people ${politicianModel.modelVersion} / rulesets D1.0 vs law review / 254 districts; strict release rules retained).`);
+else console.log(`Data validation passed (D4 ${nominationModel.modelVersion}+${electionModel.modelVersion} / ${partyManagement.modelVersion} / people ${politicianModel.modelVersion} / rulesets D1.0 vs law review / 254 districts; strict release rules retained).`);

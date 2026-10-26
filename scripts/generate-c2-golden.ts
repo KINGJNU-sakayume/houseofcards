@@ -9,6 +9,7 @@ import { rulesets } from '../src/data/rulesets';
 import { politicalModel } from '../src/data/seeds/political-model';
 import { nominationModel } from '../src/data/seeds/nomination';
 import { districtPack } from '../src/data/reality/districts';
+import { electionModel } from '../src/data/seeds/election';
 import type { Command } from '../src/types/game';
 const path = 'tests/fixtures/c2-golden.json';
 if (existsSync(path)) throw new Error('C2 fixture already exists. Review and remove it explicitly before regeneration.');
@@ -32,9 +33,17 @@ for (const p of managed.politicians.filter(x => x.status === 'prospect')) {
 }
 const nominee = managed.politicians.find(x => x.status === 'recruited')!.id;
 nominationCommands.push({ type: 'SET_TARGET_DISTRICT', districtId: target, targeted: true }, { type: 'NOMINATE_DISTRICT', districtId: target, method: 'strategic', candidateIds: [nominee] });
+// D4: the nomination sequence continued through the Final Push (message and campaign) to the election.
+let pushed = replay(seed, nominationCommands);
+const electionCommands: Command[] = [...nominationCommands];
+const step = (c: Command) => { electionCommands.push(c); pushed = dispatchCommand(pushed, c); };
+while (pushed.date < electionModel.finalPush.start) step({ type: 'ADVANCE_WEEK' });
+step({ type: 'SET_MESSAGES', national: 'housing', secondary: [] }); step({ type: 'SET_CAMPAIGN', districtId: target, intensity: 2 });
+while (pushed.status === 'active') step({ type: 'ADVANCE_WEEK' });
+if (!pushed.election) throw new Error('election missing');
 const initial = createGame(seed), founded = dispatchCommand(initial, founding);
 let end = founded; for (let i = 0; i < 77; i++) end = dispatchCommand(end, { type: 'ADVANCE_WEEK' });
-const fixture = { schemaVersion: 4, phase: 'C2', step: 'D3', modelVersion: partyManagement.modelVersion, nominationModelVersion: nominationModel.modelVersion, peopleModelVersion: politicianModel.modelVersion, organizationModelVersion: organizationModel.modelVersion, rulesetsVersion: rulesets.modelVersion, rulesetId: rulesets.defaultRulesetId, politicalModelVersion: politicalModel.modelVersion, seed,
-  initialHash: stateHash(initial), foundedHash: stateHash(founded), seasonEndHash: stateHash(end), managementHash: stateHash(replay(seed, commands)), nominationHash: stateHash(replay(seed, nominationCommands)), commands, nominationCommands };
+const fixture = { schemaVersion: 4, phase: 'C2', step: 'D4', modelVersion: partyManagement.modelVersion, nominationModelVersion: nominationModel.modelVersion, electionModelVersion: electionModel.modelVersion, peopleModelVersion: politicianModel.modelVersion, organizationModelVersion: organizationModel.modelVersion, rulesetsVersion: rulesets.modelVersion, rulesetId: rulesets.defaultRulesetId, politicalModelVersion: politicalModel.modelVersion, seed,
+  initialHash: stateHash(initial), foundedHash: stateHash(founded), seasonEndHash: stateHash(end), managementHash: stateHash(replay(seed, commands)), nominationHash: stateHash(replay(seed, nominationCommands)), electionHash: stateHash(pushed), electionSeats: pushed.election.totalSeats, commands, nominationCommands, electionCommands };
 writeFileSync(path, JSON.stringify(fixture, null, 2) + '\n');
 console.log(JSON.stringify(fixture, null, 2));

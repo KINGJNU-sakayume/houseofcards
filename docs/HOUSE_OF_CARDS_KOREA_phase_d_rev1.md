@@ -2,7 +2,7 @@
 
 Repository: `KINGJNU-sakayume/houseofcards`
 
-> **Status (2026-10-26):** D1 (§2), CAL and D2 (§2a) and D3 (§2b) are implemented. D4 is outlined only (§3). Before starting a later step, expand its section here from the code as it then stands, and record decisions in `docs/DECISIONS.md`.
+> **Status (2026-10-26):** D1 (§2), CAL and D2 (§2a), D3 (§2b) and D4 (§2c) are implemented. Phase D is complete; E1 (Election Night, Season Review) follows. Before starting a later step, expand its section here from the code as it then stands, and record decisions in `docs/DECISIONS.md`.
 
 Order, dependencies and the run protocol come from `docs/ROADMAP.md`; progress is in `docs/PROGRESS.md`. Precedence: explicit user decisions in `docs/DECISIONS.md` → Slice Spec (`docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md`, §7, §17–19, §26–27) → this document → `AGENTS.md` conventions. Each step is its own PR and is merged to main once CI passes (user decision 2026-10-25); state-shape changes bump `schemaVersion` and reject the previous schema with Korean keep-JSON guidance.
 
@@ -47,11 +47,28 @@ Order, dependencies and the run protocol come from `docs/ROADMAP.md`; progress i
 - **UI.** `/election` nomination panel: stage line, Active 30 target table with nominee and withdraw, nomination form with method explanations and refusal reasons, list editor (order, add/remove, save). The district explorer shows '후보 없음' and the nominee.
 - **Not yet.** List vote/branding effects, the Organization attribute, local-issue fit and deposit refunds by result are D4.
 
-## 3. Later steps (outline; expand before starting)
+## 2c. D4 — Final Push and the election (implemented 2026-10-26)
 
-- **D4.** Final Push from 2028-01-17, election on 2028-04-12 using `allocateList`/`totalSeats`, deposits and reimbursements from `currentLaw`, the 0-seat branch per the user's confirmed decision, results saved.
+- **Data.** `src/data/seeds/election.json` (strict zod, `D4.0`, GAME_MODEL): Final Push start 2028-01-17 (validated as a weekly tick), costs and effects, election-day swing bounds.
+- **State (schema 10).** `finalPush = { nationalMessage, secondaryMessages, leaderFocus, campaign, effort, spent }`, `election: ElectionResult | null`.
+- **Commands** (`src/engine/election/finalPush.ts`): `SET_MESSAGES {national, secondary}` (published domains only, ≤ 2 secondary, Agenda Slot 1); `SET_LEADER_FOCUS {districtId|null}` (a nominated district, Staff 2 per week, +2 intensity); `SET_CAMPAIGN {districtId, intensity 0–3}` (nominated districts, Money 300 and Staff 1 per intensity per week).
+- **Weekly.** Pays the allocation (atomic; a shortage skips the week with an Inbox notice) and accumulates effort = intensity × 0.03 × (0.5 + Organization × 0.005), capped at 1.
+- **Effects through the chain.** Messages add salience-weighted exposure to the player's monthly awareness update. Effort, as e(2 − e), adds to the nominee's district utility (× 0.3) and awareness floor (× 0.3).
+- **Election** (`src/engine/election/election.ts`, pure). On the 2028-04-10 tick, for the 2028-04-12 date:
+  1. swings come from the `election` stream (national ±1.5pp per party, district ±1pp per party and district);
+  2. district votes = projection with the swings × 2024 turnout, as integers;
+  3. list votes = sincere list shares with the list residual, summed over the 254 districts (player only with a registered list);
+  4. `allocateList`/`totalSeats` give the seats, with lottery order from the same stream for equal remainders;
+  5. list seats go to the list in order; deposits are refunded and campaign spend reimbursed under the `currentLaw` thresholds;
+  6. cohort support is recorded.
+- **0-seat branch.** Under current law (user decision): no revocation in any preset. The outcome is `in_parliament` or `extra_parliamentary`.
+- **UI.** `/election` has the Final Push panel (messages, leader focus, per-candidate intensity, weekly cost, effect meter) and the results section: party table, our winners, regional district share, deposits and reimbursement. The results are labelled as save simulation, not a prediction.
+
+## 3. Later steps
+
+- **E1.** Election Night (skippable sequence over the saved result) and Season Review cards from the saved result and history; see ROADMAP.
 
 ## 4. Blockers recorded on 2026-10-25
 
 - DD2 needs the user's raw files (2024 district results, list votes, 별표 1 district table, 읍면동 age population; ROADMAP §3.2). DD3, CAL's held-out validation, and D2 depend on it.
-- ROADMAP §5 decision 1 (0-seat branch) needs the user's confirmation before D4.
+- (Resolved 2026-10-26) ROADMAP §5 decision 1: the user confirmed current law, with no revocation.

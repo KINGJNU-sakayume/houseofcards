@@ -8,6 +8,7 @@ import { SimulationNotice, partyName, percent } from '../components/Simulation';
 import { allocateList } from '../engine/election/allocation';
 import { NONE_ID } from '../types/politics';
 import { NominationPanel } from './NominationPanel';
+import { ElectionResults, FinalPushPanel } from './FinalPushPanel';
 import { nominationsDecide } from '../engine/election/districts';
 
 const krw = (n: number) => `${(n / 10000).toLocaleString()}만원`;
@@ -27,8 +28,8 @@ export function Election() {
   const rows = districtPack.districts.filter(d => (region === 'all' || d.regionId === region) && (!activeOnly || d.active));
   const top2 = (v: Record<string, number>) => Object.entries(v).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([id, x]) => `${partyName(id)} ${percent(x)}%`).join(' · ');
   return <>
-    <div className="page-heading"><div><p className="eyebrow">ELECTION / D3</p><h1>이 세이브의 선거제도</h1><p className="muted">{r.label} · 예정 선거일 {r.electionDate} (SCHEDULED)</p></div></div>
-    <SimulationNotice>실제 2028년 선거제도와 선거구는 아직 확정되지 않았습니다. 이 규칙은 게임용 가정입니다. 지역구 탐색과 공천·비례명부(D3)는 구현되었습니다. Final Push·선거 실행과 결과는 다음 단계(D4)에서 구현합니다.</SimulationNotice>
+    <div className="page-heading"><div><p className="eyebrow">ELECTION / D4</p><h1>이 세이브의 선거제도</h1><p className="muted">{r.label} · 예정 선거일 {r.electionDate} (SCHEDULED)</p></div></div>
+    <SimulationNotice>실제 2028년 선거제도와 선거구는 아직 확정되지 않았습니다. 이 규칙은 게임용 가정입니다. 공천·비례명부, Final Push와 선거 계산·결과 저장은 구현되었습니다. Election Night 연출과 Season Review는 다음 단계(E1)에서 구현합니다.</SimulationNotice>
     <div className="sim-grid">
       <section className="sim-card" data-testid="ruleset-card"><h2>의석 배분 규칙 <span className="outline-badge">GAME ASSUMPTION</span></h2>
         <ul><li>지역구 {r.districtSeats}석 · 비례 {r.listSeats}석 (현행 정수를 가정으로 사용)</li>
@@ -46,7 +47,7 @@ export function Election() {
     </div>
     <section className="sim-card" data-testid="district-explorer"><h2>지역구 탐색 <span className="outline-badge">SAVE SIMULATION</span></h2>
       <p data-testid="district-basis"><strong>{districtPack.label}</strong></p>
-      <p className="muted small">지역구 추정 = 권역 코호트의 현재 선택 × 지역구 연령·생활조건 구성비 + 2024년 지역구 결과의 권역 대비 편차. 1·2위가 아닌 정당은 지역구 지지 15~30% 구간의 S자 곡선으로 생존가능성이 낮아지고, 코호트의 전략투표 성향만큼 1·2위로 이동합니다. {nominationsDecide(game) ? '공천 단계부터 우리 정당은 공천한 지역구에만 후보가 있습니다. 우리 후보의 지역 기반(출신 권역)·선거운동·대중성은 효용에, 인지도와 권역 조직은 그 지역구 인지 하한에 반영됩니다. 다른 정당은 모든 지역구에 정당 단위 가상 후보를 낸다고 가정합니다(GAME ASSUMPTION).' : '공천 단계 전에는 정당 기준 추정입니다.'} 캠페인 효과는 D4에서 더합니다. 선거 결과나 예측이 아닙니다.</p>
+      <p className="muted small">지역구 추정 = 권역 코호트의 현재 선택 × 지역구 연령·생활조건 구성비 + 2024년 지역구 결과의 권역 대비 편차. 1·2위가 아닌 정당은 지역구 지지 15~30% 구간의 S자 곡선으로 생존가능성이 낮아지고, 코호트의 전략투표 성향만큼 1·2위로 이동합니다. {nominationsDecide(game) ? '공천 단계부터 우리 정당은 공천한 지역구에만 후보가 있습니다. 우리 후보의 지역 기반(출신 권역)·선거운동·대중성은 효용에, 인지도와 권역 조직은 그 지역구 인지 하한에 반영됩니다. 다른 정당은 모든 지역구에 정당 단위 가상 후보를 낸다고 가정합니다(GAME ASSUMPTION).' : '공천 단계 전에는 정당 기준 추정입니다.'} Final Push 유세 효과도 우리 후보 지역구에 반영됩니다. 선거 결과나 예측이 아닙니다.</p>
       <p>현재 추정 1위 지역구 수(254곳): {Object.entries(winners).sort((a, b) => b[1] - a[1]).map(([id, n]) => `${partyName(id)} ${n}`).join(' · ')}</p>
       <div className="sim-toolbar"><label>권역 <select value={region} onChange={e => setRegion(e.target.value)}><option value="all">전체</option>{Object.entries(REGION_LABELS).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
         <label className="check-row"><input type="checkbox" checked={activeOnly} onChange={e => setActiveOnly(e.target.checked)} />Active 30만 보기</label><span className="muted small">{rows.length}곳</span></div>
@@ -56,7 +57,9 @@ export function Election() {
         <td>1위 {partyName(p.winner)}<br /><small className="muted">{top2(p.final)}</small></td>
         <td>{!game.playerParty ? '창당 전' : !p.playerStanding ? '후보 없음' : <>{percent(p.sincere[PLAYER_PARTY_ID] ?? 0)}% → {percent(p.final[PLAYER_PARTY_ID] ?? 0)}%<br /><small className="muted">생존가능성 {percent(p.viability[PLAYER_PARTY_ID] ?? 0)}%{p.candidate ? ` · 후보 ${game.politicians.find(x => x.id === p.candidate!.politicianId)!.name}` : ''}</small></>}</td></tr>; })}</tbody></table></div>
     </section>
+    <ElectionResults />
     <NominationPanel />
+    <FinalPushPanel />
     <section className="sim-card" data-testid="allocation-example"><h2>비례 배분 계산 예시</h2>
       <p className="muted">가장 최근 가상 조사({poll.date}, {poll.houseName})의 정당별 중앙값을 정당득표로 가정해 이 규칙으로 비례 {r.listSeats}석만 계산한 예시입니다. 선거 결과나 예측이 아니며, 지역구 의석은 포함하지 않습니다{r.listMethod === 'semi_compensatory' ? '(준연동형은 지역구 0석을 가정)' : ''}.</p>
       <div className="table-scroll"><table className="sim-table"><thead><tr><th>정당</th><th>가정 득표</th><th>배분 대상</th><th>비례 의석</th></tr></thead><tbody>{Object.keys(votes).sort((a, b) => votes[b]! - votes[a]!).map(id => <tr key={id}><th>{partyName(id)}</th><td>{percent(votes[id]!)}%</td><td>{example.eligible.includes(id) ? '예' : '아니오'}</td><td>{example.list[id] ?? 0}</td></tr>)}</tbody></table></div></section>

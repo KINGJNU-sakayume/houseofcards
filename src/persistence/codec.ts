@@ -27,7 +27,20 @@ const commandSchema = z.discriminatedUnion('type', [
   z.strictObject({ type: z.literal('SET_TARGET_DISTRICT'), districtId: districtId, targeted: z.boolean() }),
   z.strictObject({ type: z.literal('NOMINATE_DISTRICT'), districtId: districtId, method: z.enum(['primary', 'strategic', 'none']), candidateIds: z.array(personId).max(5) }),
   z.strictObject({ type: z.literal('SET_LIST'), politicianIds: z.array(personId).max(30) }),
+  z.strictObject({ type: z.literal('SET_CAMPAIGN'), districtId: districtId, intensity: z.number().int().min(0).max(5) }),
+  z.strictObject({ type: z.literal('SET_MESSAGES'), national: z.enum(DOMAIN_IDS).nullable(), secondary: z.array(z.enum(DOMAIN_IDS)).max(5) }),
+  z.strictObject({ type: z.literal('SET_LEADER_FOCUS'), districtId: districtId.nullable() }),
 ]);
+const q6 = z.number().int().min(0).max(1_000_000);
+const finalPushSchema = z.strictObject({ nationalMessage: z.enum(DOMAIN_IDS).nullable(), secondaryMessages: z.array(z.enum(DOMAIN_IDS)).max(5), leaderFocus: districtId.nullable(),
+  campaign: z.record(districtId, z.number().int().min(1).max(5)), effort: z.record(districtId, q6), spent: z.record(districtId, z.number().int().nonnegative()) });
+const counts = z.record(z.string(), z.number().int().nonnegative());
+const electionSchema = z.strictObject({ date: isoDate, rulesetId: z.string(), nationalSwing: z.record(z.string(), z.number().int().min(-100000).max(100000)),
+  districts: z.array(z.strictObject({ id: districtId, votes: counts, winner: z.string(), playerCandidate: personId.nullable() })).max(400),
+  listVotes: counts, eligible: z.array(z.string()).max(10), listSeats: counts, districtSeats: counts, totalSeats: counts,
+  playerListElected: z.array(personId).max(30), playerDistrictElected: z.array(districtId).max(400), cohortSupport: z.record(z.string(), q6),
+  deposits: z.strictObject({ paid: z.number().int().nonnegative(), refunded: z.number().int().nonnegative() }), reimbursement: z.number().int().nonnegative(),
+  outcome: z.enum(['in_parliament', 'extra_parliamentary']) });
 const nominationsSchema = z.strictObject({
   targets: z.array(districtId).max(30),
   districts: z.record(districtId, z.strictObject({ politicianId: personId, method: z.enum(['primary', 'strategic']), participants: z.array(personId).max(5), nominatedAt: isoDate })),
@@ -46,19 +59,19 @@ const politicianSchema = z.strictObject({ id: z.string().regex(/^pol-\d{3}$/), n
 const promiseSchema = z.strictObject({ id: z.string().regex(/^promise-\d{3}$/), politicianId: z.string().regex(/^pol-\d{3}$/), type: z.enum(PROMISE_TYPES), madeAt: isoDate,
   due: z.union([isoDate, z.literal('NOMINATION')]), status: z.enum(['pending', 'kept', 'broken']), resolvedAt: isoDate.nullable() });
 const stateSchema = z.strictObject({
-  schemaVersion: z.literal(9), phase: z.literal('C2'), seed: z.number().int().min(0).max(0xffffffff),
+  schemaVersion: z.literal(10), phase: z.literal('C2'), seed: z.number().int().min(0).max(0xffffffff),
   playerParty: z.strictObject({ id: z.literal('player'), name: z.string(), shortName: z.string(), color: z.string(),
     values: z.tuple([z.enum(CORE_VALUES), z.enum(CORE_VALUES), z.enum(CORE_VALUES)]), foundedAt: isoDate }).nullable(),
   resources: z.strictObject({ money: z.number().int().nonnegative(), staffCapacity: z.number().int().nonnegative(), agendaSlots: z.number().int().nonnegative() }).nullable(),
   finance: z.strictObject({ members: z.number().int().nonnegative(), initialMoney: z.number().int().nonnegative(), arrears: z.number().int().nonnegative(), staffLevel: z.number().int().min(0).max(4), ledgerTruncatedSum: z.number().int(),
-    ledger: z.array(z.strictObject({ date: isoDate, kind: z.enum(['dues', 'payroll', 'hiring', 'research', 'survey', 'recruitment', 'organization', 'nomination', 'deposit']), amount: z.number().int(), balanceAfter: z.number().int().nonnegative(), ref: z.string() })).max(100) }).nullable(),
+    ledger: z.array(z.strictObject({ date: isoDate, kind: z.enum(['dues', 'payroll', 'hiring', 'research', 'survey', 'recruitment', 'organization', 'nomination', 'deposit', 'campaign', 'reimbursement']), amount: z.number().int(), balanceAfter: z.number().int().nonnegative(), ref: z.string() })).max(100) }).nullable(),
   regionalOrganization: z.record(z.enum(REGION_IDS), z.strictObject({ members: z.number().int().nonnegative(), level: z.number().int().min(0).max(100), office: z.boolean(),
     investments: z.array(z.strictObject({ kind: z.enum(INVESTMENT_KINDS), intensity: z.number().int().min(1).max(3), startedAt: isoDate, completesAt: isoDate })).max(4), lastActivity: isoDate,
     scouting: z.strictObject({ until: isoDate, intensity: z.number().int().min(1).max(3) }).nullable(), forum: z.strictObject({ until: isoDate, intensity: z.number().int().min(1).max(3) }).nullable() })).or(z.strictObject({})),
   research: z.array(z.strictObject({ domain: z.enum(DOMAIN_IDS), startedAt: isoDate, completesAt: isoDate })).max(6),
   politicians: z.array(politicianSchema).max(80),
   promises: z.array(promiseSchema).max(240), recruitmentReputation: z.number().int().min(0).max(100).nullable(),
-  nominations: nominationsSchema,
+  nominations: nominationsSchema, finalPush: finalPushSchema, election: electionSchema.nullable(),
   internalSurveys: z.array(z.strictObject({ date: isoDate, margin: z.number().int().min(0).max(1_000_000), analysis: analysisSchema })).max(12),
   rngState: z.record(z.string(), z.number().int().min(1).max(0xffffffff)),
   realityPackId: z.string(), realityPackAsOf: isoDate,
@@ -89,7 +102,7 @@ const stateSchema = z.strictObject({
     priority: z.enum(['Critical', 'Action Required', 'Important', 'Report', 'FYI']), read: z.boolean(),
   })).max(60),
   events: z.array(z.strictObject({ id: z.string(), date: isoDate,
-    type: z.enum(['PARTY_CREATED', 'STAFF_CHANGED', 'RESEARCH_STARTED', 'RESEARCH_COMPLETED', 'SURVEY_COMMISSIONED', 'RECRUITMENT_ACCEPTED', 'RECRUITMENT_DECLINED', 'ROLE_ASSIGNED', 'PROMISE_KEPT', 'PROMISE_BROKEN', 'INVESTMENT_STARTED', 'INVESTMENT_COMPLETED', 'ORGANIZATION_DECAYED', 'TARGET_SET', 'PRIMARY_HELD', 'NOMINATED', 'NOMINATION_WITHDRAWN', 'LIST_SET', 'REGISTRATION_CLOSED', 'SESSION_STARTED', 'WEEK_ADVANCED', 'MONTH_BOUNDARY', 'INBOX_READ', 'PLATFORM_DRAFTED', 'PLATFORM_PUBLISHED', 'AI_PLATFORM_SHIFT', 'GOVERNMENT_ENACTED', 'POLL_PUBLISHED']), detail: z.string(),
+    type: z.enum(['PARTY_CREATED', 'STAFF_CHANGED', 'RESEARCH_STARTED', 'RESEARCH_COMPLETED', 'SURVEY_COMMISSIONED', 'RECRUITMENT_ACCEPTED', 'RECRUITMENT_DECLINED', 'ROLE_ASSIGNED', 'PROMISE_KEPT', 'PROMISE_BROKEN', 'INVESTMENT_STARTED', 'INVESTMENT_COMPLETED', 'ORGANIZATION_DECAYED', 'TARGET_SET', 'PRIMARY_HELD', 'NOMINATED', 'NOMINATION_WITHDRAWN', 'LIST_SET', 'REGISTRATION_CLOSED', 'CAMPAIGN_SET', 'MESSAGES_SET', 'LEADER_FOCUS_SET', 'ELECTION_HELD', 'SESSION_STARTED', 'WEEK_ADVANCED', 'MONTH_BOUNDARY', 'INBOX_READ', 'PLATFORM_DRAFTED', 'PLATFORM_PUBLISHED', 'AI_PLATFORM_SHIFT', 'GOVERNMENT_ENACTED', 'POLL_PUBLISHED']), detail: z.string(),
   })).max(MAX_COMMANDS + 400),
   commandLog: z.array(commandSchema).max(MAX_COMMANDS),
 });
@@ -103,31 +116,34 @@ export function deserializeSave(text: string): GameState {
   try { raw = JSON.parse(text); } catch { throw new Error('올바른 JSON 파일이 아닙니다.'); }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' &&
     'schemaVersion' in raw.state && raw.state.schemaVersion === 1) {
-    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('Phase A 프리뷰 세이브(스키마 1)는 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON 내보내기 파일을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'phase' in raw.state && raw.state.phase === 'B1') {
     throw new Error('B1 개발 프리뷰 세이브는 C2 정치 모형과 호환되지 않습니다. 기존 JSON을 보관하고 새 C2 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 2) {
-    throw new Error('B2 세이브(스키마 2)는 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('B2 세이브(스키마 2)는 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 3) {
-    throw new Error('C1 세이브(스키마 3)는 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C1 세이브(스키마 3)는 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 4) {
-    throw new Error('C2a 세이브(스키마 4)는 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C2a 세이브(스키마 4)는 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 5) {
-    throw new Error('C2b 세이브(스키마 5)는 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C2b 세이브(스키마 5)는 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 6) {
-    throw new Error('C2c 세이브(스키마 6)는 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('C2c 세이브(스키마 6)는 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 7) {
     throw new Error('D1 세이브(스키마 7)는 교정된 정치 모형 B3(스키마 8)와 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 8) {
-    throw new Error('D2 세이브(스키마 8)는 공천·명부가 추가된 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+    throw new Error('D2 세이브(스키마 8)는 공천·명부가 추가된 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
+  }
+  if (raw && typeof raw === 'object' && 'state' in raw && raw.state && typeof raw.state === 'object' && 'schemaVersion' in raw.state && raw.state.schemaVersion === 9) {
+    throw new Error('D3 세이브(스키마 9)는 Final Push와 선거 결과가 추가된 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON을 보관하고 새 프리뷰를 시작하세요.');
   }
   const parsed = envelopeSchema.safeParse(raw);
   if (!parsed.success) throw new Error('지원하지 않는 세이브 버전이거나 파일 구조가 잘못되었습니다.');

@@ -12,7 +12,7 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   for (const value of ['주거개혁', '사회안전망', '과학기술']) await page.getByRole('checkbox', { name: value, exact: false }).check();
   await page.getByRole('button', { name: '정당 창당', exact: true }).click();
   await expect(page.getByRole('heading', { name: '지역에 뿌리내리다' })).toBeVisible();
-  await expect(page.getByTestId('org-limits')).toContainText('D4에서 구현됩니다');
+  await expect(page.getByTestId('org-limits')).toContainText('투표율 동원은 구현하지 않았습니다');
   await page.getByRole('link', { name: '정책', exact: false }).click();
   await expect(page.getByText('공표 비용: Staff 1 · Slots 1').first()).toBeVisible();
   await page.getByRole('slider', { name: '임대지원 확대 초안' }).press('End');
@@ -44,7 +44,7 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await page.getByRole('button', { name: '닫기', exact: false }).first().click();
   await page.goto('./#/election');
   await expect(page.getByRole('heading', { name: '이 세이브의 선거제도' })).toBeVisible();
-  await expect(page.getByText('다음 단계(D4)', { exact: false }).first()).toBeVisible();
+  await expect(page.getByText('다음 단계(E1)', { exact: false }).first()).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   for (const path of ['organization', 'politicians', 'party']) {
     await page.goto(`./#/${path}`);

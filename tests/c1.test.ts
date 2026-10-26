@@ -152,9 +152,9 @@ describe('C1 expertise, surveys, lagged viability and inbox', () => {
     expect(Number.isFinite(expected.viability.player)).toBe(true);
     for (const d of DOMAIN_IDS) expect(first.politics.parties.find(p => p.partyId === 'player')!.expertise[d]).toBe(data.newParty.expertise[d]);
   });
-  it('emits real triggers only, retains sixty and includes honest Phase D milestone notices', () => {
+  it('emits real triggers only, retains sixty and ends with the D4 election result notice', () => {
     let s = createFoundedGame(8); expect(s.inbox).toHaveLength(3); expect(s.inbox.filter(m => m.sender === '영입 책임자')).toHaveLength(1);
     s = advance(s, 2); const count = s.inbox.length; s = advance(s); expect(s.inbox).toHaveLength(count);
-    s = advance(s, 74); expect(s.inbox.length).toBeLessThanOrEqual(60); expect(s.inbox.some(m => m.body.includes('이 기능은 아직 구현되지 않았습니다'))).toBe(true);
+    s = advance(s, 74); expect(s.inbox.length).toBeLessThanOrEqual(60); expect(s.inbox[0]!.title).toContain('총선 결과'); expect(s.inbox.some(m => m.body.includes('이 기능은 아직 구현되지 않았습니다'))).toBe(false);
   });
 });

@@ -8,9 +8,10 @@ import { organizationModel } from '../src/data/seeds/organization';
 import { rulesets } from '../src/data/rulesets';
 import { politicalModel } from '../src/data/seeds/political-model';
 import { nominationModel } from '../src/data/seeds/nomination';
+import { electionModel } from '../src/data/seeds/election';
 import type { Command } from '../src/types/game';
-it('replays the deliberately reviewed D3 founding, idle season, management/reversal and nomination goldens', () => {
-  expect([partyManagement.modelVersion, politicianModel.modelVersion, organizationModel.modelVersion, rulesets.modelVersion, rulesets.defaultRulesetId, politicalModel.modelVersion, nominationModel.modelVersion]).toEqual([golden.modelVersion, golden.peopleModelVersion, golden.organizationModelVersion, golden.rulesetsVersion, golden.rulesetId, golden.politicalModelVersion, golden.nominationModelVersion]);
+it('replays the deliberately reviewed D4 founding, idle season, management/reversal, nomination and election goldens', () => {
+  expect([partyManagement.modelVersion, politicianModel.modelVersion, organizationModel.modelVersion, rulesets.modelVersion, rulesets.defaultRulesetId, politicalModel.modelVersion, nominationModel.modelVersion, electionModel.modelVersion]).toEqual([golden.modelVersion, golden.peopleModelVersion, golden.organizationModelVersion, golden.rulesetsVersion, golden.rulesetId, golden.politicalModelVersion, golden.nominationModelVersion, golden.electionModelVersion]);
   const initial = createGame(golden.seed);
   expect(stateHash(initial)).toBe(golden.initialHash);
   let state = dispatchCommand(initial, golden.commands[0] as Command);
@@ -20,4 +21,7 @@ it('replays the deliberately reviewed D3 founding, idle season, management/rever
   expect(stateHash(replay(golden.seed, golden.commands as Command[]))).toBe(golden.managementHash);
   expect(golden.nominationCommands.some(c => c.type === 'NOMINATE_DISTRICT')).toBe(true);
   expect(stateHash(replay(golden.seed, golden.nominationCommands as Command[]))).toBe(golden.nominationHash);
+  const elected = replay(golden.seed, golden.electionCommands as Command[]);
+  expect(stateHash(elected)).toBe(golden.electionHash);
+  expect(elected.election!.totalSeats).toEqual(golden.electionSeats);
 });

@@ -122,7 +122,7 @@ describe('C2a virtual politician generator', () => {
     expect(stateHash(deserializeSave(serializeSave(s)))).toBe(stateHash(s));
     expect(stateHash(replay(42, s.commandLog))).toBe(stateHash(s));
     expect(legacyC1.state.schemaVersion).toBe(3); expect(legacyC1.checksum).toBe(stateHash(legacyC1.state));
-    expect(() => deserializeSave(JSON.stringify(legacyC1))).toThrow('C1 세이브(스키마 3)는 현재 버전(스키마 9)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyC1))).toThrow('C1 세이브(스키마 3)는 현재 버전(스키마 10)과 호환되지 않습니다. 기존 JSON을 보관');
     expect(() => deserializeSave(JSON.stringify(legacyB2))).toThrow('B2 세이브(스키마 2)');
     const tampered = JSON.parse(serializeSave(s)); tampered.state.politicians[0].attributes.honesty = 50;
     expect(() => deserializeSave(JSON.stringify(tampered))).toThrow();

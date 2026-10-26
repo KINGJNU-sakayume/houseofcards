@@ -1,0 +1,27 @@
+{
+  "modelVersion": "D4.0",
+  "label": "GAME_MODEL",
+  "note": "Slice §26 Final Push and §27 results. All weights are GAME_MODEL values; statutory deposit and reimbursement thresholds come from the ruleset's currentLaw.",
+  "finalPush": {
+    "start": "2028-01-17",
+    "maxIntensity": 3,
+    "weeklyMoneyPerIntensity": 300,
+    "weeklyStaffPerIntensity": 1,
+    "leaderStaff": 2,
+    "leaderIntensity": 2,
+    "messageAgendaSlots": 1,
+    "maxSecondaryMessages": 2,
+    "nationalExposure": 200000,
+    "secondaryExposure": 100000,
+    "effortPerIntensityWeek": 30000,
+    "organizationBase": 500000,
+    "organizationPerPoint": 5000,
+    "campaignUtility": 300000,
+    "campaignAwareness": 300000
+  },
+  "electionDay": {
+    "note": "Bounded election-day variation from the named stream 'election' (2028-04-12): one national swing per party and one district swing per party and district, both uniform, added to the district and list masses before tactical voting.",
+    "nationalSwing": 15000,
+    "districtSwing": 10000
+  }
+}
