@@ -6,5 +6,6 @@ export const NAVIGATION = [
   { path: '/politicians', label: '인재', english: 'POLITICIANS', icon: 'people', phase: 'C2', description: '가상 인재를 발굴하고 영입하며, 역할과 약속을 관리합니다.' },
   { path: '/organization', label: '지역조직', english: 'ORGANIZATION', icon: 'map', phase: 'C2', description: '여덟 권역에 조직을 키워 후보 발굴과 캠페인의 기반을 만듭니다.' },
   { path: '/election', label: '선거', english: 'ELECTION', icon: 'ballot', phase: 'D', description: '목표 지역구, 공천, 비례명부와 마지막 12주의 캠페인을 준비합니다.' },
+  { path: '/review', label: '시즌 결과', english: 'SEASON REVIEW', icon: 'flag', phase: 'E1', description: '총선 밤의 개표와 시즌 결과 카드, 이 득표가 이 의석이 된 이유를 봅니다.' },
   { path: '/data', label: '데이터 허브', english: 'DATA HUB', icon: 'chart', phase: 'C1 / E', description: '잠재 지지와 현재 지지의 차이, 연령·권역별 지지, 표의 이동을 분석합니다.' },
 ] as const;

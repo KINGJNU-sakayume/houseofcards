@@ -9,6 +9,6 @@ export function FuturePage() {
   return <>
     <div className="page-heading"><div><p className="eyebrow">{item.english}</p><h1>{item.label}</h1><p className="muted">{item.description}</p></div></div>
     <section className="future-panel"><div className="future-icon"><Icon name={item.icon} size={32} /></div><span className="outline-badge">PHASE {item.phase}</span><h2>다음 단계에서 열립니다.</h2><p>이 기능은 현재 단계에서 구현되지 않았습니다.<br />현재는 창당·자원·재정·연구·내부조사와 세이브를 확인할 수 있습니다.</p><Link className="button primary" to="/">이번 주 일정으로 <Icon name="arrow" size={16} /></Link></section>
-    <div className="foundation-note"><Icon name="lock" /><p>인재 영입·약속, 지역조직, 공천·비례명부, Final Push와 선거 계산은 구현되었습니다. Election Night와 Season Review는 E1에서 구현합니다. 아직 가짜 후보나 의석 수를 표시하지 않습니다.</p></div>
+    <div className="foundation-note"><Icon name="lock" /><p>인재 영입·약속, 지역조직, 공천·비례명부, Final Push와 선거 계산은 구현되었습니다. Election Night와 Season Review는 시즌 결과 페이지에 있습니다. 아직 가짜 후보나 의석 수를 표시하지 않습니다.</p></div>
   </>;
 }

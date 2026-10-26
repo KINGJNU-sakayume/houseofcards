@@ -1,0 +1,37 @@
+import { expect, test } from '@playwright/test';
+import golden from '../fixtures/c2-golden.json' with { type: 'json' };
+import { replay } from '../../src/engine/simulation/engine';
+import { stateHash } from '../../src/engine/simulation/determinism';
+import { serializeSave } from '../../src/persistence/codec';
+import type { Command } from '../../src/types/game';
+
+test('E1: Election Night steps and skip, then Season Review cards and the ruleset explanation', async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
+  const state = replay(golden.seed, golden.electionCommands as Command[]);
+  await page.goto('./#/review');
+  await page.getByRole('button', { name: '저장 / 불러오기' }).click();
+  await page.getByLabel('JSON 가져오기', { exact: true }).setInputFiles({ name: 'e1.json', mimeType: 'application/json', buffer: Buffer.from(serializeSave(state)) });
+  await page.getByRole('button', { name: '교체하고 계속' }).click();
+  await page.getByRole('button', { name: '세이브 관리 닫기' }).click();
+  const night = page.getByTestId('election-night');
+  await expect(night).toBeVisible();
+  await night.getByRole('button', { name: '다음: 출구조사' }).click();
+  await expect(page.getByTestId('exit-poll')).toContainText('가상 출구조사');
+  await night.getByRole('button', { name: '다음: 개표' }).click();
+  await expect(page.getByTestId('count')).toContainText('개표 중');
+  await night.getByRole('button', { name: '건너뛰기' }).click();
+  await expect(page.getByTestId('list-seats')).toContainText(`비례의석 ${state.electionRuleset.listSeats}석`);
+  const review = page.getByTestId('season-review');
+  await expect(review).toContainText(`${state.election!.totalSeats.player ?? 0}석`);
+  for (const id of ['best_policy', 'strongest_region', 'best_recruitment', 'biggest_miss', 'voter_growth', 'lost_opportunity']) await expect(page.getByTestId(`card-${id}`)).toBeVisible();
+  await expect(page.getByTestId('ruleset-explainer')).toContainText('병립형');
+  await expect(page.getByTestId('next-season')).toContainText('원외 정당으로 정당 유지');
+  await page.getByRole('button', { name: '저장 / 불러오기' }).click();
+  await page.getByText('저장 무결성 정보').click();
+  await expect(page.getByTestId('state-hash')).toHaveText(stateHash(state));
+  await page.getByRole('button', { name: '세이브 관리 닫기' }).click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});

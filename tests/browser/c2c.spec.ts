@@ -44,7 +44,7 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await page.getByRole('button', { name: '닫기', exact: false }).first().click();
   await page.goto('./#/election');
   await expect(page.getByRole('heading', { name: '이 세이브의 선거제도' })).toBeVisible();
-  await expect(page.getByText('다음 단계(E1)', { exact: false }).first()).toBeVisible();
+  await expect(page.getByText('시즌 결과 페이지(E1)', { exact: false }).first()).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   for (const path of ['organization', 'politicians', 'party']) {
     await page.goto(`./#/${path}`);

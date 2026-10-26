@@ -29,7 +29,7 @@ export function Election() {
   const top2 = (v: Record<string, number>) => Object.entries(v).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([id, x]) => `${partyName(id)} ${percent(x)}%`).join(' · ');
   return <>
     <div className="page-heading"><div><p className="eyebrow">ELECTION / D4</p><h1>이 세이브의 선거제도</h1><p className="muted">{r.label} · 예정 선거일 {r.electionDate} (SCHEDULED)</p></div></div>
-    <SimulationNotice>실제 2028년 선거제도와 선거구는 아직 확정되지 않았습니다. 이 규칙은 게임용 가정입니다. 공천·비례명부, Final Push와 선거 계산·결과 저장은 구현되었습니다. Election Night 연출과 Season Review는 다음 단계(E1)에서 구현합니다.</SimulationNotice>
+    <SimulationNotice>실제 2028년 선거제도와 선거구는 아직 확정되지 않았습니다. 이 규칙은 게임용 가정입니다. 공천·비례명부, Final Push와 선거 계산·결과 저장은 구현되었습니다. Election Night 연출과 Season Review는 시즌 결과 페이지(E1)에 있습니다.</SimulationNotice>
     <div className="sim-grid">
       <section className="sim-card" data-testid="ruleset-card"><h2>의석 배분 규칙 <span className="outline-badge">GAME ASSUMPTION</span></h2>
         <ul><li>지역구 {r.districtSeats}석 · 비례 {r.listSeats}석 (현행 정수를 가정으로 사용)</li>
