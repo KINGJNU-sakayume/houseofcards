@@ -475,3 +475,33 @@ footer { display: flex; justify-content: space-between; gap: 16px; padding: 14px
   .newspaper { padding: 14px; }
   .masthead strong { font-size: 22px; }
 }
+
+/* U3 정책 */
+.policy-context { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin: 12px 0 4px; }
+.lever-grid { display: grid; gap: 14px; }
+.lever-card { background: var(--surface); border: 1px solid var(--line); border-left: 5px solid var(--line-strong); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px 16px; display: grid; gap: 10px; min-width: 0; }
+.lever-card h3 { font-size: 16px; }
+.pledge { font-size: 16px; font-weight: 650; line-height: 1.5; }
+.step-picker { border: 0; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; min-width: 0; }
+.step-card { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 9px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-2); cursor: pointer; min-width: 0; }
+.step-card input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.step-card:hover { border-color: var(--ink-3); }
+.step-card:focus-within { outline: 3px solid var(--info); outline-offset: 1px; }
+.step-card.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+.step-card.published { border-style: dashed; }
+.step-head { font-size: 11px; font-weight: 750; color: var(--ink-3); display: flex; justify-content: space-between; gap: 4px; }
+.step-head i { font-style: normal; color: var(--party); }
+.step-card.selected .step-head { color: var(--accent); }
+.step-text { font-size: 12px; line-height: 1.45; color: var(--ink); overflow-wrap: anywhere; }
+.lever-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 10px; }
+.compare summary { font-size: 13px; }
+.compare-track { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin-top: 8px; }
+.compare-cell { text-align: center; padding: 6px 2px; border-radius: var(--radius-sm); background: var(--surface-2); }
+.compare-cell.status-quo { background: var(--surface-3); }
+.compare-step { display: block; font-size: 11px; color: var(--ink-3); margin-bottom: 4px; }
+.party-dot { width: 22px; height: 22px; border-radius: 50%; color: #fff; font-size: 11px; font-weight: 750; display: inline-grid; place-items: center; }
+@media (max-width: 850px) {
+  .step-picker { grid-template-columns: 1fr; }
+  .step-card { flex-direction: row; align-items: baseline; gap: 10px; }
+  .step-head { flex: none; width: 64px; }
+}

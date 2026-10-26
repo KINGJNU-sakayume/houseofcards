@@ -28,6 +28,8 @@ export const leverValueSchema = z.union([z.literal(0), z.literal(1), z.literal(2
 const domainIndexRecord = z.record(z.enum(DOMAIN_IDS), indexSchema);
 export const leverSchema = z.strictObject({
   id: z.string().min(1), name: z.string().min(1), domain: z.enum(DOMAIN_IDS), axis: z.string().min(1),
+  // U3: pledge text per step (0–4), GAME_MODEL wording; step 2 is the status quo.
+  steps: z.tuple([z.string().min(2).max(80), z.string().min(2).max(80), z.string().min(2).max(80), z.string().min(2).max(80), z.string().min(2).max(80)]),
   range: z.strictObject({ min: z.literal(0), max: z.literal(4), statusQuo: z.literal(2) }),
   valueTags: z.partialRecord(coreTag, z.number().int().min(1).max(10)),
   fiscalImplication: z.strictObject({ costPerStep: z.number().int().min(-10).max(10), note: z.string().min(1) }),

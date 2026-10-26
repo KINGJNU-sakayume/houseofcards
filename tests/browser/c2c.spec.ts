@@ -15,7 +15,8 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await expect(page.getByTestId('org-limits')).toContainText('투표율 동원은 구현하지 않았습니다');
   await page.getByRole('link', { name: '정책', exact: false }).click();
   await expect(page.getByText('공표 비용: 실무 인력 1 · 의제 슬롯 1').first()).toBeVisible();
-  await page.getByRole('slider', { name: '임대지원 확대 초안' }).press('End');
+  await page.getByRole('radio', { name: '임대지원 확대 4단계' }).click();
+  await expect(page.getByRole('radio', { name: '임대지원 확대 4단계' })).toBeChecked();
   await page.getByRole('button', { name: '임대지원 확대 공표' }).click();
   await expect(page.getByTestId('published-housing.rent-support')).toContainText('공표 4');
   await page.getByRole('link', { name: '데이터 허브', exact: false }).click();

@@ -24,7 +24,7 @@ export function Pills<T extends string>({ options, value, onChange, label }: { o
 }
 
 export function Tabs<T extends string>({ options, value, onChange, label }: { options: { id: T; label: ReactNode; count?: number }[]; value: T; onChange: (id: T) => void; label: string }) {
-  return <div className="tabs" role="tablist" aria-label={label}>{options.map(o => <button key={o.id} type="button" role="tab" aria-selected={o.id === value} className={o.id === value ? 'active' : ''} onClick={() => onChange(o.id)}>{o.label}{o.count !== undefined && <span className="count">{o.count}</span>}</button>)}</div>;
+  return <div className="tabs" role="tablist" aria-label={label}>{options.map(o => <button key={o.id} type="button" role="tab" aria-selected={o.id === value} className={o.id === value ? 'active' : ''} onClick={() => onChange(o.id)}>{o.label}{o.count !== undefined && <span className="count" aria-hidden="true">{o.count}</span>}</button>)}</div>;
 }
 
 export function Modal({ title, onClose, children, narrow, closeLabel = '닫기' }: { title: ReactNode; onClose: () => void; children: ReactNode; narrow?: boolean; closeLabel?: string }) {

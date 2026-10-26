@@ -19,7 +19,8 @@ test('C1 founding gate, actual costs, research, stale survey, honest stubs and m
   await expect(page.getByTestId('allocation-example')).toContainText('선거 결과나 예측이 아니며');
   await page.getByRole('link', { name: '정책', exact: false }).click();
   await expect(page.getByText('공표 비용: 실무 인력 1 · 의제 슬롯 1').first()).toBeVisible();
-  await page.getByRole('slider', { name: '임대지원 확대 초안' }).press('End');
+  await page.getByRole('radio', { name: '임대지원 확대 4단계' }).click();
+  await expect(page.getByRole('radio', { name: '임대지원 확대 4단계' })).toBeChecked();
   await expect(page.getByRole('button', { name: '다음 주로' })).toBeEnabled();
   await page.getByRole('button', { name: '임대지원 확대 공표' }).click();
   await expect(page.getByTestId('published-housing.rent-support')).toContainText('공표 4');
