@@ -1,0 +1,356 @@
+{
+ "id": "calibration-cal",
+ "tolerance": 50000,
+ "trainingSeeds": [
+  42,
+  1,
+  2,
+  3,
+  4
+ ],
+ "heldOutSeeds": "5..24",
+ "lossBefore": 357450220288,
+ "lossAfter": 32238403783,
+ "withinToleranceSeed42": {
+  "before": 7,
+  "after": 18
+ },
+ "withinToleranceHeldOutMean": {
+  "before": 7,
+  "after": 17
+ },
+ "targets": [
+  {
+   "id": "calibration-seoul-dp",
+   "target": 438655,
+   "beforeSeed42": 369685,
+   "afterSeed42": 419046,
+   "beforeHeldOutMean": 387463,
+   "afterHeldOutMean": 423993
+  },
+  {
+   "id": "calibration-seoul-ppp",
+   "target": 440098,
+   "beforeSeed42": 411036,
+   "afterSeed42": 430791,
+   "beforeHeldOutMean": 400663,
+   "afterHeldOutMean": 435904
+  },
+  {
+   "id": "calibration-gyeonggi-incheon-dp",
+   "target": 492760,
+   "beforeSeed42": 371444,
+   "afterSeed42": 457421,
+   "beforeHeldOutMean": 381480,
+   "afterHeldOutMean": 471784
+  },
+  {
+   "id": "calibration-gyeonggi-incheon-ppp",
+   "target": 389444,
+   "beforeSeed42": 412764,
+   "afterSeed42": 390156,
+   "beforeHeldOutMean": 408251,
+   "afterHeldOutMean": 380258
+  },
+  {
+   "id": "calibration-chungcheong-dp",
+   "target": 482547,
+   "beforeSeed42": 356149,
+   "afterSeed42": 446941,
+   "beforeHeldOutMean": 372169,
+   "afterHeldOutMean": 464125
+  },
+  {
+   "id": "calibration-chungcheong-ppp",
+   "target": 441452,
+   "beforeSeed42": 440012,
+   "afterSeed42": 446745,
+   "beforeHeldOutMean": 410525,
+   "afterHeldOutMean": 425884
+  },
+  {
+   "id": "calibration-tk-dp",
+   "target": 315313,
+   "beforeSeed42": 371729,
+   "afterSeed42": 303455,
+   "beforeHeldOutMean": 383782,
+   "afterHeldOutMean": 312579
+  },
+  {
+   "id": "calibration-tk-ppp",
+   "target": 623814,
+   "beforeSeed42": 395614,
+   "afterSeed42": 596150,
+   "beforeHeldOutMean": 404542,
+   "afterHeldOutMean": 595251
+  },
+  {
+   "id": "calibration-pk-dp",
+   "target": 427365,
+   "beforeSeed42": 363739,
+   "afterSeed42": 413235,
+   "beforeHeldOutMean": 377559,
+   "afterHeldOutMean": 416126
+  },
+  {
+   "id": "calibration-pk-ppp",
+   "target": 493327,
+   "beforeSeed42": 408590,
+   "afterSeed42": 467315,
+   "beforeHeldOutMean": 412743,
+   "afterHeldOutMean": 474808
+  },
+  {
+   "id": "calibration-honam-dp",
+   "target": 677683,
+   "beforeSeed42": 357536,
+   "afterSeed42": 718880,
+   "beforeHeldOutMean": 369438,
+   "afterHeldOutMean": 729092
+  },
+  {
+   "id": "calibration-honam-ppp",
+   "target": 86523,
+   "beforeSeed42": 416580,
+   "afterSeed42": 208943,
+   "beforeHeldOutMean": 414316,
+   "afterHeldOutMean": 202133
+  },
+  {
+   "id": "calibration-gangwon-dp",
+   "target": 458132,
+   "beforeSeed42": 337628,
+   "afterSeed42": 422698,
+   "beforeHeldOutMean": 383264,
+   "afterHeldOutMean": 456068
+  },
+  {
+   "id": "calibration-gangwon-ppp",
+   "target": 468762,
+   "beforeSeed42": 454735,
+   "afterSeed42": 454763,
+   "beforeHeldOutMean": 406904,
+   "afterHeldOutMean": 430988
+  },
+  {
+   "id": "calibration-jeju-dp",
+   "target": 493744,
+   "beforeSeed42": 335138,
+   "afterSeed42": 478685,
+   "beforeHeldOutMean": 366299,
+   "afterHeldOutMean": 497334
+  },
+  {
+   "id": "calibration-jeju-ppp",
+   "target": 328726,
+   "beforeSeed42": 450923,
+   "afterSeed42": 343851,
+   "beforeHeldOutMean": 419367,
+   "afterHeldOutMean": 330093
+  },
+  {
+   "id": "calibration-recent-polls-dp",
+   "target": 373333,
+   "beforeSeed42": 365529,
+   "afterSeed42": 453253,
+   "beforeHeldOutMean": 379931,
+   "afterHeldOutMean": 464093
+  },
+  {
+   "id": "calibration-recent-polls-ppp",
+   "target": 384556,
+   "beforeSeed42": 415265,
+   "afterSeed42": 418491,
+   "beforeHeldOutMean": 408095,
+   "afterHeldOutMean": 413537
+  },
+  {
+   "id": "calibration-recent-polls-rkp",
+   "target": 58222,
+   "beforeSeed42": 83571,
+   "afterSeed42": 76667,
+   "beforeHeldOutMean": 81098,
+   "afterHeldOutMean": 71972
+  },
+  {
+   "id": "calibration-recent-polls-reform",
+   "target": 21333,
+   "beforeSeed42": 85904,
+   "afterSeed42": 37174,
+   "beforeHeldOutMean": 81815,
+   "afterHeldOutMean": 36506
+  }
+ ],
+ "heldOutReality2024List": [
+  {
+   "region": "chungcheong",
+   "list2024": {
+    "dp": 276983,
+    "ppp": 374827
+   },
+   "modelSeed42": {
+    "dp": 446941,
+    "ppp": 446745
+   }
+  },
+  {
+   "region": "gangwon",
+   "list2024": {
+    "dp": 248849,
+    "ppp": 435845
+   },
+   "modelSeed42": {
+    "dp": 422698,
+    "ppp": 454763
+   }
+  },
+  {
+   "region": "gyeonggi-incheon",
+   "list2024": {
+    "dp": 292394,
+    "ppp": 341150
+   },
+   "modelSeed42": {
+    "dp": 457421,
+    "ppp": 390156
+   }
+  },
+  {
+   "region": "honam",
+   "list2024": {
+    "dp": 381007,
+    "ppp": 70294
+   },
+   "modelSeed42": {
+    "dp": 718880,
+    "ppp": 208943
+   }
+  },
+  {
+   "region": "jeju",
+   "list2024": {
+    "dp": 283079,
+    "ppp": 314114
+   },
+   "modelSeed42": {
+    "dp": 478685,
+    "ppp": 343851
+   }
+  },
+  {
+   "region": "pk",
+   "list2024": {
+    "dp": 216042,
+    "ppp": 454824
+   },
+   "modelSeed42": {
+    "dp": 413235,
+    "ppp": 467315
+   }
+  },
+  {
+   "region": "seoul",
+   "list2024": {
+    "dp": 262563,
+    "ppp": 369150
+   },
+   "modelSeed42": {
+    "dp": 419046,
+    "ppp": 430791
+   }
+  },
+  {
+   "region": "tk",
+   "list2024": {
+    "dp": 142066,
+    "ppp": 602132
+   },
+   "modelSeed42": {
+    "dp": 303455,
+    "ppp": 596150
+   }
+  }
+ ],
+ "calibrated": {
+  "regionalAttachmentWeights": {
+   "seoul": {
+    "dp": 20,
+    "ppp": 100,
+    "reform": 5,
+    "rkp": 1,
+    "minor-bloc": 8100
+   },
+   "gyeonggi-incheon": {
+    "dp": 200,
+    "ppp": 4,
+    "reform": 776,
+    "rkp": 134,
+    "minor-bloc": 7425
+   },
+   "chungcheong": {
+    "dp": 114,
+    "ppp": 100,
+    "reform": 1,
+    "rkp": 2,
+    "minor-bloc": 1162
+   },
+   "tk": {
+    "dp": 13,
+    "ppp": 200,
+    "reform": 1,
+    "rkp": 1,
+    "minor-bloc": 263
+   },
+   "pk": {
+    "dp": 45,
+    "ppp": 100,
+    "reform": 1,
+    "rkp": 1,
+    "minor-bloc": 799
+   },
+   "honam": {
+    "dp": 10000,
+    "ppp": 1,
+    "reform": 1,
+    "rkp": 1,
+    "minor-bloc": 1
+   },
+   "gangwon": {
+    "dp": 88,
+    "ppp": 100,
+    "reform": 1,
+    "rkp": 1,
+    "minor-bloc": 1091
+   },
+   "jeju": {
+    "dp": 100,
+    "ppp": 4,
+    "reform": 187,
+    "rkp": 363,
+    "minor-bloc": 2
+   }
+  },
+  "parties": {
+   "dp": {
+    "awareness": 980000,
+    "viability": 950000
+   },
+   "ppp": {
+    "awareness": 920000,
+    "viability": 850000
+   },
+   "reform": {
+    "awareness": 220000,
+    "viability": 75000
+   },
+   "rkp": {
+    "awareness": 420000,
+    "viability": 116871
+   },
+   "minor-bloc": {
+    "awareness": 50000,
+    "viability": 50000
+   }
+  }
+ }
+}
