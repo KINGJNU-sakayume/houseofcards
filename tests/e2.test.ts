@@ -72,6 +72,6 @@ describe('E2 list readiness and saves', () => {
   });
   it('rejects real E1 saves (schema 10) with Korean keep-JSON guidance', () => {
     expect(legacyE1.state.schemaVersion).toBe(10); expect(legacyE1.checksum).toBe(stateHash(legacyE1.state));
-    expect(() => deserializeSave(JSON.stringify(legacyE1))).toThrow('E1 세이브(스키마 10)는 브랜드 일관성이 추가된 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyE1))).toThrow('E1 세이브(스키마 10)는 브랜드 일관성이 추가된 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

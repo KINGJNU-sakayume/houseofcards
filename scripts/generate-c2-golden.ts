@@ -43,7 +43,7 @@ while (pushed.status === 'active') step({ type: 'ADVANCE_WEEK' });
 if (!pushed.election) throw new Error('election missing');
 const initial = createGame(seed), founded = dispatchCommand(initial, founding);
 let end = founded; for (let i = 0; i < 77; i++) end = dispatchCommand(end, { type: 'ADVANCE_WEEK' });
-const fixture = { schemaVersion: 4, phase: 'C2', step: 'F1', modelVersion: partyManagement.modelVersion, nominationModelVersion: nominationModel.modelVersion, electionModelVersion: electionModel.modelVersion, peopleModelVersion: politicianModel.modelVersion, organizationModelVersion: organizationModel.modelVersion, rulesetsVersion: rulesets.modelVersion, rulesetId: rulesets.defaultRulesetId, politicalModelVersion: politicalModel.modelVersion, seed,
+const fixture = { schemaVersion: 4, phase: 'C2', step: 'F2', modelVersion: partyManagement.modelVersion, nominationModelVersion: nominationModel.modelVersion, electionModelVersion: electionModel.modelVersion, peopleModelVersion: politicianModel.modelVersion, organizationModelVersion: organizationModel.modelVersion, rulesetsVersion: rulesets.modelVersion, rulesetId: rulesets.defaultRulesetId, politicalModelVersion: politicalModel.modelVersion, seed,
   initialHash: stateHash(initial), foundedHash: stateHash(founded), seasonEndHash: stateHash(end), managementHash: stateHash(replay(seed, commands)), nominationHash: stateHash(replay(seed, nominationCommands)), electionHash: stateHash(pushed), electionSeats: pushed.election.totalSeats, commands, nominationCommands, electionCommands };
 writeFileSync(path, JSON.stringify(fixture, null, 2) + '\n');
 console.log(JSON.stringify(fixture, null, 2));

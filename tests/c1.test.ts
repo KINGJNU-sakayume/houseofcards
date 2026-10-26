@@ -8,7 +8,7 @@ import { partyManagement as data, partyManagementSchema } from '../src/data/seed
 import { realityPack, policyLevers } from '../src/data/reality';
 import { CORE_VALUES, DOMAIN_IDS } from '../src/types/simulation';
 import type { Command, GameState } from '../src/types/game';
-import { applyPublicationCost, growExpertise, publicationCost, researchCost, settleWeek, staffCap, weeklyFinance } from '../src/engine/parties/management';
+import { applyPublicationCost, growExpertise, monthlyDonations, publicationCost, researchCost, settleWeek, staffCap, weeklyFinance } from '../src/engine/parties/management';
 import { updatePartyAI } from '../src/engine/parties/ai';
 import { updateViability } from '../src/engine/voters/dynamics';
 import { handleEngineRequest } from '../src/engine/simulation/protocol';
@@ -108,7 +108,7 @@ describe('C1 atomic resources, weekly finance and publication', () => {
   it('records arrears, caps paid cash at zero and halves a refill while unpaid, then repays arrears', () => {
     let s = clone(createFoundedGame(4)); s.date = '2026-10-26'; s.resources!.money = 0; s.finance!.initialMoney = 0; s.finance!.staffLevel = 4;
     const weekly = weeklyFinance(s), settled = settleWeek(s, true);
-    expect(settled.resources!.money).toBe(0); expect(settled.finance!.arrears).toBe(weekly.expenses - weekly.income);
+    expect(settled.resources!.money).toBe(0); expect(settled.finance!.arrears).toBe(weekly.expenses - weekly.income - monthlyDonations(s)); // F2: monthly donations are booked before payroll
     expect(settled.resources!.staffCapacity).toBe(Math.floor((data.finance.baseStaffCapacity + data.staffLevels[4]!.capacity) / 2));
     expect(settled.inbox.some(m => m.priority === 'Critical')).toBe(true); expect(settled.resources!.money).toBe(conservation(settled));
     s = clone(settled); s.resources!.money = 100000; s.finance!.initialMoney += 100000;

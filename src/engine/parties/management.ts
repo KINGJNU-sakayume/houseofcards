@@ -128,9 +128,15 @@ export function nextRefillDate(date: string): string {
 export function weeklyFinance(state: GameState): { income: number; expenses: number } {
   return { income: roundDiv(state.finance!.members * data.finance.payingRate * data.finance.monthlyDues * 12, SCALE * 52), expenses: data.staffLevels[state.finance!.staffLevel]!.weeklyPayroll + Object.values(state.regionalOrganization).filter(r => r.office).length * organizationModel.officeRent };
 }
+// F2: supporters' donations, booked once a month from last month's current support (GAME_MODEL).
+export function monthlyDonations(state: GameState): number {
+  return roundDiv((state.politics.analysis.currentSupport[PLAYER_PARTY_ID] ?? 0) * data.donations.monthlyPerSupport, SCALE);
+}
 export function settleWeek(state: GameState, monthly: boolean): GameState {
   const { income, expenses } = weeklyFinance(state);
   let next = recordMoney(state, 'dues', income, 'weekly-dues');
+  const donations = monthly ? monthlyDonations(next) : 0;
+  if (donations) next = recordMoney(next, 'donations', donations, 'monthly-donations');
   const due = expenses + next.finance!.arrears;
   const paid = Math.min(next.resources!.money, due);
   next = recordMoney(next, 'payroll', -paid, 'weekly-payroll-rent-and-arrears');

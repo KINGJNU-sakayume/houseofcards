@@ -189,6 +189,6 @@ describe('D3 saves', () => {
   });
   it('rejects real D2 saves (schema 8) with Korean keep-JSON guidance', () => {
     expect(legacyD2.state.schemaVersion).toBe(8); expect(legacyD2.checksum).toBe(stateHash(legacyD2.state));
-    expect(() => deserializeSave(JSON.stringify(legacyD2))).toThrow('D2 세이브(스키마 8)는 공천·명부가 추가된 현재 버전(스키마 13)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyD2))).toThrow('D2 세이브(스키마 8)는 공천·명부가 추가된 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

@@ -8,7 +8,7 @@ export interface PlayerParty {
 export interface Resources { money: number; staffCapacity: number; agendaSlots: number }
 export interface Finance {
   members: number; initialMoney: number; arrears: number; staffLevel: number; ledgerTruncatedSum: number;
-  ledger: { date: string; kind: 'dues' | 'payroll' | 'hiring' | 'research' | 'survey' | 'recruitment' | 'organization' | 'nomination' | 'deposit' | 'campaign' | 'reimbursement'; amount: number; balanceAfter: number; ref: string }[];
+  ledger: { date: string; kind: 'dues' | 'donations' | 'payroll' | 'hiring' | 'research' | 'survey' | 'recruitment' | 'organization' | 'nomination' | 'deposit' | 'campaign' | 'reimbursement'; amount: number; balanceAfter: number; ref: string }[];
 }
 export interface Research { domain: DomainId; startedAt: string; completesAt: string }
 // voteFlow: E2 Vote Flow estimate at the survey date (from → to, Q6 of the electorate).
