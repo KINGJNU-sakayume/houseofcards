@@ -1,18 +1,20 @@
 {
   "schemaVersion": 4,
   "phase": "C2",
-  "step": "D2",
+  "step": "D3",
   "modelVersion": "C1.0",
+  "nominationModelVersion": "D3.0",
   "peopleModelVersion": "C2.1",
   "organizationModelVersion": "C2.0",
   "rulesetsVersion": "D1.0",
   "rulesetId": "parallel_46_open",
   "politicalModelVersion": "B3",
   "seed": 42,
-  "initialHash": "7fac0edb13b7ef19",
-  "foundedHash": "35697dbd768bf566",
-  "seasonEndHash": "968d941c0e9c6ba5",
-  "managementHash": "044594234993c11c",
+  "initialHash": "c802c452562d3312",
+  "foundedHash": "6af459f0174f31f5",
+  "seasonEndHash": "c4e3b0e121616734",
+  "managementHash": "d404281b3a137fb3",
+  "nominationHash": "58e2151fd21f50f9",
   "commands": [
     {
       "type": "CREATE_PARTY",
@@ -88,6 +90,255 @@
       "regionId": "seoul",
       "kind": "policy_forum",
       "intensity": 1
+    }
+  ],
+  "nominationCommands": [
+    {
+      "type": "CREATE_PARTY",
+      "name": "내일의 정당",
+      "shortName": "내일",
+      "color": "#8864b5",
+      "values": [
+        "housing",
+        "safety-net",
+        "science"
+      ]
+    },
+    {
+      "type": "SET_PLATFORM_DRAFT",
+      "leverId": "housing.rent-support",
+      "value": 4
+    },
+    {
+      "type": "PUBLISH_PLATFORM",
+      "leverId": "housing.rent-support"
+    },
+    {
+      "type": "COMMISSION_INTERNAL_SURVEY"
+    },
+    {
+      "type": "START_POLICY_RESEARCH",
+      "domain": "housing"
+    },
+    {
+      "type": "SET_STAFF_LEVEL",
+      "level": 1
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "SET_PLATFORM_DRAFT",
+      "leverId": "housing.rent-support",
+      "value": 0
+    },
+    {
+      "type": "PUBLISH_PLATFORM",
+      "leverId": "housing.rent-support"
+    },
+    {
+      "type": "COMMISSION_INTERNAL_SURVEY"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "RECRUIT_POLITICIAN",
+      "politicianId": "pol-001",
+      "role": "member",
+      "promises": [
+        "primary_guarantee"
+      ]
+    },
+    {
+      "type": "INVEST_REGION",
+      "regionId": "seoul",
+      "kind": "policy_forum",
+      "intensity": 1
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "ADVANCE_WEEK"
+    },
+    {
+      "type": "RECRUIT_POLITICIAN",
+      "politicianId": "pol-044",
+      "role": "member",
+      "promises": [
+        "primary_guarantee",
+        "regional_priority"
+      ]
+    },
+    {
+      "type": "RECRUIT_POLITICIAN",
+      "politicianId": "pol-045",
+      "role": "member",
+      "promises": [
+        "primary_guarantee",
+        "regional_priority"
+      ]
+    },
+    {
+      "type": "RECRUIT_POLITICIAN",
+      "politicianId": "pol-046",
+      "role": "member",
+      "promises": [
+        "primary_guarantee",
+        "regional_priority"
+      ]
+    },
+    {
+      "type": "SET_TARGET_DISTRICT",
+      "districtId": "kr2024-015",
+      "targeted": true
+    },
+    {
+      "type": "NOMINATE_DISTRICT",
+      "districtId": "kr2024-015",
+      "method": "strategic",
+      "candidateIds": [
+        "pol-046"
+      ]
     }
   ]
 }

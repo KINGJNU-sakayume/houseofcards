@@ -7,7 +7,7 @@ import { projectDistrict, projectDistricts, regionBaselines } from '../src/engin
 import { createGame } from '../src/engine/simulation/engine';
 import { createFoundedGame } from './helpers';
 import { stateHash } from '../src/engine/simulation/determinism';
-import { deserializeSave } from '../src/persistence/codec';
+import { deserializeSave, serializeSave } from '../src/persistence/codec';
 
 const parties = [...realityPack.parties.map(p => p.id), 'minor-bloc'];
 const sum = (v: Record<string, number>) => Object.values(v).reduce((a, b) => a + b, 0);
@@ -67,6 +67,9 @@ describe('D2 district projection', () => {
   });
   it('rejects real CAL saves (old Reality pack) with Korean keep-JSON guidance', () => {
     expect(legacyCal.state.realityPackId).toBe('kr-b2-2026-10-18-r3');
-    expect(() => deserializeSave(JSON.stringify(legacyCal))).toThrow('현실 데이터 기준이 다른 개발 프리뷰 세이브입니다. 기존 JSON을 보관');
+    // Schema 8 is now rejected first (D3); the pack-id check still guards same-schema saves.
+    expect(() => deserializeSave(JSON.stringify(legacyCal))).toThrow('스키마 8');
+    const repacked = JSON.parse(serializeSave(createGame(42))); repacked.state.realityPackId = 'kr-b2-2026-10-18-r3'; repacked.checksum = stateHash(repacked.state);
+    expect(() => deserializeSave(JSON.stringify(repacked))).toThrow('현실 데이터 기준이 다른 개발 프리뷰 세이브입니다. 기존 JSON을 보관');
   });
 });

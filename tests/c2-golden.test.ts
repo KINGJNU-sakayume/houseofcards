@@ -7,9 +7,10 @@ import { politicianModel } from '../src/data/seeds/politicians';
 import { organizationModel } from '../src/data/seeds/organization';
 import { rulesets } from '../src/data/rulesets';
 import { politicalModel } from '../src/data/seeds/political-model';
+import { nominationModel } from '../src/data/seeds/nomination';
 import type { Command } from '../src/types/game';
-it('replays the deliberately reviewed D2 founding, idle season and management/reversal goldens', () => {
-  expect([partyManagement.modelVersion, politicianModel.modelVersion, organizationModel.modelVersion, rulesets.modelVersion, rulesets.defaultRulesetId, politicalModel.modelVersion]).toEqual([golden.modelVersion, golden.peopleModelVersion, golden.organizationModelVersion, golden.rulesetsVersion, golden.rulesetId, golden.politicalModelVersion]);
+it('replays the deliberately reviewed D3 founding, idle season, management/reversal and nomination goldens', () => {
+  expect([partyManagement.modelVersion, politicianModel.modelVersion, organizationModel.modelVersion, rulesets.modelVersion, rulesets.defaultRulesetId, politicalModel.modelVersion, nominationModel.modelVersion]).toEqual([golden.modelVersion, golden.peopleModelVersion, golden.organizationModelVersion, golden.rulesetsVersion, golden.rulesetId, golden.politicalModelVersion, golden.nominationModelVersion]);
   const initial = createGame(golden.seed);
   expect(stateHash(initial)).toBe(golden.initialHash);
   let state = dispatchCommand(initial, golden.commands[0] as Command);
@@ -17,4 +18,6 @@ it('replays the deliberately reviewed D2 founding, idle season and management/re
   for (let i = 0; i < 77; i++) state = dispatchCommand(state, { type: 'ADVANCE_WEEK' });
   expect(stateHash(state)).toBe(golden.seasonEndHash);
   expect(stateHash(replay(golden.seed, golden.commands as Command[]))).toBe(golden.managementHash);
+  expect(golden.nominationCommands.some(c => c.type === 'NOMINATE_DISTRICT')).toBe(true);
+  expect(stateHash(replay(golden.seed, golden.nominationCommands as Command[]))).toBe(golden.nominationHash);
 });

@@ -25,7 +25,7 @@ export function Organization() {
       <ul><li>조직 수준과 정책간담회는 그 권역 유권자에게 전달되는 공약 노출을 키워 인지도를 서서히 올립니다(공표한 공약이나 영입 인물의 인지도가 있어야 전달할 것이 있습니다).</li>
         <li>후보발굴은 그 권역 출신 인재 후보가 나올 확률 가중치만 올립니다.</li><li>당원은 당비(Money)에만 쓰입니다. 지역사무소는 임대료가 들고 월 Staff Capacity를 늘립니다.</li>
         <li>활동 없이 {org.decayGraceDays}일이 지나면 조직 수준이 매월 {org.decayPerMonth}(사무소가 있으면 {org.officeDecayPerMonth})씩 낮아집니다.</li></ul>
-      <p className="muted small">아직 하지 않는 일: 캠페인 실행, 투표율 동원, 전략투표 생존가능성, 지역구 후보 공천은 Phase D에서 구현됩니다. 현재 영입 인물의 프로필 노출 항은 {(partyProfile(game) / 10000).toFixed(1)}%p(상한 {org.profileCap / 10000}%p)입니다.</p></section>
+      <p className="muted small">공천(D3)은 권역 조직 수준에 영향을 주고(경선 +, 갈등 있는 전략공천 −), 조직 수준은 우리 후보의 지역구 인지도 하한에 쓰입니다. 캠페인 실행과 투표율 동원은 D4에서 구현됩니다. 현재 영입 인물의 프로필 노출 항은 {(partyProfile(game) / 10000).toFixed(1)}%p(상한 {org.profileCap / 10000}%p)입니다.</p></section>
     <section className="sim-card"><h2>권역별 조직</h2><div className="table-scroll"><table className="sim-table people-table"><thead><tr><th>권역</th><th>수준 · 당원</th><th>사무소 · 진행 중</th><th>효과</th></tr></thead><tbody>{REGION_IDS.map(id => { const r = game.regionalOrganization[id]!; const forum = forumActive(game, id), scouting = scoutingActive(game, id); return <tr key={id} data-testid={`region-${id}`}>
       <th>{REGION_LABELS[id]}</th><td>수준 {r.level} · 당원 {r.members.toLocaleString()}명</td>
       <td>{r.office ? `사무소 있음 (주 ${moneyLabel(org.officeRent)})` : '사무소 없음'}{r.investments.map(i => <span key={i.kind}><br />{INVESTMENT_LABELS[i.kind]} 강도 {i.intensity} · 완료 {i.completesAt}</span>)}</td>

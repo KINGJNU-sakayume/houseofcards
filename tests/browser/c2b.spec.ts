@@ -16,7 +16,7 @@ test('C2b prospects, qualitative band, recruit with promise, refusal reason, sav
   await expect(page.getByText('영입 후보 30명', { exact: false })).toBeVisible();
   await expect(page.getByText('실존 인물과 무관하며', { exact: false }).first()).toBeVisible();
   const detail = page.getByTestId('politician-detail');
-  await expect(detail.getByText('Phase D에서 사용됩니다').first()).toBeVisible();
+  await expect(detail.getByText('D4 캠페인에서 사용됩니다', { exact: false }).first()).toBeVisible();
   await expect(page.getByTestId('recruit-band')).toHaveText(/낮음|보통|높음/);
   const expected0 = createFoundedGame(20261019);
   const first = [...expected0.politicians].sort((a, b) => a.name.localeCompare(b.name, 'ko'))[0]!;
@@ -28,7 +28,7 @@ test('C2b prospects, qualitative band, recruit with promise, refusal reason, sav
   const outcome = expected.politicians.find(p => p.id === first.id)!.status;
   if (outcome === 'recruited') {
     await page.getByRole('button', { name: /영입한 인재/ }).click();
-    await expect(page.getByTestId('politician-detail')).toContainText('공천은 Phase D에서 구현됩니다');
+    await expect(page.getByTestId('politician-detail')).toContainText('등록 마감(2028-03-20)에 공천 결과로 판정');
   } else {
     await expect(page.getByTestId('recruit-refusal')).toContainText('재접촉 대기');
     await expect(page.getByRole('button', { name: '영입 제안', exact: true })).toBeDisabled();
