@@ -571,5 +571,5 @@ Phase D 지시서 `docs/HOUSE_OF_CARDS_KOREA_phase_d_rev1.md`를 새로 쓰고(D
   - Active 30 → "주요 지역구 30곳"
   - 단계 배지(B2·C1…)와 영어 eyebrow는 없앴다.
 - **스키마 15.** 저장되는 받은 편지 본문과 거부 사유 문구가 바뀌어, 같은 명령 기록이 다른 상태로 재생된다. 그래서 판별자를 올렸다. 실제 F2 엔진(main)으로 내보낸 `tests/fixtures/phase-f2-v14.json`을 한국어 보관 안내와 함께 거부한다.
-- **골든 old→new (seed42, 같은 명령열 재생).** 창당 전 `672339861edf06fa`→`a90da6cdf8b48b73`, 창당 후 `45550c7bcb97dbaf`→`4af446f5be302a22`, idle 종료 `707fcf0b91930680`→`eb75b6348b20f8a9`, 관리 `7c21fd54b11c51c9`→`e7995e2cbb179cb7`, 공천 `4c0eea175fde558b`→`78280593701082a5`, 선거 `b120098f299c2d4e`→`69f4ced760ef645f`.
+- **골든 old→new (seed42, 같은 명령열 재생).** 창당 전 `672339861edf06fa`→`a90da6cdf8b48b73`, 창당 후 `45550c7bcb97dbaf`→`4af446f5be302a22`, idle 종료 `707fcf0b91930680`→`eb75b6348b20f8a9`, 관리 `7c21fd54b11c51c9`→`e7995e2cbb179cb7`, 공천 `4c0eea175fde558b`→`78280593701082a5`, 선거 `b120098f299c2d4e`→`69f4ced760ef645f`, 20시드 배치 `45eeef2b4cc5c21a`→`9099b4853d4d202f`(의석 결과는 F2와 같고 저장 문구만 바뀜).
 - **시험 변경.** 브라우저·단위 시험의 영어 문구 단언을 새 한국어 문구로 바꿨다. `data-testid`는 유지했다. 상단 날짜는 `topbar-date`로 확인한다.
