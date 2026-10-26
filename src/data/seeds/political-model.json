@@ -1,5 +1,5 @@
 {
-  "modelVersion": "B3",
+  "modelVersion": "B4",
   "label": "GAME MODEL · 개발 프리뷰 · 현실 지지율/정당 평가 아님",
   "utility": {
     "fit": 1400000,
@@ -17,7 +17,9 @@
     "ownershipRate": 100000,
     "identityRate": 120000,
     "loyaltyErosion": 7000,
-    "approvalRate": 80000
+    "approvalRate": 80000,
+    "coverageSlope": 3000000,
+    "coverageCap": 300000
   },
   "scenario": {
     "rulesetId": "parallel_46_open",

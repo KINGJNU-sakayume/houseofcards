@@ -10,6 +10,7 @@ import { fixedMultiply, roundDiv, SCALE } from '../simulation/math';
 import { consistency, platformIdentity, policyFit, computeAnalysis } from './model';
 import { partyProfile, playerExposure } from '../organization/channels';
 import { messageExposure } from '../election/finalPush';
+import { electionModel } from '../../data/seeds/election';
 import { PLAYER_PARTY_ID } from '../../types/party';
 
 const clamp = (n: number, low = 0, high = SCALE) => Math.max(low, Math.min(high, n));
@@ -78,6 +79,28 @@ export function updateViability(state: GameState) {
   }
   return { viability, viabilityInput: { asOf: polls[polls.length - 1]!.date, shares } };
 }
+// Published, fresh platform levers weighted by the cohort's and the issue's salience (Q6).
+export function leverExposure(state: GameState, cohort: GameState['cohorts'][number], platform: GameState['platforms'][number]): number {
+  let exposure = 0;
+  for (const lever of policyLevers) {
+    const position = platform.positions[lever.id]!;
+    if (position.publishedValue === null || position.publishedAt === null) continue;
+    const freshness = Math.max(150000, SCALE - daysBetween(position.publishedAt, state.date) * 7000);
+    const salience = fixedMultiply(cohort.salience[lever.domain] * 100, state.issues.find(i => i.id === lever.domain)!.salience * 100);
+    exposure += fixedMultiply(salience, freshness);
+  }
+  return roundDiv(exposure, policyLevers.length);
+}
+// F1 national news exposure, the same rule for every party: coverage follows the
+// party's latest published national poll (capped), and in the official campaign
+// period every party on the ballot gets the same exposure. Awareness path only.
+export function newsExposure(state: GameState, partyId: string): number {
+  const poll = state.politics.polls.filter(p => p.date < state.date && p.national.results[partyId] !== undefined).at(-1);
+  const coverage = poll ? Math.min(model.dynamics.coverageCap, fixedMultiply(poll.national.results[partyId]!.point, model.dynamics.coverageSlope)) : 0;
+  const onBallot = partyId !== PLAYER_PARTY_ID || state.nominations.list.length > 0 || Object.keys(state.nominations.districts).length > 0;
+  const campaign = state.date >= electionModel.finalPush.start && !state.election && onBallot ? electionModel.finalPush.campaignPeriodExposure : 0;
+  return coverage + campaign;
+}
 export function evolvePerceptions(state: GameState): GameState {
   const parties = state.politics.parties.map(party => {
     const platform = state.platforms.find(p => p.partyId === party.partyId)!;
@@ -93,19 +116,13 @@ export function evolvePerceptions(state: GameState): GameState {
     return { ...party, identity, ownership };
   });
   const profile = state.playerParty ? partyProfile(state) : 0;
+  const media = Object.fromEntries(parties.map(p => [p.partyId, newsExposure(state, p.partyId)]));
   const perceptions = Object.fromEntries(state.cohorts.map(cohort => [cohort.id, Object.fromEntries(parties.map(party => {
     const platform = state.platforms.find(p => p.partyId === party.partyId)!;
-    let exposure = 0;
-    for (const lever of policyLevers) {
-      const position = platform.positions[lever.id]!;
-      if (position.publishedValue === null || position.publishedAt === null) continue;
-      const freshness = Math.max(150000, SCALE - daysBetween(position.publishedAt, state.date) * 7000);
-      const salience = fixedMultiply(cohort.salience[lever.domain] * 100, state.issues.find(i => i.id === lever.domain)!.salience * 100);
-      exposure += fixedMultiply(salience, freshness);
-    }
-    exposure = roundDiv(exposure, policyLevers.length);
+    let exposure = leverExposure(state, cohort, platform);
     // §16: organization and recruits' profile act only inside the player's exposure term.
     if (party.partyId === PLAYER_PARTY_ID) exposure = playerExposure(state, cohort.regionId, exposure + messageExposure(state, cohort.salience), profile);
+    exposure = Math.min(SCALE, exposure + media[party.partyId]!);
     const before = state.politics.perceptions[cohort.id]![party.partyId]!;
     const gain = fixedMultiply(fixedMultiply(fixedMultiply(model.dynamics.awarenessGrowth, exposure), cohort.politicalAttention * 100), SCALE - before.awareness);
     const decay = fixedMultiply(fixedMultiply(model.dynamics.awarenessDecay, SCALE - exposure), before.awareness);

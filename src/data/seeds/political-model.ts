@@ -5,9 +5,9 @@ const q = z.number().int().min(0).max(1_000_000);
 const count = z.number().int().positive().max(10000);
 const party = z.strictObject({ awareness: q, expertise: q, ownership: q, viability: q, oppositionAlignment: z.number().int().nonnegative().max(100) });
 export const politicalModelSchema = z.strictObject({
-  modelVersion: z.literal('B3'), label: z.string(), potentialDefinition: z.literal('all-parties'),
+  modelVersion: z.literal('B4'), label: z.string(), potentialDefinition: z.literal('all-parties'),
   utility: z.strictObject({ fit: z.number().int().min(0).max(2_000_000), identity: q, trust: q, loyalty: z.number().int().min(0).max(2_000_000), government: q, viability: q, none: z.number().int().min(0).max(2_000_000) }),
-  dynamics: z.strictObject({ awarenessGrowth: q, awarenessDecay: q, awarenessCap: q, ownershipRate: q, identityRate: q, loyaltyErosion: q, approvalRate: q }),
+  dynamics: z.strictObject({ awarenessGrowth: q, awarenessDecay: q, awarenessCap: q, ownershipRate: q, identityRate: q, loyaltyErosion: q, approvalRate: q, coverageSlope: z.number().int().min(0).max(10_000_000), coverageCap: q }),
   scenario: z.strictObject({ rulesetId: z.literal('parallel_46_open'), label: z.string(), listSeats: count, legalThresholdVoteShare: q, electabilityKnee: q }),
   viability: z.strictObject({ thresholdWeight: q, thresholdWidth: z.number().int().positive().max(1_000_000), electabilityWidth: z.number().int().positive().max(1_000_000), monthlyCap: q }),
   parties: z.record(z.string(), party),

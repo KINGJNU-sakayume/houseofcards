@@ -35,7 +35,7 @@ export function createGame(seed: number, rulesetId: string = rulesets.defaultRul
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('시드는 0~4294967295의 정수여야 합니다.');
   const state = initializePolitics({
     ...initializeSimulation(seed, CALENDAR.startDate, calibration.seeds),
-    schemaVersion: 12, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, brandInconsistency: 0, nominations: emptyNominations(), finalPush: emptyFinalPush(), election: null, simulationStartDate: CALENDAR.startDate,
+    schemaVersion: 13, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, brandInconsistency: 0, nominations: emptyNominations(), finalPush: emptyFinalPush(), election: null, simulationStartDate: CALENDAR.startDate,
     realityPackId: REALITY_PACK_ID, realityPackAsOf: REALITY_PACK_AS_OF,
     rulesetId: preset.rulesetId,
     // The opinion model reads only these ruleset values (viability knee and threshold).

@@ -86,6 +86,6 @@ if (process.argv.includes('--write')) {
   writeFileSync('src/data/seeds/b1.json', JSON.stringify(seedsJson, null, 2) + '\n');
   const modelJson = JSON.parse(readFileSync('src/data/seeds/political-model.json', 'utf8'));
   for (const [id, p] of Object.entries(best.parties)) { modelJson.parties[id].awareness = p.awareness; modelJson.parties[id].viability = p.viability; }
-  modelJson.modelVersion = 'B3';
+  modelJson.modelVersion = 'B4';
   writeFileSync('src/data/seeds/political-model.json', JSON.stringify(modelJson, null, 2) + '\n');
 }
