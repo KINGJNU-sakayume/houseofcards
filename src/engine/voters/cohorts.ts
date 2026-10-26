@@ -47,7 +47,7 @@ export function buildCohorts(reality: RealityPack, seeds: SeedPack, levers: read
   for (const cohort of cohorts.sort((a, b) => a.id < b.id ? -1 : 1)) {
     const attachment = [...partyIds].sort().map(id => {
       const draw = randomInt(rng, 1000); rng = draw.state;
-      return { id, mass: (draw.value + 1) * seeds.partyAttachmentMasses[id]! };
+      return { id, mass: (draw.value + 1) * seeds.partyAttachmentMasses[id]! * seeds.regionalAttachmentWeights[cohort.regionId as keyof SeedPack['regionalAttachmentWeights']]![id]! };
     });
     cohort.partyAttachment = normalizeMasses(attachment);
   }

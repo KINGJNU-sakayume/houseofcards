@@ -72,6 +72,8 @@ export const seedPackSchema = z.strictObject({
   tagInterpretation: z.record(z.string(), z.array(coreTag)),
   platformPriorWeights: z.array(z.number().int().positive().max(1000)).length(5),
   partyAttachmentMasses: z.record(z.string(), z.number().int().positive().max(1000)),
+  // Region × party multiplier on attachment masses (100 = neutral); CAL tunes these.
+  regionalAttachmentWeights: z.record(z.enum(REGION_IDS), z.record(z.string(), z.number().int().positive().max(10000))),
   nonLeverSignals: z.partialRecord(coreTag, z.array(z.string())),
   seedLabel: z.string().min(1),
 });

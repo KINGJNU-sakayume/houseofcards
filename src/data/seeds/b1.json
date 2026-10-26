@@ -584,5 +584,63 @@
     "reform": 2,
     "rkp": 2,
     "minor-bloc": 1
+  },
+  "regionalAttachmentWeights": {
+    "seoul": {
+      "dp": 100,
+      "ppp": 100,
+      "reform": 100,
+      "rkp": 100,
+      "minor-bloc": 100
+    },
+    "gyeonggi-incheon": {
+      "dp": 100,
+      "ppp": 100,
+      "reform": 100,
+      "rkp": 100,
+      "minor-bloc": 100
+    },
+    "chungcheong": {
+      "dp": 100,
+      "ppp": 100,
+      "reform": 100,
+      "rkp": 100,
+      "minor-bloc": 100
+    },
+    "tk": {
+      "dp": 100,
+      "ppp": 100,
+      "reform": 100,
+      "rkp": 100,
+      "minor-bloc": 100
+    },
+    "pk": {
+      "dp": 100,
+      "ppp": 100,
+      "reform": 100,
+      "rkp": 100,
+      "minor-bloc": 100
+    },
+    "honam": {
+      "dp": 100,
+      "ppp": 100,
+      "reform": 100,
+      "rkp": 100,
+      "minor-bloc": 100
+    },
+    "gangwon": {
+      "dp": 100,
+      "ppp": 100,
+      "reform": 100,
+      "rkp": 100,
+      "minor-bloc": 100
+    },
+    "jeju": {
+      "dp": 100,
+      "ppp": 100,
+      "reform": 100,
+      "rkp": 100,
+      "minor-bloc": 100
+    }
   }
 }
