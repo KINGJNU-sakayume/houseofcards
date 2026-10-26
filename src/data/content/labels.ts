@@ -7,3 +7,5 @@ export const DRIVER_LABELS: Record<string, string> = {
   'investment-gap': '산업 투자 부족', 'infrastructure-gap': '산업 기반 부족', 'energy-pressure': '에너지 부담', 'research-gap': '연구개발 부족', 'global-demand-pressure': '세계 수요 압력',
   'institutional-distrust': '제도 신뢰의 압력', 'representation-gap': '대표성 격차',
 };
+export const PROFILE_LABELS: Record<string, string> = { 'housing-pressure': '주거 압박(Housing Pressure)', 'family-work': '가족·일(Family Work)', 'asset-retirement': '자산·노후(Asset Retirement)' };
+export const cohortLabel = (id: string) => { const [region, age, profile] = id.split('/'); return `${REGION_LABELS[region!] ?? region} ${age} ${PROFILE_LABELS[profile!] ?? profile}`; };
