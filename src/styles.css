@@ -505,3 +505,33 @@ footer { display: flex; justify-content: space-between; gap: 16px; padding: 14px
   .step-card { flex-direction: row; align-items: baseline; gap: 10px; }
   .step-head { flex: none; width: 64px; }
 }
+
+/* U5 인재 */
+.sort-button { border: 0; background: none; padding: 0; font: inherit; color: inherit; font-weight: 650; cursor: pointer; white-space: nowrap; }
+.sort-button.active { color: var(--accent); }
+.person-button { display: flex; align-items: center; gap: 10px; border: 0; background: none; padding: 0; text-align: left; cursor: pointer; }
+.person-button strong { display: block; font-size: 14px; }
+.person-button small { display: block; font-size: 11px; }
+.roster td.num, .roster th.num { text-align: center; }
+.profile { display: grid; gap: 16px; }
+.profile-head { display: grid; grid-template-columns: auto minmax(0, 1fr) 180px; gap: 16px; align-items: center; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.profile-head h2 { font-size: 24px; }
+.profile-trust strong { display: block; font-size: 22px; margin-bottom: 4px; }
+.profile-trust small { font-size: 12px; color: var(--ink-3); font-weight: 500; }
+.profile-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.attr-group { margin-bottom: 14px; }
+.attr-group h3 { margin: 0 0 6px; font-size: 13px; color: var(--ink-3); }
+.attr-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.attr-row span small { display: block; font-size: 11px; color: var(--ink-3); }
+.profile-action { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; background: var(--surface-2); margin: 0; }
+.profile-action legend { font-weight: 700; padding: 0 4px; }
+@media (max-width: 760px) {
+  .profile-head { grid-template-columns: auto minmax(0, 1fr); }
+  .profile-trust { grid-column: 1 / -1; }
+  .profile-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 680px) {
+  .roster tr { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) !important; align-items: center; }
+  .roster td:nth-child(2), .roster td:nth-child(5), .roster td:nth-child(6), .roster td:nth-child(7) { display: none !important; }
+}
+dialog.modal, dialog.save-dialog { margin: auto; }

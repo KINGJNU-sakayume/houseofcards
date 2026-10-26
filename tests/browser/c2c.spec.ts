@@ -25,7 +25,9 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   const initial = createFoundedGame(20261019);
   const person = [...initial.politicians].sort((a, b) => a.name.localeCompare(b.name, 'ko'))[0]!;
   await page.getByRole('link', { name: '인재', exact: false }).click();
+  await page.locator('.person-button').filter({ hasText: person.name }).click();
   await page.getByRole('button', { name: '영입 제안', exact: true }).click();
+  await page.getByTestId('recruit-result').getByRole('button', { name: '확인' }).click();
   await page.getByRole('link', { name: '지역조직', exact: false }).click();
   await page.getByLabel('종류', { exact: false }).selectOption('policy_forum');
   await expect(page.getByText('비용: 3,000만원 · 실무 인력 2 · 3주 소요')).toBeVisible();
