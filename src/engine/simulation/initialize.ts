@@ -1,4 +1,5 @@
-import { policyLevers, realityPack, seedPack } from '../../data/reality';
+import { policyLevers, realityPack, seedPack as defaultSeeds } from '../../data/reality';
+import type { SeedPack } from '../../data/reality/schema';
 import { createIssues } from '../issues';
 import { createGovernmentPolicy, createPlatform, editDraft, publishPlatform } from '../policy';
 import { buildCohorts } from '../voters/cohorts';
@@ -6,7 +7,8 @@ import { deriveStream, randomInt, streamKey } from './rng';
 import type { CoreValue } from '../../types/simulation';
 
 export { PLAYER_PARTY_ID } from '../../types/party';
-export function initializeSimulation(seed: number, date: string) {
+// `seedPack` is overridable only for offline calibration (scripts/calibrate.ts).
+export function initializeSimulation(seed: number, date: string, seedPack: SeedPack = defaultSeeds) {
   const ids = [...realityPack.parties.map(p => p.id), 'minor-bloc'].sort();
   const key = streamKey('platform-priors', date);
   let rng = deriveStream(seed, 'platform-priors', date);

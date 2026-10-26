@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import legacyC2c from './fixtures/phase-c2c-v6.json' with { type: 'json' };
+import legacyD1 from './fixtures/phase-d1-v7.json' with { type: 'json' };
 import lawReview from '../docs/data/law-review-phase-d.json' with { type: 'json' };
 import rulesetData from '../src/data/rulesets/rulesets.json' with { type: 'json' };
 import { rulesetPreset, rulesets } from '../src/data/rulesets';
@@ -112,8 +113,12 @@ describe('D1 game integration', () => {
     const tampered = JSON.parse(serializeSave(s)); tampered.state.electionRuleset.listSeats = 47;
     expect(() => deserializeSave(JSON.stringify(tampered))).toThrow();
   });
+  it('rejects real pre-calibration D1 saves (schema 7) with Korean keep-JSON guidance', () => {
+    expect(legacyD1.state.schemaVersion).toBe(7); expect(legacyD1.checksum).toBe(stateHash(legacyD1.state));
+    expect(() => deserializeSave(JSON.stringify(legacyD1))).toThrow('D1 세이브(스키마 7)는 교정된 정치 모형 B3(스키마 8)와 호환되지 않습니다. 기존 JSON을 보관');
+  });
   it('rejects real C2c saves with Korean keep-JSON guidance', () => {
     expect(legacyC2c.state.schemaVersion).toBe(6); expect(legacyC2c.checksum).toBe(stateHash(legacyC2c.state));
-    expect(() => deserializeSave(JSON.stringify(legacyC2c))).toThrow('C2c 세이브(스키마 6)는 D1(스키마 7)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyC2c))).toThrow('C2c 세이브(스키마 6)는 현재 버전(스키마 8)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

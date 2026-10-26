@@ -39,7 +39,7 @@ export interface GameEvent {
   detail: string;
 }
 export interface GameState {
-  schemaVersion: 7;
+  schemaVersion: 8;
   phase: 'C2';
   playerParty: PlayerParty | null;
   resources: Resources | null;

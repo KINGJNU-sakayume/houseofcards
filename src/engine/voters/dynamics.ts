@@ -16,9 +16,10 @@ export const quarterKey = (date: string) => `${date.slice(0, 4)}-Q${Math.floor((
 const emptyAnalysis = (date: string): SupportAnalysis => ({ date, currentSupport: {}, potentialSupport: {}, byAge: {}, byRegion: {}, groupMass: {}, neutralViability: 0, playerPartyId: null,
   barriers: null });
 
-export function initializePolitics(base: Omit<GameState, 'politics'>): GameState {
+// `partySeeds` is overridable only for offline calibration (scripts/calibrate.ts).
+export function initializePolitics(base: Omit<GameState, 'politics'>, partySeeds: typeof model.parties = model.parties): GameState {
   const parties: PartyPerception[] = base.platforms.map(platform => {
-    const seed = model.parties[platform.partyId]!;
+    const seed = partySeeds[platform.partyId]!;
     const declaredValues: PartyPerception['declaredValues'] = [];
     return { partyId: platform.partyId, declaredValues, identity: platformIdentity(platform, declaredValues),
       expertise: Object.fromEntries(DOMAIN_IDS.map(d => [d, seed.expertise])) as PartyPerception['expertise'],
@@ -31,7 +32,7 @@ export function initializePolitics(base: Omit<GameState, 'politics'>): GameState
   let rng = base.rngState[calibrationKey] ?? deriveStream(base.seed, 'cohort-calibration', base.date);
   const perceptions = Object.fromEntries(base.cohorts.map(cohort => [cohort.id, Object.fromEntries(parties.map(party => {
     const draw = randomInt(rng, 20001); rng = draw.state;
-    const awareness = clamp(fixedMultiply(model.parties[party.partyId]!.awareness, 800000 + cohort.politicalAttention * 20) + draw.value - 10000);
+    const awareness = clamp(fixedMultiply(partySeeds[party.partyId]!.awareness, 800000 + cohort.politicalAttention * 20) + draw.value - 10000);
     return [party.partyId, { awareness, loyalty: cohort.partyAttachment[party.partyId]! }];
   }))]));
   const approval = realityPack.facts.find(f => f.id === 'government-approval');
@@ -44,7 +45,7 @@ export function initializePolitics(base: Omit<GameState, 'politics'>): GameState
     governmentApproval: approvalBaseline,
     governmentApprovalBaseline: approvalBaseline,
     governmentApprovalStatus: verified ? 'REAL_FACT' : 'UNVERIFIED_ASSUMPTION',
-    viability: Object.fromEntries(parties.map(p => [p.partyId, model.parties[p.partyId]!.viability])),
+    viability: Object.fromEntries(parties.map(p => [p.partyId, partySeeds[p.partyId]!.viability])),
     viabilityInput: { asOf: null, shares: {} }, pollHouses: houses, polls: [], analysis: emptyAnalysis(base.date),
   };
   const state: GameState = { ...base, rngState: { ...base.rngState, ...rngState, [calibrationKey]: rng }, politics };

@@ -1,5 +1,5 @@
 {
-  "modelVersion": "B2.1",
+  "modelVersion": "B3",
   "label": "GAME MODEL · 개발 프리뷰 · 현실 지지율/정당 평가 아님",
   "utility": {
     "fit": 1400000,
@@ -34,10 +34,10 @@
   },
   "parties": {
     "dp": {
-      "awareness": 930000,
+      "awareness": 980000,
       "expertise": 600000,
       "ownership": 540000,
-      "viability": 850000,
+      "viability": 950000,
       "oppositionAlignment": 0
     },
     "ppp": {
@@ -48,24 +48,24 @@
       "oppositionAlignment": 5
     },
     "reform": {
-      "awareness": 440000,
+      "awareness": 220000,
       "expertise": 420000,
       "ownership": 300000,
-      "viability": 350000,
+      "viability": 75000,
       "oppositionAlignment": 2
     },
     "rkp": {
       "awareness": 420000,
       "expertise": 410000,
       "ownership": 300000,
-      "viability": 350000,
+      "viability": 116871,
       "oppositionAlignment": 2
     },
     "minor-bloc": {
-      "awareness": 330000,
+      "awareness": 50000,
       "expertise": 320000,
       "ownership": 220000,
-      "viability": 250000,
+      "viability": 50000,
       "oppositionAlignment": 1
     }
   },
