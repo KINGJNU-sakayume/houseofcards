@@ -36,7 +36,7 @@ export interface PoliticsState {
   pollHouses: PollHouse[]; polls: SimulatedPoll[]; analysis: SupportAnalysis;
 }
 export interface OpinionRuleset {
-  rulesetId: 'parallel_46_open'; kind: 'opinion_only'; label: string; status: 'GAME_ASSUMPTION';
+  rulesetId: string; kind: 'opinion_only'; label: string; status: 'GAME_ASSUMPTION';
   calendar: { startDate: string; lastWeeklyDate: string; electionDate: string };
   listSeats: number; legalThresholdVoteShare: number; electabilityKnee: number;
 }

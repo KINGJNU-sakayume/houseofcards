@@ -3,41 +3,16 @@ import type { OpinionRuleset, PoliticsState } from './politics';
 import type { Finance, InternalSurvey, InvestmentKind, PlayerParty, RegionOrganization, Research, Resources } from './party';
 import type { CoreValue, DomainId } from './simulation';
 import type { PartyPromise, Politician, PromiseType, RoleId } from './people';
+import type { CurrentLaw, RulesetPreset } from '../data/rulesets';
 export type ISODate = string;
 export interface CalendarConfig {
   startDate: ISODate;
   lastWeeklyDate: ISODate;
   electionDate: ISODate;
 }
-export interface FoundationRuleset {
-  rulesetId: 'foundation_calendar_only';
-  kind: 'foundation';
-  label: string;
-  status: 'GAME_ASSUMPTION';
-  calendar: CalendarConfig;
-}
-// Election allocation and all legal parameters belong to Phase D data presets.
-export interface ElectionRuleset {
-  rulesetId: string;
-  label: string;
-  electionDate: ISODate;
-  districtSeats: number;
-  listSeats: number;
-  listMethod: 'parallel' | 'semi_compensatory';
-  listAllocation: 'hare_largest_remainder';
-  districtRule: 'plurality_single_member';
-  legalThreshold: null | { voteShare: number; orDistrictSeats: number };
-  semiCompensatory: null | {
-    coupling: number; cap: number; satelliteMode: 'none' | 'major_parties_neutralize';
-  };
-  officialCampaignDays: number;
-  dualCandidacy: boolean;
-  listGenderRule: 'odd_positions_female' | 'none';
-  listSizeUi: { min: number; max: number };
-  partyRevocation: { seatsEq: number; listVoteShareBelow: number };
-  deposit: { perDistrictCandidate: number; partyList: number; refundFullAbove: number; refundHalfAbove: number };
-  campaignCostReimbursement: { fullAbove: number; halfAbove: number };
-}
+// The save's full election ruleset: a GAME_ASSUMPTION preset plus the current
+// statutory values (REAL_FACT, docs/data/law-review-phase-d.json).
+export type ElectionRulesetSnapshot = RulesetPreset & { electionDate: ISODate; currentLaw: CurrentLaw };
 export type Command = { type: 'ADVANCE_WEEK' } | { type: 'RESPOND_INBOX'; messageId: string }
   | { type: 'CREATE_PARTY'; name: string; shortName: string; color: string; values: [CoreValue, CoreValue, CoreValue] }
   | { type: 'SET_STAFF_LEVEL'; level: number }
@@ -64,7 +39,7 @@ export interface GameEvent {
   detail: string;
 }
 export interface GameState {
-  schemaVersion: 6;
+  schemaVersion: 7;
   phase: 'C2';
   playerParty: PlayerParty | null;
   resources: Resources | null;
@@ -87,8 +62,9 @@ export interface GameState {
   issues: IssueState[];
   cohorts: Cohort[];
   politics: PoliticsState;
-  rulesetId: 'parallel_46_open';
+  rulesetId: string;
   rulesetSnapshot: OpinionRuleset;
+  electionRuleset: ElectionRulesetSnapshot;
   date: ISODate;
   tick: number;
   status: 'founding' | 'active' | 'phase_complete';

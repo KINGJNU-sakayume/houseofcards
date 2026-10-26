@@ -1,15 +1,17 @@
 {
   "schemaVersion": 4,
   "phase": "C2",
-  "step": "C2c",
+  "step": "D1",
   "modelVersion": "C1.0",
   "peopleModelVersion": "C2.1",
   "organizationModelVersion": "C2.0",
+  "rulesetsVersion": "D1.0",
+  "rulesetId": "parallel_46_open",
   "seed": 42,
-  "initialHash": "1f129a1402e6c47a",
-  "foundedHash": "0f0dfa650430d06c",
-  "seasonEndHash": "aa609398df9a9663",
-  "managementHash": "47a88ba74e23434f",
+  "initialHash": "c60940bf22eeb3d7",
+  "foundedHash": "6775052ac5fc5cc1",
+  "seasonEndHash": "09dbba7b0eb45a82",
+  "managementHash": "043fef5e435819b0",
   "commands": [
     {
       "type": "CREATE_PARTY",

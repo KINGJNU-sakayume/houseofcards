@@ -107,6 +107,38 @@
       "finding": "기존 pack 기록과 같다. 현행 정수이며 2028 정수의 확정이 아니다."
     },
     {
+      "id": "campaign-period",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §33①2·③2, §59",
+      "value": {
+        "electionPeriodDays": 14,
+        "officialCampaignDays": 13
+      },
+      "text": "국회의원선거 선거기간은 14일(후보자등록마감일 후 6일부터 선거일까지). 선거운동은 선거기간개시일부터 선거일 전일까지(§59 본문, 예외 있음).",
+      "finding": "공식 선거운동 기간은 13일이다. 예비후보자·문자·인터넷 선거운동 예외(§59 각 호)는 게임에서 모델링하지 않는다. (D1에서 추가)"
+    },
+    {
+      "id": "district-winner",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §188①",
+      "value": {
+        "rule": "plurality_single_member",
+        "tieBreak": "older_candidate"
+      },
+      "text": "①지역구국회의원선거에 있어서는 … 유효투표의 다수를 얻은 자를 당선인으로 결정한다. 다만, 최고득표자가 2인 이상인 때에는 연장자를 당선인으로 결정한다.",
+      "finding": "단순 다수대표, 동수는 연장자. (D1에서 추가)"
+    },
+    {
+      "id": "list-remainder-tie",
+      "status": "REAL_FACT",
+      "source": "publicOfficialElectionAct §189②2",
+      "value": {
+        "tieBreak": "lottery"
+      },
+      "text": "잔여의석은 소수점 이하 수가 큰 순으로 각 의석할당정당에 1석씩 배분하되, 그 수가 같은 때에는 해당 정당 사이의 추첨에 따른다.",
+      "finding": "현행 조문은 준연동형 잔여배분 규정이지만 게임은 같은 추첨 규칙을 병립형 최대잔여 동률에도 쓴다(게임 가정). (D1에서 추가)"
+    },
+    {
       "id": "districting-2028",
       "status": "REAL_FACT",
       "resolution": "UNRESOLVED",

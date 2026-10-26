@@ -43,7 +43,8 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await expect(page.getByTestId('state-hash')).toHaveText(stateHash(expected));
   await page.getByRole('button', { name: '닫기', exact: false }).first().click();
   await page.goto('./#/election');
-  await expect(page.getByRole('heading', { name: '다음 단계에서 열립니다.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '이 세이브의 선거제도' })).toBeVisible();
+  await expect(page.getByText('D2–D4', { exact: false }).first()).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   for (const path of ['organization', 'politicians', 'party']) {
     await page.goto(`./#/${path}`);

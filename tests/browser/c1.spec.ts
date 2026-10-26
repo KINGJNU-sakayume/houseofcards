@@ -15,7 +15,8 @@ test('C1 founding gate, actual costs, research, stale survey, honest stubs and m
   await page.getByLabel('약칭', { exact: true }).fill('내일');
   for (const value of ['주거개혁', '사회안전망', '과학기술']) await page.getByRole('checkbox', { name: value, exact: false }).check();
   await page.getByRole('button', { name: '정당 창당', exact: true }).click();
-  await expect(page.getByRole('heading', { name: '다음 단계에서 열립니다.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '이 세이브의 선거제도' })).toBeVisible();
+  await expect(page.getByTestId('allocation-example')).toContainText('선거 결과나 예측이 아니며');
   await page.getByRole('link', { name: '정책', exact: false }).click();
   await expect(page.getByText('공표 비용: Staff 1 · Slots 1').first()).toBeVisible();
   await page.getByRole('slider', { name: '임대지원 확대 초안' }).press('End');

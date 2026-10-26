@@ -121,6 +121,6 @@ describe('C2b recruitment', () => {
     expect(stateHash(replay(42, s.commandLog as Command[]))).toBe(stateHash(s));
     expect(s.promises.length).toBeGreaterThan(0);
     expect(legacyC2a.state.schemaVersion).toBe(4); expect(legacyC2a.checksum).toBe(stateHash(legacyC2a.state));
-    expect(() => deserializeSave(JSON.stringify(legacyC2a))).toThrow('C2a 세이브(스키마 4)는 C2c(스키마 6)와 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyC2a))).toThrow('C2a 세이브(스키마 4)는 D1(스키마 7)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

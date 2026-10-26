@@ -3,11 +3,13 @@ import { useGameStore } from '../state/store';
 import { MAX_SAVE_BYTES, serializeSave } from '../persistence/codec';
 import { stateHash } from '../engine/simulation/determinism';
 import { Icon } from './Icon';
+import { rulesets } from '../data/rulesets';
 
 export function SaveDialog({ onClose }: { onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const store = useGameStore();
   const [seed, setSeed] = useState(String(store.game.seed));
+  const [rulesetId, setRulesetId] = useState(store.game.rulesetId);
   const [localError, setLocalError] = useState('');
   const [confirm, setConfirm] = useState<'new' | 'load' | 'import' | null>(null);
   const [importContent, setImportContent] = useState('');
@@ -26,7 +28,7 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
   async function confirmAction() {
-    if (confirm === 'new') await store.newGame(Number(seed));
+    if (confirm === 'new') await store.newGame(Number(seed), rulesetId);
     if (confirm === 'load') await store.loadManual();
     if (confirm === 'import') await store.importText(importContent);
     setConfirm(null);
@@ -48,7 +50,7 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
         void file.text().then(text => { setImportContent(text); setConfirm('import'); }).catch(() => setLocalError('파일을 읽지 못했습니다.'));
       }} /></label>
     </div>
-    <div className="new-session"><h3>새 프리뷰 시작</h3><p className="muted">시드는 같은 선택을 같은 결과로 재현하는 번호입니다. 새 게임은 창당 화면에서 시작합니다.</p><div className="input-row"><label htmlFor="seed">시드</label><input id="seed" type="number" min="0" max="4294967295" step="1" value={seed} onChange={event => setSeed(event.target.value)} /><button className="button" disabled={store.busy || seed.trim() === '' || !Number.isInteger(Number(seed)) || Number(seed) < 0 || Number(seed) > 0xffffffff} onClick={() => setConfirm('new')}>새로 시작</button></div></div>
+    <div className="new-session"><h3>새 프리뷰 시작</h3><p className="muted">시드는 같은 선택을 같은 결과로 재현하는 번호입니다. 새 게임은 창당 화면에서 시작합니다. 선거제도는 게임용 가정이며 실제 2028년 제도는 미확정입니다.</p><div className="input-row"><label htmlFor="seed">시드</label><input id="seed" type="number" min="0" max="4294967295" step="1" value={seed} onChange={event => setSeed(event.target.value)} /><label htmlFor="ruleset">선거제도</label><select id="ruleset" value={rulesetId} onChange={event => setRulesetId(event.target.value)}>{rulesets.presets.filter(p => p.uiEnabled).map(p => <option key={p.rulesetId} value={p.rulesetId}>{p.label}</option>)}</select><button className="button" disabled={store.busy || seed.trim() === '' || !Number.isInteger(Number(seed)) || Number(seed) < 0 || Number(seed) > 0xffffffff} onClick={() => setConfirm('new')}>새로 시작</button></div></div>
     {confirm && <div className="confirmation" role="group" aria-label="진행 상황 교체 확인"><p>현재 진행 상황과 자동저장을 교체합니다. 수동 저장 슬롯은 유지됩니다.</p><div className="input-row"><button className="button primary" disabled={store.busy} onClick={() => void confirmAction()}>교체하고 계속</button><button className="button" onClick={() => setConfirm(null)}>취소</button></div></div>}
     {(localError || store.error) && <p className="error" role="alert">{localError || store.error}</p>}
     <p className="dialog-status" role="status">{store.notice}</p>

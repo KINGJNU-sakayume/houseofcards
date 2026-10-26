@@ -1,0 +1,28 @@
+import { expect, test } from '@playwright/test';
+
+test('D1: choose a ruleset for a new game, see it on every screen and on the Election page', async ({ page }) => {
+  const errors: string[] = []; page.on('pageerror', e => errors.push(e.message));
+  await page.goto('./');
+  await page.getByRole('button', { name: '저장 / 불러오기' }).click();
+  await expect(page.getByLabel('선거제도')).toBeVisible();
+  await expect(page.getByLabel('선거제도').locator('option')).toHaveCount(2);
+  await page.getByLabel('선거제도').selectOption('parallel_46_threshold_3');
+  await page.getByRole('button', { name: '새로 시작', exact: true }).click();
+  await page.getByRole('button', { name: '교체하고 계속', exact: true }).click();
+  await page.getByRole('button', { name: '세이브 관리 닫기' }).click();
+  await expect(page.getByText('이 세이브의 선거제도: 병립형 46 · 3% 문턱 복원 시나리오', { exact: false })).toBeVisible();
+  await page.getByLabel('정당 이름', { exact: true }).fill('내일의 정당');
+  await page.getByLabel('약칭', { exact: true }).fill('내일');
+  for (const value of ['주거개혁', '사회안전망', '과학기술']) await page.getByRole('checkbox', { name: value, exact: false }).check();
+  await page.getByRole('button', { name: '정당 창당', exact: true }).click();
+  await page.getByRole('link', { name: '선거', exact: false }).click();
+  await expect(page.getByTestId('ruleset-card')).toContainText('정당득표 3% 이상 또는 지역구 5석 이상 (입법 시나리오)');
+  await expect(page.getByTestId('law-card')).toContainText('1,500만원');
+  await expect(page.getByTestId('law-card')).toContainText('중복입후보 불가');
+  await expect(page.getByTestId('allocation-example').locator('tbody tr')).toHaveCount(5);
+  await page.reload();
+  await expect(page.getByTestId('ruleset-card')).toContainText('3%');
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});
