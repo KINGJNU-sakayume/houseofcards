@@ -73,7 +73,7 @@ export function Hemicycle({ parties, ariaLabel }: { parties: { id: string; label
   points.sort((p, q) => q.a - p.a || p.r - q.r);
   const colors = parties.flatMap(p => Array<string>(p.seats).fill(p.color));
   const W2 = 400, H2 = 215, cx = 200, cy = 205, R = 190;
-  return <figure style={{ margin: 0 }}>
+  return <figure style={{ margin: '0 auto', maxWidth: 560 }}>
     <svg className="chart" viewBox={`0 0 ${W2} ${H2}`} role="img" aria-label={ariaLabel}>
       {points.map((p, i) => <circle key={i} cx={cx + Math.cos(p.a) * R * p.r} cy={cy - Math.sin(p.a) * R * p.r} r={Math.max(2.4, 190 / (rows * 6.2))} fill={colors[i]} />)}
       <text x={cx} y={cy - 8} textAnchor="middle" style={{ fontSize: 22, fontWeight: 750, fill: 'var(--ink)' }}>{total}석</text>
