@@ -9,3 +9,6 @@ export const DRIVER_LABELS: Record<string, string> = {
 };
 export const PROFILE_LABELS: Record<string, string> = { 'housing-pressure': '주거 압박(Housing Pressure)', 'family-work': '가족·일(Family Work)', 'asset-retirement': '자산·노후(Asset Retirement)' };
 export const cohortLabel = (id: string) => { const [region, age, profile] = id.split('/'); return `${REGION_LABELS[region!] ?? region} ${age} ${PROFILE_LABELS[profile!] ?? profile}`; };
+// Display colours for charts and capsules only (UI convention, not official party branding).
+export const PARTY_COLORS: Record<string, string> = { dp: '#2f6fd1', ppp: '#d64545', reform: '#e08a1c', rkp: '#1f8f86', 'minor-bloc': '#8a8f98', none: '#c7d0db' };
+export const STEP_LABELS = ['축소', '일부 축소', '현행 유지', '확대', '대폭 확대'] as const;

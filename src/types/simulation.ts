@@ -13,6 +13,7 @@ export type ProfileId = typeof PROFILE_IDS[number];
 export type LeverValue = 0 | 1 | 2 | 3 | 4;
 export interface LeverDefinition {
   id: string; name: string; domain: DomainId; axis: string;
+  steps: [string, string, string, string, string];
   range: { min: 0; max: 4; statusQuo: 2 };
   valueTags: Partial<Record<CoreValue, number>>;
   fiscalImplication: { costPerStep: number; note: string };
