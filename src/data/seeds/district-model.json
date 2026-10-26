@@ -1,0 +1,7 @@
+{
+  "modelVersion": "D2.0",
+  "label": "GAME_MODEL",
+  "viability": { "low": 150000, "high": 300000, "note": "Slice §19: S-curve with its bend between about 15% and 30% district support; the top two are viable" },
+  "tacticalScale": 1000000,
+  "residual": "district 2024 share minus the region's turnout-weighted 2024 average, for game parties only"
+}

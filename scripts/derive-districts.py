@@ -2,7 +2,7 @@
 
 Usage: python3 -I scripts/derive-districts.py
 Reads docs/data/districts-2024.json (DD2), docs/data/party-mapping-2024.json and
-src/data/seeds/b1.json (profile conditionals); writes docs/data/districts-light-2024.json.
+src/data/seeds/b1.json (profile conditionals); writes docs/data/districts-light-2024.json and the Reality-pack copy src/data/reality/districts-2024.json.
 Deterministic, stdlib only, no network. Not loaded into the Reality pack (D2).
 """
 import hashlib
@@ -15,6 +15,7 @@ DATA = ROOT / 'docs' / 'data'
 SCALE = 1_000_000
 AGE_BANDS = ['18-29', '30-44', '45-59', '60+']
 PROFILE_IDS = ['housing-pressure', 'family-work', 'asset-retirement']  # order of profileConditionals masses
+PACK_ID = 'kr-d2-2026-10-18-r4'
 QUOTAS = {'seoul': 6, 'gyeonggi-incheon': 8, 'chungcheong': 4, 'pk': 4, 'tk': 2, 'honam': 2, 'gangwon': 2, 'jeju': 2}
 
 def fail(msg):
@@ -107,6 +108,14 @@ def main():
     }
     text = json.dumps(out, ensure_ascii=False, indent=1) + '\n'
     (DATA / 'districts-light-2024.json').write_text(text, encoding='utf-8')
+    # D2: the Reality-pack copy (read-only game data) with only the fields the engine uses.
+    active_ids = {a['id'] for a in active}
+    pack = {'packId': PACK_ID, 'source': 'docs/data/districts-light-2024.json', 'label': out['label'], 'quotas': QUOTAS,
+            'active30Criteria': out['method']['active30'],
+            'districts': [{'id': r['id'], 'sido': r['sido'], 'name': r['name'], 'regionId': r['regionId'], 'active': r['id'] in active_ids,
+                           'electors2024': r['electors2024'], 'turnout2024': r['turnout2024'], 'cohortComposition': r['cohortComposition'],
+                           'baseline2024': {k: r['baseline2024'][k] for k in ('districtShare', 'listShare', 'winnerGameParty', 'marginShare')}} for r in light]}
+    (ROOT / 'src' / 'data' / 'reality' / 'districts-2024.json').write_text(json.dumps(pack, ensure_ascii=False, indent=1) + '\n', encoding='utf-8')
     print(json.dumps({'districts': len(light), 'active': Counter(a['regionId'] for a in active), 'sha256': hashlib.sha256(text.encode()).hexdigest()}, ensure_ascii=False, default=dict))
 
 if __name__ == '__main__':

@@ -20,6 +20,11 @@ test('D1: choose a ruleset for a new game, see it on every screen and on the Ele
   await expect(page.getByTestId('law-card')).toContainText('1,500만원');
   await expect(page.getByTestId('law-card')).toContainText('중복입후보 불가');
   await expect(page.getByTestId('allocation-example').locator('tbody tr')).toHaveCount(5);
+  await expect(page.getByTestId('district-basis')).toContainText('2024년 기준');
+  await expect(page.getByTestId('district-explorer').locator('tbody tr')).toHaveCount(30);
+  await page.getByLabel('Active 30만 보기').uncheck();
+  await expect(page.getByTestId('district-explorer').locator('tbody tr')).toHaveCount(254);
+  await expect(page.getByTestId('district-explorer')).toContainText('REAL-WORLD BASELINE');
   await page.reload();
   await expect(page.getByTestId('ruleset-card')).toContainText('3%');
   await page.setViewportSize({ width: 390, height: 844 });
