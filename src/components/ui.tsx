@@ -27,14 +27,14 @@ export function Tabs<T extends string>({ options, value, onChange, label }: { op
   return <div className="tabs" role="tablist" aria-label={label}>{options.map(o => <button key={o.id} type="button" role="tab" aria-selected={o.id === value} className={o.id === value ? 'active' : ''} onClick={() => onChange(o.id)}>{o.label}{o.count !== undefined && <span className="count" aria-hidden="true">{o.count}</span>}</button>)}</div>;
 }
 
-export function Modal({ title, onClose, children, narrow, closeLabel = '닫기' }: { title: ReactNode; onClose: () => void; children: ReactNode; narrow?: boolean; closeLabel?: string }) {
+export function Modal({ title, onClose, children, narrow, closeLabel = '닫기', testId }: { title: ReactNode; onClose: () => void; children: ReactNode; narrow?: boolean; closeLabel?: string; testId?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const element = ref.current!;
     if (!element.open) element.showModal();
     return () => element.close();
   }, []);
-  return <dialog ref={ref} className={`modal ${narrow ? 'narrow' : ''}`} onCancel={event => { event.preventDefault(); onClose(); }}>
+  return <dialog ref={ref} data-testid={testId} className={`modal ${narrow ? 'narrow' : ''}`} onCancel={event => { event.preventDefault(); onClose(); }}>
     <header className="modal-head"><h2>{title}</h2><button className="icon-button" aria-label={closeLabel} onClick={onClose}><Icon name="close" size={18} /></button></header>
     <div className="modal-body">{children}</div>
   </dialog>;

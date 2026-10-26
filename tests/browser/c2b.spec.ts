@@ -15,24 +15,29 @@ test('C2b prospects, qualitative band, recruit with promise, refusal reason, sav
   await expect(page.getByRole('heading', { name: '함께할 사람을 찾다' })).toBeVisible();
   await expect(page.getByText('영입 후보 30명', { exact: false })).toBeVisible();
   await expect(page.getByText('실존 인물과 무관하며', { exact: false }).first()).toBeVisible();
+  const expected0 = createFoundedGame(20261019);
+  const first = [...expected0.politicians].sort((a, b) => a.name.localeCompare(b.name, 'ko'))[0]!;
+  // U5: the roster is a full-width table; a row opens the profile modal.
+  await page.locator('.person-button').filter({ hasText: first.name }).click();
   const detail = page.getByTestId('politician-detail');
   await expect(detail.getByText('막판 총력전 유세 누적 효율', { exact: false }).first()).toBeVisible();
   await expect(page.getByTestId('recruit-band')).toHaveText(/낮음|보통|높음/);
-  const expected0 = createFoundedGame(20261019);
-  const first = [...expected0.politicians].sort((a, b) => a.name.localeCompare(b.name, 'ko'))[0]!;
   await expect(detail.getByRole('heading', { name: first.name })).toBeVisible();
   await detail.getByRole('checkbox', { name: '총선 경선 보장', exact: false }).check();
   await page.getByRole('button', { name: '영입 제안', exact: true }).click();
   const commands: Command[] = [{ type: 'RECRUIT_POLITICIAN', politicianId: first.id, role: 'member', promises: ['primary_guarantee'] }];
   let expected = expected0; for (const c of commands) expected = dispatchCommand(expected, c);
   const outcome = expected.politicians.find(p => p.id === first.id)!.status;
+  // The outcome is shown in a result modal; its profile button reopens the person.
+  await expect(page.getByTestId('recruit-result')).toContainText(outcome === 'recruited' ? '영입 성공' : '거절했습니다');
+  await page.getByRole('button', { name: '프로필 보기' }).click();
   if (outcome === 'recruited') {
-    await page.getByRole('button', { name: /영입한 인재/ }).click();
     await expect(page.getByTestId('politician-detail')).toContainText('등록 마감(2028-03-20)에 공천 결과로 판정');
   } else {
     await expect(page.getByTestId('recruit-refusal')).toContainText('재접촉 대기');
     await expect(page.getByRole('button', { name: '영입 제안', exact: true })).toBeDisabled();
   }
+  await page.getByTestId('politician-detail').getByRole('button', { name: '닫기' }).click();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: 'test-results/c2b-politicians-mobile.png', fullPage: true });
   await page.reload();
