@@ -43,6 +43,6 @@ export function monthlyBrand(state: GameState): GameState {
   const after = before + fixedMultiply(brandTarget(state) - before, b().monthlyRate);
   let next: GameState = { ...state, brandInconsistency: Math.max(0, Math.min(SCALE, after)) };
   if (before < b().warning && next.brandInconsistency >= b().warning)
-    next = postMessage(next, '공약·인재가 내세운 가치와 어긋납니다', '공표한 공약의 방향이나 영입한 인재의 성향이 창당 때 내세운 핵심가치와 반대로 기울고 있습니다. 유권자의 신뢰 평가가 서서히 낮아지며, 일관되게 바로잡으면 서서히 회복합니다. 득표를 직접 빼지는 않습니다.', 'Important', '정책위원장');
+    next = postMessage(next, '공약·인재가 내세운 가치와 어긋납니다', '공표한 공약의 방향이나 영입한 인재의 성향이 창당 때 내세운 핵심가치와 반대로 기울고 있습니다. 유권자의 신뢰 평가가 서서히 낮아지며, 일관되게 바로잡으면 서서히 회복합니다. 득표를 직접 빼지는 않습니다.', 'Important', '정책위원장', { route: '/party', label: '브랜드 일관성 보기' });
   return next;
 }

@@ -60,6 +60,9 @@ export interface ElectionResult {
   deposits: { paid: number; refunded: number }; reimbursement: number;
   outcome: 'in_parliament' | 'extra_parliamentary';
 }
+// U1 monthly record for charts (bounded): end-of-month money, members, current support and issue indices.
+export interface MonthlyRecord { date: ISODate; money: number; members: number; support: number; issues: Record<string, [number, number]> }
+export interface InboxLink { route: string; label: string }
 export interface InboxMessage {
   id: string;
   date: ISODate;
@@ -68,6 +71,7 @@ export interface InboxMessage {
   body: string;
   priority: 'Critical' | 'Action Required' | 'Important' | 'Report' | 'FYI';
   read: boolean;
+  link: InboxLink | null;
 }
 export interface GameEvent {
   id: string;
@@ -76,7 +80,7 @@ export interface GameEvent {
   detail: string;
 }
 export interface GameState {
-  schemaVersion: 15;
+  schemaVersion: 16;
   phase: 'C2';
   playerParty: PlayerParty | null;
   resources: Resources | null;
@@ -111,6 +115,7 @@ export interface GameState {
   tick: number;
   status: 'founding' | 'active' | 'phase_complete';
   inbox: InboxMessage[];
+  history: MonthlyRecord[];
   events: GameEvent[];
   commandLog: Command[];
 }

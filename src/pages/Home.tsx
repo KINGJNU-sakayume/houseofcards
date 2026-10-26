@@ -1,46 +1,99 @@
-import { ResourceStrip } from '../components/Resources';
+import { useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { PLAYER_PARTY_ID } from '../types/party';
-import { useState } from 'react';
+import type { InboxMessage } from '../types/game';
 import { useGameStore } from '../state/store';
-import { CALENDAR, daysBetween, isMonthlyTick, MILESTONES, weekCount } from '../engine/calendar';
-import { realityPack } from '../data/reality';
+import { CALENDAR, daysBetween, MILESTONES, weekCount } from '../engine/calendar';
 import { DOMAIN_LABELS } from '../types/simulation';
-import { SimulationNotice, range } from '../components/Simulation';
+import { ResourceStrip } from '../components/Resources';
 import { Icon } from '../components/Icon';
+import { Bar, PageHeading, Panel, Stat, Tabs } from '../components/ui';
+import { Sparkline } from '../components/charts';
+import { formatDate, formatMoney, range, shortDate } from '../components/format';
+
+const PRIORITY: Record<InboxMessage['priority'], { label: string; tone: string; rank: number }> = {
+  Critical: { label: '긴급', tone: 'loss', rank: 0 },
+  'Action Required': { label: '조치 필요', tone: 'warn', rank: 1 },
+  Important: { label: '중요', tone: 'info', rank: 2 },
+  Report: { label: '보고', tone: '', rank: 3 },
+  FYI: { label: '참고', tone: '', rank: 4 },
+};
+const SENDER_COLORS: Record<string, string> = { 사무총장: '#3550a8', 정책위원장: '#2f9b57', '데이터 책임자': '#138a8a', '영입 책임자': '#c7790f', 선거대책위원장: '#c93838' };
+type Filter = 'all' | 'unread' | 'action';
 
 export function Home() {
   const { game, dispatch, busy, ready } = useGameStore();
+  const navigate = useNavigate();
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [filter, setFilter] = useState<'all' | 'unread'>('all');
-  const selected = game.inbox.find(message => message.id === selectedId) ?? game.inbox[0]!;
-  const messages = game.inbox.filter(message => filter === 'all' || !message.read).sort((a, b) => ['Critical', 'Action Required', 'Important', 'Report', 'FYI'].indexOf(a.priority) - ['Critical', 'Action Required', 'Important', 'Report', 'FYI'].indexOf(b.priority) || b.date.localeCompare(a.date) || game.inbox.indexOf(a) - game.inbox.indexOf(b)).slice(0, 5);
-  const latestPoll = game.politics.polls[game.politics.polls.length - 1]!;
-  const pollSupport = latestPoll.national.results[PLAYER_PARTY_ID];
+  const [filter, setFilter] = useState<Filter>('all');
+  const needsAction = (m: InboxMessage) => m.priority === 'Critical' || m.priority === 'Action Required';
+  const messages = useMemo(() => game.inbox
+    .filter(m => filter === 'all' || (filter === 'unread' ? !m.read : needsAction(m)))
+    .sort((a, b) => b.date.localeCompare(a.date) || PRIORITY[a.priority].rank - PRIORITY[b.priority].rank || game.inbox.indexOf(a) - game.inbox.indexOf(b)), [game.inbox, filter]);
+  const selected = game.inbox.find(m => m.id === selectedId) ?? messages[0] ?? game.inbox[0];
+  const unread = game.inbox.filter(m => !m.read).length;
+  const actions = game.inbox.filter(m => needsAction(m) && !m.read).length;
+  const polls = game.politics.polls.filter(p => p.national.results[PLAYER_PARTY_ID]);
+  const latest = game.politics.polls[game.politics.polls.length - 1]!.national.results[PLAYER_PARTY_ID];
+  const days = daysBetween(game.date, CALENDAR.electionDate);
+  const total = weekCount(CALENDAR);
   const topIssues = [...game.issues].sort((a, b) => b.salience - a.salience).slice(0, 3);
-  const unread = game.inbox.filter(message => !message.read).length;
-  const days = daysBetween(game.date, realityPack.electionDate!.value);
-  const percentage = (game.tick - 1) / (weekCount(CALENDAR) - 1) * 100;
+  const next = MILESTONES.find(m => m.date > game.date);
+  const open = (m: InboxMessage) => {
+    if (!m.read && ready && !busy) void dispatch({ type: 'RESPOND_INBOX', messageId: m.id });
+    if (m.link) navigate(m.link.route);
+  };
   return <>
-    <div className="page-heading"><div><p className="eyebrow">당사 · {game.tick}주차</p><h1>{game.playerParty?.name ?? '우리 정당'} 당사</h1><p className="muted">이번 주 보고와 일정을 확인하고 다음 주로 넘어가세요.</p></div><span className="outline-badge">시즌 2026 — 2028</span></div>
-    <ResourceStrip /><section className="overview-grid" aria-label="시즌 현황">
-      <article className="metric"><span>오늘</span><strong data-testid="game-date">{game.date.replaceAll('-', '.')}</strong><small>{isMonthlyTick(game.date) ? '월요일 · 월간 틱 경계' : '월요일 · 주간 틱'}</small></article>
-      <article className="metric"><span>예정 선거일까지</span><strong>D−{days}</strong><small>2028.04.12 · 예정</small></article>
-      <article className="metric"><span>주간 일정</span><strong>{String(game.tick).padStart(2, '0')}<em> / {weekCount(CALENDAR)}</em></strong><small>{78 - game.tick}번 전진 남음</small></article>
-      <article className="metric"><span>우리 정당 · 가상 조사</span><strong>{pollSupport ? range(pollSupport.low, pollSupport.high) : '첫 조사 대기'}</strong><small>{latestPoll.date} · 현실 여론조사 아님</small></article>
-    </section>
-    <SimulationNotice />
-    <section className="home-issues" aria-label="관심이 높은 이슈">{topIssues.map(issue => <article className="sim-card" key={issue.id}><span className="muted small">게임 모형 지수 · {issue.lastUpdated}</span><h3>{DOMAIN_LABELS[issue.id]}</h3><p>심각도 {(issue.severity / 100).toFixed(1)} · 관심도 {(issue.salience / 100).toFixed(1)}</p></article>)}</section>
-    <div className="workspace-grid">
-      <section className="inbox-panel" aria-labelledby="inbox-title">
-        <div className="section-heading"><h2 id="inbox-title"><Icon name="inbox" />받은 편지함 <span className="count">{unread}</span></h2><span className="muted small">우선순위별 주요 알림 최대 5개</span></div>
-        <div className="inbox-tabs" role="group" aria-label="편지 필터"><button aria-pressed={filter === 'all'} className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>전체</button><button aria-pressed={filter === 'unread'} className={filter === 'unread' ? 'active' : ''} onClick={() => setFilter('unread')}>읽지 않음</button></div>
-        <div className="inbox-layout"><div className="message-list">
-          {messages.length === 0 && <p className="empty-list">모든 편지를 읽었습니다.</p>}
-          {messages.map(item => <button key={item.id} onClick={() => setSelectedId(item.id)} className={`message-item ${item.id === selected.id ? 'selected' : ''}`} aria-pressed={item.id === selected.id}><span className="message-meta"><span>{item.sender}</span><span>{item.date.slice(5).replace('-', '.')}</span></span><strong>{!item.read && <i className="unread-dot" />}{item.title}</strong><span className="message-category">{{ Critical: '긴급', 'Action Required': '확인 필요', Important: '중요', Report: '보고', FYI: '참고' }[item.priority]}</span></button>)}
-        </div><article className="message-detail"><div className="message-detail-meta"><span className="badge">{{ Critical: '긴급', 'Action Required': '확인 필요', Important: '중요', Report: '보고', FYI: '참고' }[selected.priority]}</span><span>{selected.date}</span></div><h3>{selected.title}</h3><p className="sender">{selected.sender} <span>→ 대표님</span></p><p className="letter-body">{selected.body}</p><div className="letter-footnote">가상 운영 안내 · 가상 시뮬레이션</div><button className="button compact" disabled={selected.read || busy || !ready} onClick={() => void dispatch({ type: 'RESPOND_INBOX', messageId: selected.id })}><Icon name="check" size={16} />{selected.read ? '읽음' : '읽음으로 표시'}</button></article></div>
-      </section>
-      <aside className="agenda-panel"><div className="section-heading"><h2><Icon name="clock" />다가오는 일정</h2><span className="muted small">게임 일정</span></div><ol className="timeline">{MILESTONES.slice(0, 4).map(item => <li key={item.date} className={game.date >= item.date ? 'reached' : ''}><time>{item.date.replaceAll('-', '.')}</time><strong>{item.label}</strong></li>)}</ol><div className="agenda-note">일정은 게임 시나리오입니다.<br />실제 법정 선거 일정의 안내가 아닙니다.</div></aside>
+    <PageHeading eyebrow={`당사 · ${game.tick}주차`} title={`${game.playerParty?.name ?? '우리 정당'} 당사`} sub="이번 주 보고와 일정을 확인하고 다음 주로 넘어가세요." />
+    <ResourceStrip />
+    <div className="stats">
+      <Stat label="오늘" value={<span data-testid="game-date">{game.date.replaceAll('-', '.')}</span>} note={`${game.tick}주차 / ${total}주`} />
+      <Stat label="총선까지" value={days >= 0 ? `D-${days}` : '선거 종료'} note={`${formatDate(CALENDAR.electionDate)} (예정)`} />
+      <Stat label="우리 정당 지지 (가상 조사)" value={latest ? range(latest.low, latest.high) : '첫 조사 대기'} note="현실 여론조사 아님"><Sparkline values={polls.map(p => p.national.results[PLAYER_PARTY_ID]!.point)} color="var(--party)" ariaLabel="우리 정당 조사 지지 추이" /></Stat>
+      <Stat label="자금" value={game.resources ? formatMoney(game.resources.money) : '—'} note={game.history.length > 1 ? '월말 잔액 추이' : '월말마다 기록합니다'}><Sparkline values={game.history.map(h => h.money)} color="var(--gain)" ariaLabel="월말 자금 추이" /></Stat>
     </div>
-    <section className="progress-panel"><div><p className="eyebrow">2028년까지의 길</p><h2>{game.status === 'phase_complete' ? '시즌의 마지막 주에 도착했습니다.' : '한 주씩, 다음 가능성으로.'}</h2><p className="muted">{game.status === 'phase_complete' ? '2028-04-12 총선이 계산되었습니다. 시즌 결과 페이지에서 개표의 밤과 시즌 리뷰를 볼 수 있습니다. 기록을 저장하거나 새 시드로 다시 시작할 수 있습니다.' : '시간을 진행하면 날짜와 받은 편지가 갱신되고 자동저장됩니다.'}</p></div><div className="season-progress"><div><span>2026.10.19</span><span>2028.04.10</span></div><progress max={100} value={percentage} aria-label="시즌 일정 진행률" /><span>{game.tick} / {weekCount(CALENDAR)} 주차</span></div></section>
+    <div className="grid side">
+      <Panel title={<span className="row"><Icon name="inbox" size={18} />받은 편지함 <span className="count">읽지 않음 {unread}</span></span>} flush>
+        <div style={{ padding: '0 16px' }}><Tabs label="편지 필터" value={filter} onChange={setFilter} options={[{ id: 'all', label: '전체', count: game.inbox.length }, { id: 'unread', label: '읽지 않음', count: unread }, { id: 'action', label: '조치 필요', count: actions }]} /></div>
+        <div className="inbox-layout">
+          <div className="message-list">
+            {messages.length === 0 && <p className="empty-list">해당하는 편지가 없습니다.</p>}
+            {messages.map(m => <button key={m.id} onClick={() => setSelectedId(m.id)} className={`message-item ${m.id === selected?.id ? 'selected' : ''} ${m.read ? 'read' : ''}`} aria-pressed={m.id === selected?.id}>
+              <span className="message-meta"><span className="row" style={{ gap: 6 }}><i className="dot" style={{ background: SENDER_COLORS[m.sender] ?? 'var(--ink-3)' }} />{m.sender}</span><span>{shortDate(m.date)}</span></span>
+              <strong>{!m.read && <i className="unread-dot" />}{m.title}</strong>
+              <span className="row" style={{ gap: 6, marginTop: 4 }}><span className={`badge ${PRIORITY[m.priority].tone}`}>{PRIORITY[m.priority].label}</span>{m.link && <span className="muted small">→ {m.link.label}</span>}</span>
+            </button>)}
+          </div>
+          {selected ? <article className="message-detail">
+            <div className="spread"><div className="sender"><span className="avatar" style={{ background: SENDER_COLORS[selected.sender] ?? 'var(--ink-3)', width: 36, height: 36 }}>{selected.sender.slice(0, 1)}</span><div><strong>{selected.sender}</strong><div className="muted small">→ 대표님 · {formatDate(selected.date)}</div></div></div><span className={`badge ${PRIORITY[selected.priority].tone}`}>{PRIORITY[selected.priority].label}</span></div>
+            <h3>{selected.title}</h3>
+            <p className="letter-body">{selected.body}</p>
+            <div className="row">
+              {selected.link && <button className="button primary" disabled={busy} onClick={() => open(selected)}>{selected.link.label}<Icon name="arrow" size={16} /></button>}
+              <button className="button" disabled={selected.read || busy || !ready} onClick={() => void dispatch({ type: 'RESPOND_INBOX', messageId: selected.id })}><Icon name="check" size={16} />{selected.read ? '읽음' : '읽음으로 표시'}</button>
+            </div>
+            <p className="letter-footnote" style={{ marginTop: 14 }}>가상 운영 보고 · 가상 시뮬레이션</p>
+          </article> : <p className="empty-list">받은 편지가 없습니다.</p>}
+        </div>
+      </Panel>
+      <div className="stack">
+        <Panel title="다가오는 일정" sub="게임 일정 · 실제 법정 일정 아님">
+          {next && <p className="chip info" style={{ marginBottom: 10 }}>다음: {next.label} · D-{daysBetween(game.date, next.date)}</p>}
+          <ol className="timeline" style={{ padding: 0 }}>{MILESTONES.map(item => <li key={item.date} className={game.date >= item.date ? 'reached' : ''}><time>{formatDate(item.date)}</time><strong>{item.label}</strong></li>)}</ol>
+        </Panel>
+        <Panel title="관심이 높은 이슈" actions={<Link className="link-button small" to="/korea">정국 브리핑 →</Link>}>
+          <div className="stack" style={{ gap: 12 }}>{topIssues.map(issue => <div key={issue.id}>
+            <div className="spread"><strong>{DOMAIN_LABELS[issue.id]}</strong><span className="muted small">관심도 {(issue.salience / 100).toFixed(0)} · 심각도 {(issue.severity / 100).toFixed(0)}</span></div>
+            <Bar value={issue.salience} max={10000} color="var(--warn)" label={`${DOMAIN_LABELS[issue.id]} 관심도`} />
+          </div>)}</div>
+        </Panel>
+        <Panel title="시즌 진행">
+          <div className="spread muted small"><span>2026.10.19</span><span>2028.04.10</span></div>
+          <progress max={total - 1} value={game.tick - 1} aria-label="시즌 일정 진행률" />
+          <p className="muted small" style={{ marginTop: 8 }}>{game.status === 'phase_complete' ? '총선이 계산되었습니다. 시즌 결과에서 개표의 밤과 시즌 리뷰를 보세요.' : `${total - game.tick}주 남았습니다. 진행하면 자동저장됩니다.`}</p>
+          {game.status === 'phase_complete' && <Link className="button primary" style={{ marginTop: 10 }} to="/review">시즌 결과 보기</Link>}
+        </Panel>
+      </div>
+    </div>
   </>;
 }

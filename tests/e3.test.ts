@@ -27,6 +27,6 @@ describe('E3 election-day national swing', () => {
 describe('E3 saves', () => {
   it('rejects real E2 saves (schema 11) with Korean keep-JSON guidance', () => {
     expect(legacyE2.state.schemaVersion).toBe(11); expect(legacyE2.checksum).toBe(stateHash(legacyE2.state));
-    expect(() => deserializeSave(JSON.stringify(legacyE2))).toThrow('E2 세이브(스키마 11)는 선거일 변동이 바뀐 현재 버전(스키마 15)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyE2))).toThrow('E2 세이브(스키마 11)는 선거일 변동이 바뀐 현재 버전(스키마 16)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

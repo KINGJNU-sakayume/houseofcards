@@ -154,7 +154,7 @@ export function nominationCommand(state: GameState, command: Command): { state: 
       const current = state.nominations.districts[command.districtId]!;
       const rest = Object.fromEntries(Object.entries(state.nominations.districts).filter(([id]) => id !== command.districtId));
       let next = recordMoney(clearDistrict(setNominations(state, n => ({ ...n, districts: rest })), command.districtId), 'deposit', districtDeposit(state), `${command.districtId}:refund`);
-      next = postMessage(next, `${district.name} 공천을 철회했습니다`, `${state.politicians.find(p => p.id === current.politicianId)!.name}의 기탁금이 반환되었습니다. 이 지역구에는 우리 정당 후보가 없습니다.`, 'Report');
+      next = postMessage(next, `${district.name} 공천을 철회했습니다`, `${state.politicians.find(p => p.id === current.politicianId)!.name}의 기탁금이 반환되었습니다. 이 지역구에는 우리 정당 후보가 없습니다.`, 'Report', '사무총장', { route: '/election', label: '공천 보기' });
       return { state: next, event: 'NOMINATION_WITHDRAWN', detail: command.districtId };
     }
     let next = state, winner: string, participants: string[] = [];
@@ -180,7 +180,7 @@ export function nominationCommand(state: GameState, command: Command): { state: 
     const nomination: DistrictNomination = { politicianId: winner, method: command.method, participants, nominatedAt: state.date };
     next = setNominations(next, n => ({ ...n, districts: Object.fromEntries(Object.entries({ ...n.districts, [command.districtId]: nomination }).sort(([a], [b]) => a < b ? -1 : 1)) }));
     const person = state.politicians.find(p => p.id === winner)!;
-    next = postMessage(next, `${district.name} 후보: ${person.name}`, `${METHOD_LABELS[command.method]}으로 공천했습니다${participants.length > 1 ? ` (경선 참여 ${participants.length}명)` : ''}. 기탁금 ${districtDeposit(state)}만원을 냈으며 등록 마감(${nm.gates.registration}) 전에 철회하면 돌려받습니다. 가상 인물입니다.`, 'Important');
+    next = postMessage(next, `${district.name} 후보: ${person.name}`, `${METHOD_LABELS[command.method]}으로 공천했습니다${participants.length > 1 ? ` (경선 참여 ${participants.length}명)` : ''}. 기탁금 ${districtDeposit(state)}만원을 냈으며 등록 마감(${nm.gates.registration}) 전에 철회하면 돌려받습니다. 가상 인물입니다.`, 'Important', '사무총장', { route: '/election', label: '공천 보기' });
     return { state: next, event: 'NOMINATED', detail: `${command.districtId}:${winner}` };
   }
   if (command.type === 'SET_LIST') {
@@ -200,9 +200,9 @@ export function weeklyNominations(state: GameState): GameState {
   if (!state.playerParty) return state;
   const g = nm.gates;
   let next = state;
-  if (state.date === g.targets) next = postMessage(next, '선거 준비 1단계: 집중 지역 선택', `주요 지역구 30곳 가운데 최대 ${nm.targets.max}곳을 집중 지역으로 정할 수 있습니다. 공천은 ${g.nominations}부터, 비례명부는 ${g.list}부터입니다.`, 'Action Required');
-  if (state.date === g.nominations) next = postMessage(next, '선거 준비 2단계: 공천', `집중 지역에 경선(${nm.primary.minCandidates}~${nm.primary.maxCandidates}명) 또는 전략공천으로 후보를 정할 수 있습니다. 후보를 내지 않은 지역구에는 우리 정당 후보가 없습니다. 등록 마감 ${g.registration}.`, 'Action Required');
-  if (state.date === g.list) next = postMessage(next, '선거 준비 3단계: 비례대표 명부', `${state.electionRuleset.listSizeUi.min}~${state.electionRuleset.listSizeUi.max}명. 홀수 순위 여성, 여성 50% 이상(공직선거법 §47③), 지역구와 중복입후보 불가(§52③).`, 'Action Required');
+  if (state.date === g.targets) next = postMessage(next, '선거 준비 1단계: 집중 지역 선택', `주요 지역구 30곳 가운데 최대 ${nm.targets.max}곳을 집중 지역으로 정할 수 있습니다. 공천은 ${g.nominations}부터, 비례명부는 ${g.list}부터입니다.`, 'Action Required', '사무총장', { route: '/election', label: '집중 지역 고르기' });
+  if (state.date === g.nominations) next = postMessage(next, '선거 준비 2단계: 공천', `집중 지역에 경선(${nm.primary.minCandidates}~${nm.primary.maxCandidates}명) 또는 전략공천으로 후보를 정할 수 있습니다. 후보를 내지 않은 지역구에는 우리 정당 후보가 없습니다. 등록 마감 ${g.registration}.`, 'Action Required', '사무총장', { route: '/election', label: '공천하러 가기' });
+  if (state.date === g.list) next = postMessage(next, '선거 준비 3단계: 비례대표 명부', `${state.electionRuleset.listSizeUi.min}~${state.electionRuleset.listSizeUi.max}명. 홀수 순위 여성, 여성 50% 이상(공직선거법 §47③), 지역구와 중복입후보 불가(§52③).`, 'Action Required', '사무총장', { route: '/election', label: '명부 만들기' });
   if (state.date === g.registration && !state.nominations.registeredAt) {
     next = setNominations(next, n => ({ ...n, registeredAt: state.date }));
     for (const promise of next.promises) {
@@ -214,7 +214,7 @@ export function weeklyNominations(state: GameState): GameState {
       next = kept ? keepPromise(next, promise) : breakPromise(next, promise, promise.type === 'primary_guarantee' ? '경선 없이 등록이 마감되어 깨졌습니다' : `${REGION_LABELS[person.regionId]} 지역구 공천 없이 등록이 마감되어 깨졌습니다`);
     }
     const n = next.nominations;
-    next = postMessage(next, '후보 등록 마감', `지역구 후보 ${Object.keys(n.districts).length}명, 비례대표 명부 ${n.list.length}명으로 등록을 마쳤습니다. 이후 공천과 명부는 바꿀 수 없습니다. 선거는 마지막 주(2028-04-10) 진행 시 2028-04-12 기준으로 계산됩니다.`, 'Important');
+    next = postMessage(next, '후보 등록 마감', `지역구 후보 ${Object.keys(n.districts).length}명, 비례대표 명부 ${n.list.length}명으로 등록을 마쳤습니다. 이후 공천과 명부는 바꿀 수 없습니다. 선거는 마지막 주(2028-04-10) 진행 시 2028-04-12 기준으로 계산됩니다.`, 'Important', '사무총장', { route: '/election', label: '선거 화면으로' });
     next = event(next, 'REGISTRATION_CLOSED', `${Object.keys(n.districts).length}|${n.list.length}`);
   }
   return next;

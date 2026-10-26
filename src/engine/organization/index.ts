@@ -61,7 +61,7 @@ export function weeklyOrganization(state: GameState): GameState {
         forum: investment.kind === 'policy_forum' ? { until: addDays(next.date, org.boostWeeks * 7), intensity: investment.intensity } : r.forum,
         investments: r.investments.filter(i => i !== investment) }));
       if (members) next = { ...next, finance: { ...next.finance!, members: next.finance!.members + members } };
-      next = postMessage(next, `${REGION_LABELS[id]} ${INVESTMENT_LABELS[investment.kind]} 완료`, `${INVESTMENT_EFFECTS[investment.kind]} 조직은 지지를 직접 더하지 않으며 캠페인·투표율·전략투표 효과는 Phase D에서 구현됩니다.`, 'Report', '사무총장');
+      next = postMessage(next, `${REGION_LABELS[id]} ${INVESTMENT_LABELS[investment.kind]} 완료`, `${INVESTMENT_EFFECTS[investment.kind]} 조직은 지지를 직접 더하지 않으며 후보의 지역구 인지도와 막판 총력전 유세 효율에 쓰입니다.`, 'Report', '사무총장', { route: '/organization', label: '지역조직 보기' });
       next = event(next, 'INVESTMENT_COMPLETED', `${id}:${investment.kind}`);
     }
     const r = next.regionalOrganization[id]!;
@@ -82,7 +82,7 @@ export function monthlyOrganization(state: GameState): GameState {
     decayed.push(id);
   }
   if (!decayed.length) return next;
-  next = postMessage(next, '지역조직이 약해지고 있습니다', `${decayed.map(id => REGION_LABELS[id]).join(', ')}: ${org.decayGraceDays}일 넘게 조직 활동이 없어 조직 수준이 낮아졌습니다. 지역사무소가 있으면 감쇠가 느려집니다.`, 'Important', '사무총장');
+  next = postMessage(next, '지역조직이 약해지고 있습니다', `${decayed.map(id => REGION_LABELS[id]).join(', ')}: ${org.decayGraceDays}일 넘게 조직 활동이 없어 조직 수준이 낮아졌습니다. 지역사무소가 있으면 감쇠가 느려집니다.`, 'Important', '사무총장', { route: '/organization', label: '지역조직 보기' });
   return event(next, 'ORGANIZATION_DECAYED', decayed.join('|'));
 }
 // Monthly: recruits' expertise channel into the player's expertise (→ ownership → trust).

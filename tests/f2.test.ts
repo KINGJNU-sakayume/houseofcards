@@ -40,6 +40,6 @@ describe('F2 donations (GAME_MODEL money only)', () => {
 describe('F2 saves', () => {
   it('rejects real F1 saves (schema 13) with Korean keep-JSON guidance', () => {
     expect(legacyF1.state.schemaVersion).toBe(13); expect(legacyF1.checksum).toBe(stateHash(legacyF1.state));
-    expect(() => deserializeSave(JSON.stringify(legacyF1))).toThrow('F1 세이브(스키마 13)는 후원금 수입이 추가된 현재 버전(스키마 15)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyF1))).toThrow('F1 세이브(스키마 13)는 후원금 수입이 추가된 현재 버전(스키마 16)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

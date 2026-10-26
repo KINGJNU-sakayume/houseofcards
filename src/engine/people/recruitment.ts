@@ -94,7 +94,7 @@ export function breakPromise(state: GameState, promise: PartyPromise, reason: st
     recruitmentReputation: Math.max(c.reputationFloor, state.recruitmentReputation! - c.brokenReputation) };
   const person = next.politicians.find(p => p.id === promise.politicianId)!;
   next = updatePerson(next, person.id, p => ({ ...p, trust: Math.max(0, p.trust - c.brokenTrust) }));
-  next = postMessage(next, `${person.name}에게 한 약속을 지키지 못했습니다`, `${PROMISE_LABELS[promise.type]} 약속이 ${reason}. 개인 신뢰와 당의 영입 평판이 떨어졌으며 평판은 매월 조금씩 회복합니다.`, 'Important', '영입 책임자');
+  next = postMessage(next, `${person.name}에게 한 약속을 지키지 못했습니다`, `${PROMISE_LABELS[promise.type]} 약속이 ${reason}. 개인 신뢰와 당의 영입 평판이 떨어졌으며 평판은 매월 조금씩 회복합니다.`, 'Important', '영입 책임자', { route: `/politicians?id=${person.id}`, label: '인재 보기' });
   return event(next, 'PROMISE_BROKEN', promise.id);
 }
 export function keepPromise(state: GameState, promise: PartyPromise): GameState {
@@ -117,7 +117,7 @@ export function weeklyPromises(state: GameState): GameState {
     if (promise.type !== 'policy_chair' || promise.status !== 'pending' || promise.due === 'NOMINATION') continue;
     const person = next.politicians.find(p => p.id === promise.politicianId)!;
     if (promise.due < next.date) next = breakPromise(next, promise, '기한 안에 이행되지 않았습니다');
-    else if (daysBetween(next.date, promise.due) === config().warningDays) next = postMessage(next, '정책위원장 임명 약속 기한이 다가옵니다', `${person.name}에게 약속한 정책위원장 임명 기한은 ${promise.due}입니다. 기한이 지나면 약속은 깨진 것으로 기록됩니다.`, 'Action Required', '영입 책임자');
+    else if (daysBetween(next.date, promise.due) === config().warningDays) next = postMessage(next, '정책위원장 임명 약속 기한이 다가옵니다', `${person.name}에게 약속한 정책위원장 임명 기한은 ${promise.due}입니다. 기한이 지나면 약속은 깨진 것으로 기록됩니다.`, 'Action Required', '영입 책임자', { route: `/politicians?id=${person.id}`, label: '인재 보기' });
   }
   return next;
 }
@@ -138,12 +138,12 @@ export function recruitmentCommand(state: GameState, command: Command): { state:
     next = { ...next, rngState: { ...next.rngState, [key]: draw.state } };
     if (draw.value >= probability) {
       next = updatePerson(next, person.id, p => ({ ...p, status: 'declined', cooldownUntil: addDays(state.date, c.cooldownWeeks * 7), trust: Math.max(0, p.trust - c.refusalTrust) }));
-      next = postMessage(next, `${person.name}이(가) 영입 제안을 거절했습니다`, `${c.cooldownWeeks}주 뒤 다시 접촉할 수 있습니다. 공표한 공약과 가치, 당의 성장세, 역할과 약속이 영입 판단에 반영됩니다. 가상 인물입니다.`, 'Report', '영입 책임자');
+      next = postMessage(next, `${person.name}이(가) 영입 제안을 거절했습니다`, `${c.cooldownWeeks}주 뒤 다시 접촉할 수 있습니다. 공표한 공약과 가치, 당의 성장세, 역할과 약속이 영입 판단에 반영됩니다. 가상 인물입니다.`, 'Report', '영입 책임자', { route: `/politicians?id=${person.id}`, label: '인재 보기' });
       return { state: next, event: 'RECRUITMENT_DECLINED', detail: person.id };
     }
     next = updatePerson(next, person.id, p => ({ ...p, status: 'recruited', role: command.role, recruitedAt: state.date, cooldownUntil: null, trust: Math.min(100, p.trust + c.acceptTrust) }));
     for (const type of [...command.promises].sort()) next = { ...next, promises: [...next.promises, newPromise(next, person.id, type, type === 'policy_chair' && command.role === 'policy_chair')] };
-    next = postMessage(next, `${person.name} 영입에 성공했습니다`, `역할: ${ROLE_LABELS[command.role]}.${command.promises.length ? ` 약속: ${command.promises.map(t => PROMISE_LABELS[t]).join(', ')}. 공천 관련 약속은 Phase D에서 이행 여부가 결정됩니다.` : ''} 가상 인물입니다.`, 'Important', '영입 책임자');
+    next = postMessage(next, `${person.name} 영입에 성공했습니다`, `역할: ${ROLE_LABELS[command.role]}.${command.promises.length ? ` 약속: ${command.promises.map(t => PROMISE_LABELS[t]).join(', ')}. 공천 관련 약속은 후보 등록 마감에 이행 여부가 결정됩니다.` : ''} 가상 인물입니다.`, 'Important', '영입 책임자', { route: `/politicians?id=${person.id}`, label: '인재 보기' });
     return { state: settleAppointments(next), event: 'RECRUITMENT_ACCEPTED', detail: person.id };
   }
   if (command.type === 'ASSIGN_ROLE') {
@@ -157,7 +157,7 @@ export function recruitmentCommand(state: GameState, command: Command): { state:
     // Removing a role that was promised breaks that promise.
     for (const promise of state.promises) if (promise.politicianId === person.id && promise.type === 'policy_chair' && promise.status === 'kept' && person.role === 'policy_chair')
       next = breakPromise(next, promise, '정책위원장 해임으로 깨졌습니다');
-    next = postMessage(settleAppointments(next), `${person.name}의 역할이 바뀌었습니다`, `${ROLE_LABELS[person.role ?? 'member']} → ${ROLE_LABELS[command.role]}.`, 'Report', '사무총장');
+    next = postMessage(settleAppointments(next), `${person.name}의 역할이 바뀌었습니다`, `${ROLE_LABELS[person.role ?? 'member']} → ${ROLE_LABELS[command.role]}.`, 'Report', '사무총장', { route: `/politicians?id=${person.id}`, label: '인재 보기' });
     return { state: next, event: 'ROLE_ASSIGNED', detail: person.id };
   }
   return null;

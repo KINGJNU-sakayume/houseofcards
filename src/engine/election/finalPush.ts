@@ -88,11 +88,11 @@ export function weeklyFinalPush(state: GameState): GameState {
   if (!state.playerParty || state.date <= fp().start || state.election) return state;
   const c = fp(), f = state.finalPush;
   let next = state;
-  if (state.date === addDays(fp().start, 7)) next = postMessage(next, '막판 총력전 첫 주', '전국 메시지, 지도부 집중 지역, 후보별 유세 강도를 매주 배분합니다. 법정 공식 선거운동 기간(13일)과는 다른 게임 개념입니다.', 'Report');
+  if (state.date === addDays(fp().start, 7)) next = postMessage(next, '막판 총력전 첫 주', '전국 메시지, 지도부 집중 지역, 후보별 유세 강도를 매주 배분합니다. 법정 공식 선거운동 기간(13일)과는 다른 게임 개념입니다.', 'Report', '사무총장', { route: '/election', label: '막판 총력전 배분' });
   const cost = weeklyCost(state);
   if (!cost.money && !cost.staffCapacity) return next;
   const reason = shortage(next, cost);
-  if (reason) return postMessage(next, '이번 주 유세를 하지 못했습니다', `${reason}. 배분은 유지되며 다음 주에 다시 시도합니다.`, 'Important');
+  if (reason) return postMessage(next, '이번 주 유세를 하지 못했습니다', `${reason}. 배분은 유지되며 다음 주에 다시 시도합니다.`, 'Important', '사무총장', { route: '/election', label: '유세 배분 확인' });
   next = spend(next, cost, 'campaign', `week:${state.date}`);
   const effort = { ...f.effort }, spent = { ...f.spent };
   for (const [id, n] of Object.entries(state.nominations.districts).sort(([a], [b]) => a < b ? -1 : 1)) {

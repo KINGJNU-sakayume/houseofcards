@@ -440,3 +440,8 @@ footer { display: flex; justify-content: space-between; gap: 16px; padding: 14px
   .party-expertise td[data-label]::before { content: attr(data-label); display: block; font-size: 11px; color: var(--ink-3); }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+
+/* U1 inbox */
+.message-item.read strong { font-weight: 500; color: var(--ink-2); }
+.message-item .badge { font-size: 10px; }
+
