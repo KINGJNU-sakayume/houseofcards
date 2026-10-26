@@ -15,7 +15,7 @@ import { fixedMultiply, SCALE } from '../simulation/math';
 const fp = () => em.finalPush;
 export const emptyFinalPush = (): FinalPush => ({ nationalMessage: null, secondaryMessages: [], leaderFocus: null, campaign: {}, effort: {}, spent: {} });
 export const finalPushOpen = (state: GameState) => state.date >= fp().start && !state.election;
-const gate = (state: GameState) => state.election ? '선거가 끝났습니다.' : state.date < fp().start ? `Final Push는 ${fp().start}부터입니다.` : null;
+const gate = (state: GameState) => state.election ? '선거가 끝났습니다.' : state.date < fp().start ? `막판 총력전은 ${fp().start}부터입니다.` : null;
 const published = (state: GameState, domain: DomainId) => {
   const platform = state.platforms.find(p => p.partyId === PLAYER_PARTY_ID)!;
   return policyLevers.some(l => l.domain === domain && platform.positions[l.id]!.publishedValue !== null);
@@ -88,7 +88,7 @@ export function weeklyFinalPush(state: GameState): GameState {
   if (!state.playerParty || state.date <= fp().start || state.election) return state;
   const c = fp(), f = state.finalPush;
   let next = state;
-  if (state.date === addDays(fp().start, 7)) next = postMessage(next, 'Final Push 첫 주', '전국 메시지, 지도부 집중 지역, 후보별 유세 강도를 매주 배분합니다. 법정 공식 선거운동 기간(13일)과는 다른 게임 개념입니다.', 'Report');
+  if (state.date === addDays(fp().start, 7)) next = postMessage(next, '막판 총력전 첫 주', '전국 메시지, 지도부 집중 지역, 후보별 유세 강도를 매주 배분합니다. 법정 공식 선거운동 기간(13일)과는 다른 게임 개념입니다.', 'Report');
   const cost = weeklyCost(state);
   if (!cost.money && !cost.staffCapacity) return next;
   const reason = shortage(next, cost);

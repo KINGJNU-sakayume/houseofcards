@@ -16,7 +16,7 @@ test('C2b prospects, qualitative band, recruit with promise, refusal reason, sav
   await expect(page.getByText('영입 후보 30명', { exact: false })).toBeVisible();
   await expect(page.getByText('실존 인물과 무관하며', { exact: false }).first()).toBeVisible();
   const detail = page.getByTestId('politician-detail');
-  await expect(detail.getByText('Final Push 유세 누적 효율(D4)', { exact: false }).first()).toBeVisible();
+  await expect(detail.getByText('막판 총력전 유세 누적 효율', { exact: false }).first()).toBeVisible();
   await expect(page.getByTestId('recruit-band')).toHaveText(/낮음|보통|높음/);
   const expected0 = createFoundedGame(20261019);
   const first = [...expected0.politicians].sort((a, b) => a.name.localeCompare(b.name, 'ko'))[0]!;

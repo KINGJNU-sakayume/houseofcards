@@ -38,7 +38,7 @@ describe('D3 gates and targets', () => {
   });
   it('targets only Active districts, at most the configured maximum', () => {
     const light = districtPack.districts.find(d => !d.active)!;
-    expect(() => run(atTargets, { type: 'SET_TARGET_DISTRICT', districtId: light.id, targeted: true })).toThrow('Active 30');
+    expect(() => run(atTargets, { type: 'SET_TARGET_DISTRICT', districtId: light.id, targeted: true })).toThrow('주요 지역구 30곳');
     let s = atTargets;
     for (const d of active.slice(0, nm.targets.max)) s = run(s, { type: 'SET_TARGET_DISTRICT', districtId: d.id, targeted: true });
     expect(s.nominations.targets).toHaveLength(nm.targets.max);
@@ -67,7 +67,7 @@ describe('D3 nominations', () => {
     const prospect = { ...base, politicians: base.politicians.map((p, i) => i === 0 ? { ...p, status: 'prospect' as const } : p) };
     expect(() => run(prospect, { type: 'NOMINATE_DISTRICT', districtId: district.id, method: 'strategic', candidateIds: [id] })).toThrow('영입한 인재');
     const poor = { ...base, resources: { ...base.resources!, money: 1499 } };
-    expect(() => run(poor, { type: 'NOMINATE_DISTRICT', districtId: district.id, method: 'strategic', candidateIds: [id] })).toThrow('Money');
+    expect(() => run(poor, { type: 'NOMINATE_DISTRICT', districtId: district.id, method: 'strategic', candidateIds: [id] })).toThrow('자금이 부족');
   });
   it('a primary picks the winner by Slice §26 factors plus bounded noise, deterministically, and raises participant trust and organization', () => {
     const strong = withRecruits(base, (p, i) => i === 0 ? { regionId: district.regionId, attributes: { ...p.attributes, localBase: 95, recognition: 95, campaigning: 95, broadAppeal: 95, negotiation: 95 } }
@@ -189,6 +189,6 @@ describe('D3 saves', () => {
   });
   it('rejects real D2 saves (schema 8) with Korean keep-JSON guidance', () => {
     expect(legacyD2.state.schemaVersion).toBe(8); expect(legacyD2.checksum).toBe(stateHash(legacyD2.state));
-    expect(() => deserializeSave(JSON.stringify(legacyD2))).toThrow('D2 세이브(스키마 8)는 공천·명부가 추가된 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyD2))).toThrow('D2 세이브(스키마 8)는 공천·명부가 추가된 현재 버전(스키마 15)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

@@ -22,9 +22,9 @@ test('D1: choose a ruleset for a new game, see it on every screen and on the Ele
   await expect(page.getByTestId('allocation-example').locator('tbody tr')).toHaveCount(5);
   await expect(page.getByTestId('district-basis')).toContainText('2024년 기준');
   await expect(page.getByTestId('district-explorer').locator('tbody tr')).toHaveCount(30);
-  await page.getByLabel('Active 30만 보기').uncheck();
+  await page.getByLabel('주요 30곳만 보기').uncheck();
   await expect(page.getByTestId('district-explorer').locator('tbody tr')).toHaveCount(254);
-  await expect(page.getByTestId('district-explorer')).toContainText('REAL-WORLD BASELINE');
+  await expect(page.getByTestId('district-explorer')).toContainText('현실 기준 자료');
   await page.reload();
   await expect(page.getByTestId('ruleset-card')).toContainText('3%');
   await page.setViewportSize({ width: 390, height: 844 });

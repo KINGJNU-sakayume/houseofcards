@@ -14,7 +14,7 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await expect(page.getByRole('heading', { name: '지역에 뿌리내리다' })).toBeVisible();
   await expect(page.getByTestId('org-limits')).toContainText('투표율 동원은 구현하지 않았습니다');
   await page.getByRole('link', { name: '정책', exact: false }).click();
-  await expect(page.getByText('공표 비용: Staff 1 · Slots 1').first()).toBeVisible();
+  await expect(page.getByText('공표 비용: 실무 인력 1 · 의제 슬롯 1').first()).toBeVisible();
   await page.getByRole('slider', { name: '임대지원 확대 초안' }).press('End');
   await page.getByRole('button', { name: '임대지원 확대 공표' }).click();
   await expect(page.getByTestId('published-housing.rent-support')).toContainText('공표 4');
@@ -27,7 +27,7 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await page.getByRole('button', { name: '영입 제안', exact: true }).click();
   await page.getByRole('link', { name: '지역조직', exact: false }).click();
   await page.getByLabel('종류', { exact: false }).selectOption('policy_forum');
-  await expect(page.getByText('비용: 30.0 백만 원 · Staff 2 · 3주 소요')).toBeVisible();
+  await expect(page.getByText('비용: 3,000만원 · 실무 인력 2 · 3주 소요')).toBeVisible();
   await page.getByRole('button', { name: '투자 시작', exact: true }).click();
   await expect(page.getByTestId('region-seoul')).toContainText('정책간담회 강도 1');
   await expect(page.getByTestId('invest-refusal')).toContainText('이미 진행 중');
@@ -44,7 +44,7 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await page.getByRole('button', { name: '닫기', exact: false }).first().click();
   await page.goto('./#/election');
   await expect(page.getByRole('heading', { name: '이 세이브의 선거제도' })).toBeVisible();
-  await expect(page.getByText('시즌 결과 페이지(E1)', { exact: false }).first()).toBeVisible();
+  await expect(page.getByText('시즌 결과 페이지에', { exact: false }).first()).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   for (const path of ['organization', 'politicians', 'party']) {
     await page.goto(`./#/${path}`);

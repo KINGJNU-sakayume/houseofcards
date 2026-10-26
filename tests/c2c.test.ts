@@ -38,7 +38,7 @@ describe('C2c regional organization', () => {
     expect(once.resources!.staffCapacity).toBe(s.resources!.staffCapacity - investmentCost('member_drive', 2).staffCapacity!);
     expect(() => invest(once, 'seoul', 'member_drive')).toThrow('이미 진행 중');
     const poor: GameState = { ...s, resources: { ...s.resources!, staffCapacity: 1 } };
-    expect(() => invest(poor, 'seoul', 'policy_forum')).toThrow('Staff Capacity가 부족합니다');
+    expect(() => invest(poor, 'seoul', 'policy_forum')).toThrow('실무 인력이 부족합니다');
     expect(s.commandLog).toHaveLength(1);
   });
   it('member drives complete after their weeks, raise members, level and dues; aggregates equal sums', () => {
@@ -125,6 +125,6 @@ describe('C2c regional organization', () => {
     expect(stateHash(deserializeSave(serializeSave(s)))).toBe(stateHash(s));
     expect(stateHash(replay(42, s.commandLog as Command[]))).toBe(stateHash(s));
     expect(legacyC2b.state.schemaVersion).toBe(5); expect(legacyC2b.checksum).toBe(stateHash(legacyC2b.state));
-    expect(() => deserializeSave(JSON.stringify(legacyC2b))).toThrow('C2b 세이브(스키마 5)는 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyC2b))).toThrow('C2b 세이브(스키마 5)는 현재 버전(스키마 15)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

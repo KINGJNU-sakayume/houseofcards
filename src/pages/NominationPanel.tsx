@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useGameStore } from '../state/store';
+import { formatMoney } from '../components/format';
 import { districtPack } from '../data/reality/districts';
 import { REGION_LABELS } from '../data/content/labels';
 import { nominationModel as nm } from '../data/seeds/nomination';
@@ -27,11 +28,11 @@ export function NominationPanel() {
   const listReason = listRefusal(game, list);
   const toggle = (id: string) => setCandidates(c => c.includes(id) ? c.filter(x => x !== id) : method === 'strategic' ? [id] : [...c, id]);
   const move = (i: number, d: number) => { const next = [...list]; [next[i], next[i + d]] = [next[i + d]!, next[i]!]; setDraft(next); };
-  return <section className="sim-card" data-testid="nomination-panel"><h2>공천과 비례명부 <span className="outline-badge">SAVE SIMULATION</span></h2>
+  return <section className="sim-card" data-testid="nomination-panel"><h2>공천과 비례명부 <span className="outline-badge">가상 시뮬레이션</span></h2>
     <p data-testid="nomination-stage"><strong>{STAGE_LABELS[stage]}</strong></p>
     <ListWarning />
-    <p className="muted small">일정은 게임 단순화입니다(실제 후보 등록 기간과 다름). 공천 후보는 영입한 가상 인물입니다. 다른 정당의 후보는 정당 단위 가상 레코드이며 실존 후보가 아닙니다. 기탁금은 현행법 값(지역구 {districtDeposit(game).toLocaleString()}만원, 비례 1인 {listDeposit(game).toLocaleString()}만원)으로 공천 시 내고, 마감 전 철회하면 돌려받습니다. 득표에 따른 반환은 선거 결과에서 계산합니다(지역구 15% 이상 전액, 10% 이상 반액; 비례는 당선인이 있으면 전액).</p>
-    <h3>집중 지역 (Active 30 중 최대 {nm.targets.max}곳 · {n.targets.length}곳 선택)</h3>
+    <p className="muted small">일정은 게임 단순화입니다(실제 후보 등록 기간과 다름). 공천 후보는 영입한 가상 인물입니다. 다른 정당의 후보는 정당 단위 가상 레코드이며 실존 후보가 아닙니다. 기탁금은 현행법 값(지역구 {formatMoney(districtDeposit(game))}, 비례 1인 {formatMoney(listDeposit(game))})으로 공천 시 내고, 마감 전 철회하면 돌려받습니다. 득표에 따른 반환은 선거 결과에서 계산합니다(지역구 15% 이상 전액, 10% 이상 반액; 비례는 당선인이 있으면 전액).</p>
+    <h3>집중 지역 (주요 30곳 중 최대 {nm.targets.max}곳 · {n.targets.length}곳 선택)</h3>
     <div className="table-scroll"><table className="sim-table" data-testid="target-table"><thead><tr><th>지역구</th><th>집중</th><th>우리 후보</th></tr></thead><tbody>{active.map(d => {
       const on = n.targets.includes(d.id), nomination = n.districts[d.id], reason = targetRefusal(game, d.id, !on);
       return <tr key={d.id}><th>{d.name}<br /><small className="muted">{d.sido} · {REGION_LABELS[d.regionId]}</small></th>
@@ -41,7 +42,7 @@ export function NominationPanel() {
     <h3>공천</h3>
     <div className="sim-toolbar"><label>지역구 <select value={chosen} onChange={e => setDistrictId(e.target.value)}><option value="">선택</option>{n.targets.filter(id => !n.districts[id]).map(id => <option key={id} value={id}>{active.find(d => d.id === id)!.name}</option>)}</select></label>
       <label>방식 <select value={method} onChange={e => { setMethod(e.target.value as NominationMethod); setCandidates([]); }}><option value="strategic">전략공천 (1명)</option><option value="primary">경선 ({nm.primary.minCandidates}~{nm.primary.maxCandidates}명)</option></select></label></div>
-    <p className="muted small">{method === 'primary' ? `경선: 지역 기반(출신 권역만)·인지도·선거운동·대중성·협상 점수에 작은 무작위 변동을 더해 승자를 정합니다. 참가자 신뢰와 권역 조직이 오르고 '총선 경선 보장' 약속이 지켜집니다. 비용 ${primaryCost().money}만원, Staff ${primaryCost().staffCapacity}.` : `전략공천: 같은 권역의 공천받지 못한 영입 인재의 신뢰가 떨어지며 후보의 협상력이 이를 줄입니다. Staff ${nm.strategic.staffCapacity}.`} 출신 권역 지역구에 공천하면 '지역 우선공천' 약속이 지켜집니다.</p>
+    <p className="muted small">{method === 'primary' ? `경선: 지역 기반(출신 권역만)·인지도·선거운동·대중성·협상 점수에 작은 무작위 변동을 더해 승자를 정합니다. 참가자 신뢰와 권역 조직이 오르고 '총선 경선 보장' 약속이 지켜집니다. 비용 ${formatMoney(primaryCost().money ?? 0)}, 실무 인력 ${primaryCost().staffCapacity}.` : `전략공천: 같은 권역의 공천받지 못한 영입 인재의 신뢰가 떨어지며 후보의 협상력이 이를 줄입니다. 실무 인력 ${nm.strategic.staffCapacity}.`} 출신 권역 지역구에 공천하면 '지역 우선공천' 약속이 지켜집니다.</p>
     {free.length ? <div role="group" aria-label="공천 후보" className="check-grid">{free.map(p => <label key={p.id} className="check-row"><input type="checkbox" checked={candidates.includes(p.id)} onChange={() => toggle(p.id)} />{p.name} · {REGION_LABELS[p.regionId]} · 지역기반 {p.attributes.localBase} · 선거운동 {p.attributes.campaigning} · 대중성 {p.attributes.broadAppeal}</label>)}</div> : <p className="muted">공천할 수 있는 영입 인재가 없습니다.</p>}
     <button className="button primary" disabled={disabled || !!nominateReason} onClick={() => { void dispatch({ type: 'NOMINATE_DISTRICT', districtId: chosen, method, candidateIds: candidates }); setCandidates([]); }}>공천</button>
     {nominateReason && <p className="muted small" data-testid="nomination-refusal">{nominateReason}</p>}

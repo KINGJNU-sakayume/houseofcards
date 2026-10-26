@@ -71,7 +71,7 @@ export function targetRefusal(state: GameState, districtId: string, targeted: bo
   const gate = gateRefusal(state, 'targets'); if (gate) return gate;
   const d = districtById(districtId);
   if (!d) return '지역구를 찾을 수 없습니다.';
-  if (!d.active) return 'Active 30 지역구만 집중 지역으로 정할 수 있습니다.';
+  if (!d.active) return '주요 지역구 30곳만 집중 지역으로 정할 수 있습니다.';
   const has = state.nominations.targets.includes(districtId);
   if (targeted && !has && state.nominations.targets.length >= nm.targets.max) return `집중 지역은 최대 ${nm.targets.max}곳입니다.`;
   if (!targeted && state.nominations.districts[districtId]) return '공천한 지역구는 먼저 공천을 철회해야 집중 지역에서 뺄 수 있습니다.';
@@ -200,7 +200,7 @@ export function weeklyNominations(state: GameState): GameState {
   if (!state.playerParty) return state;
   const g = nm.gates;
   let next = state;
-  if (state.date === g.targets) next = postMessage(next, '선거 준비 1단계: 집중 지역 선택', `Active 30 지역구 가운데 최대 ${nm.targets.max}곳을 집중 지역으로 정할 수 있습니다. 공천은 ${g.nominations}부터, 비례명부는 ${g.list}부터입니다.`, 'Action Required');
+  if (state.date === g.targets) next = postMessage(next, '선거 준비 1단계: 집중 지역 선택', `주요 지역구 30곳 가운데 최대 ${nm.targets.max}곳을 집중 지역으로 정할 수 있습니다. 공천은 ${g.nominations}부터, 비례명부는 ${g.list}부터입니다.`, 'Action Required');
   if (state.date === g.nominations) next = postMessage(next, '선거 준비 2단계: 공천', `집중 지역에 경선(${nm.primary.minCandidates}~${nm.primary.maxCandidates}명) 또는 전략공천으로 후보를 정할 수 있습니다. 후보를 내지 않은 지역구에는 우리 정당 후보가 없습니다. 등록 마감 ${g.registration}.`, 'Action Required');
   if (state.date === g.list) next = postMessage(next, '선거 준비 3단계: 비례대표 명부', `${state.electionRuleset.listSizeUi.min}~${state.electionRuleset.listSizeUi.max}명. 홀수 순위 여성, 여성 50% 이상(공직선거법 §47③), 지역구와 중복입후보 불가(§52③).`, 'Action Required');
   if (state.date === g.registration && !state.nominations.registeredAt) {

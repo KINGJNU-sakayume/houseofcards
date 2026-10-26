@@ -11,8 +11,8 @@ import { VALUE_LABELS } from './Founding';
 import { ListWarning } from './NominationPanel';
 
 const ATTRIBUTE_LABELS: Record<AttributeId, string> = { recognition: '인지도(Recognition)', localBase: '지역 기반(LocalBase)', campaigning: '선거운동(Campaigning)', organization: '조직력(Organization)', media: '미디어(Media)', negotiation: '협상(Negotiation)', broadAppeal: '대중 호감(BroadAppeal)' };
-// Honest usage notes per §16; Phase D-only attributes are stored and shown only.
-const ATTRIBUTE_USE: Record<AttributeId, string> = { recognition: '영입 시 인지도 노출(상한·체감)', media: '영입 시 인지도 노출(상한·체감)', localBase: '경선 점수, 출신 권역 지역구 후보 효과(D3)', campaigning: '경선 점수, 지역구 후보 효과(D3)', organization: 'Final Push 유세 누적 효율(D4)', negotiation: '영입 협상, 경선 점수, 전략공천 갈등 완화(D3)', broadAppeal: '경선 점수, 지역구 후보 효과(D3)' };
+// Honest usage notes per §16; Election-only attributes are stored and shown only.
+const ATTRIBUTE_USE: Record<AttributeId, string> = { recognition: '영입 시 인지도 노출(상한·체감)', media: '영입 시 인지도 노출(상한·체감)', localBase: '경선 점수, 출신 권역 지역구 후보 효과', campaigning: '경선 점수, 지역구 후보 효과', organization: '막판 총력전 유세 누적 효율', negotiation: '영입 협상, 경선 점수, 전략공천 갈등 완화', broadAppeal: '경선 점수, 지역구 후보 효과' };
 const STATUS_LABELS: Record<Politician['status'], string> = { prospect: '영입 대기', recruited: '영입됨', declined: '거절 · 재접촉 대기', unavailable: '접촉 불가' };
 const backgroundLabel = (id: string) => politicianModel.backgrounds.find(b => b.id === id)?.label ?? id;
 const topDomain = (p: Politician): DomainId => [...DOMAIN_IDS].sort((a, b) => p.policyExpertise[b] - p.policyExpertise[a] || (a < b ? -1 : 1))[0]!;
@@ -41,8 +41,8 @@ export function Politicians() {
   const personPromises = selected ? game.promises.filter(p => p.politicianId === selected.id) : [];
   const counts = { prospects: game.politicians.filter(p => p.status === 'prospect').length, roster: game.politicians.filter(p => p.status === 'recruited').length };
   return <>
-    <div className="page-heading"><div><p className="eyebrow">POLITICIANS / C2</p><h1>함께할 사람을 찾다</h1><p className="muted">영입 후보 {counts.prospects}명 · 영입 {counts.roster}명 · 누적 생성 {game.politicians.length}명 · 영입 평판 {game.recruitmentReputation ?? '—'}/100</p></div></div>
-    <ResourceStrip /><SimulationNotice>가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 능력치는 GAME MODEL 값입니다. 영입 인물은 인지도 노출과 당 전문성으로만 서서히 작용하며 지지를 직접 더하지 않습니다.</SimulationNotice>
+    <div className="page-heading"><div><p className="eyebrow">인재</p><h1>함께할 사람을 찾다</h1><p className="muted">영입 후보 {counts.prospects}명 · 영입 {counts.roster}명 · 누적 생성 {game.politicians.length}명 · 영입 평판 {game.recruitmentReputation ?? '—'}/100</p></div></div>
+    <ResourceStrip /><SimulationNotice>가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 능력치는 게임 모형 값입니다. 영입 인물은 인지도 노출과 당 전문성으로만 서서히 작용하며 지지를 직접 더하지 않습니다.</SimulationNotice>
     <div className="sim-tabs" role="group" aria-label="인재 보기">{([['prospects', `영입 후보 (${counts.prospects})`], ['roster', `영입한 인재 (${counts.roster})`]] as const).map(([id, label]) => <button key={id} aria-pressed={view === id} className={view === id ? 'active' : ''} onClick={() => { setView(id); setSelectedId(null); }}>{label}</button>)}</div>
     <div className="sim-toolbar">
       <label>권역 <select value={region} onChange={e => setRegion(e.target.value)}><option value="all">전체</option>{Object.entries(REGION_LABELS).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
@@ -68,8 +68,8 @@ export function Politicians() {
           <p className="muted small">약속한 정책위원장 자리에서 해임하면 약속은 깨진 것으로 기록됩니다.</p>
         </> : <fieldset className="recruit-form"><legend>영입 제안</legend>
           <label>역할 <select value={role} onChange={e => setRole(e.target.value as RoleId)}>{ROLE_IDS.map(r => <option key={r} value={r}>{ROLE_LABELS[r]}</option>)}</select></label>
-          <div role="group" aria-label="약속">{PROMISE_TYPES.map(t => <label key={t} className="check-row"><input type="checkbox" checked={promises.includes(t)} onChange={e => setPromises(e.target.checked ? [...promises, t] : promises.filter(x => x !== t))} />{PROMISE_LABELS[t]}{t !== 'policy_chair' ? ' (Phase D 공천에서 이행)' : ` (${politicianModel.recruitment.promiseWindowWeeks}주 안에 임명)`}</label>)}</div>
-          <p>비용: {moneyLabel(cost.money)} · Staff {cost.staffCapacity}{band && <> · 성공 가능성 <strong data-testid="recruit-band">{band}</strong></>}</p>
+          <div role="group" aria-label="약속">{PROMISE_TYPES.map(t => <label key={t} className="check-row"><input type="checkbox" checked={promises.includes(t)} onChange={e => setPromises(e.target.checked ? [...promises, t] : promises.filter(x => x !== t))} />{PROMISE_LABELS[t]}{t !== 'policy_chair' ? ' (공천에서 이행)' : ` (${politicianModel.recruitment.promiseWindowWeeks}주 안에 임명)`}</label>)}</div>
+          <p>비용: {moneyLabel(cost.money)} · 실무 인력 {cost.staffCapacity}{band && <> · 성공 가능성 <strong data-testid="recruit-band">{band}</strong></>}</p>
           <p className="muted small">가능성은 가치·공약 일치, 당의 공개 조사 흐름과 인지도, 역할, 약속, 개인 신뢰, 영입 평판으로 정해지며 정확한 수치는 공개하지 않습니다. 거절되면 {politicianModel.recruitment.cooldownWeeks}주 동안 재접촉할 수 없습니다.</p>
           <button className="button primary" disabled={disabled || !!refusal} title={refusal ?? undefined} onClick={() => void dispatch({ type: 'RECRUIT_POLITICIAN', politicianId: selected.id, role, promises: [...promises] })}>영입 제안</button>
           {refusal && <p className="muted" data-testid="recruit-refusal">{refusal}</p>}

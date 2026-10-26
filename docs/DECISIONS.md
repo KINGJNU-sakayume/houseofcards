@@ -542,3 +542,34 @@ Phase D 지시서 `docs/HOUSE_OF_CARDS_KOREA_phase_d_rev1.md`를 새로 쓰고(D
 - **스키마 14.** 원장 종류가 추가되었다. 실제 F1 엔진(main)으로 내보낸 `tests/fixtures/phase-f1-v13.json`을 한국어 보관 안내와 함께 거부한다.
 - **시험 변경.** C1 미지급금 시험은 월간 정산에서 후원금이 급여보다 먼저 들어오는 것을 반영해 기대값에서 후원금을 뺀다.
 - **골든 old→new (seed42, 같은 명령열 재생).** 창당 전 `a33b0294b91b53a5`→`672339861edf06fa`, 창당 후 `0f221d4cf626bb7c`→`45550c7bcb97dbaf`, idle 종료 `dd03782ab0e76dc5`→`707fcf0b91930680`, 관리 `f74ef49ae206f18a`→`7c21fd54b11c51c9`, 공천 `08aab53d6c578306`→`4c0eea175fde558b`, 선거 `6b831ff466ce33d7`→`b120098f299c2d4e`, 20시드 배치 `a3c1ac08a9051e77`→`45eeef2b4cc5c21a`.
+
+# U0 — 디자인 기반과 한국어화 (2026-10-26, `claude/sweet-bohr-1vwv1l`)
+
+- **배경 (사용자 리뷰 2026-10-26).** 화면이 "베타·메모장" 수준이라는 평가였다. 영어 라벨이 섞여 있고, 금액이 "30.0 백만 원"으로 나오며, 그래프나 색 포인트가 없었다. 사용자 결정은 세 가지다.
+  - 라이트 테마를 유지하고 디자인을 개선한다.
+  - 공약 문안에 게임용 구체 수치를 넣는다(U3).
+  - 탭별 단계(U0–U6)로 나눠 단계마다 PR을 만들고 병합한다.
+  - 계획: `docs/ROADMAP.md` U0–U6 행.
+- **디자인 기반.**
+  - `src/styles.css`를 토큰 기반으로 다시 썼다. 표면·글자·선, 강조색, 정당색 `--party`, 이득 초록, 손실 빨강, 경고, 능력치 5등급 색이 토큰이다. 외부 웹폰트와 차트 라이브러리는 추가하지 않았다.
+  - 셸은 FM식이다. 어두운 좌측 내비에 읽지 않은 편지 수를 표시한다. 상단 바에는 날짜(요일 계산), 총선 D-day, 자금·실무 인력·의제 슬롯, 저장 상태, "다음 주로"(조치가 필요한 편지 수 배지)를 둔다. 개발 배너는 "가상 시뮬레이션 · 실제 예측 아님" 칩으로 줄였다.
+  - 공용 컴포넌트(`src/components/ui.tsx`): Panel, Stat, Pills, Tabs, Modal(`<dialog>`), AttrValue, Bar.
+  - SVG 차트(`src/components/charts.tsx`): LineChart, Sparkline, BarList, Radar, Hemicycle, Gauge.
+- **표기.** `src/components/format.ts`의 `formatMoney`로 금액을 억·만원 단위로 쓴다(예: 15억 2,500만원). 날짜는 "2027년 8월 30일 (월)"로 쓴다. 엔진 거부 문구는 지역화 데이터 없이 천 단위 쉼표를 직접 넣는다(엔진마다 같은 저장 문자열을 만들기 위해서다).
+- **한국어 라벨 (AGENTS 비협상 8의 라벨을 한국어로 충족).**
+  - SAVE SIMULATION → "가상 시뮬레이션"
+  - REAL-WORLD BASELINE → "현실 기준 자료"
+  - GAME MODEL → "게임 모형"
+  - REAL FACT → "확인된 사실"
+  - GAME ASSUMPTION → "게임 가정"
+  - SCHEDULED → "예정"
+  - Money / Staff Capacity / Agenda Slots → 자금 / 실무 인력 / 의제 슬롯
+  - Final Push → "막판 총력전"
+  - Election Night → "개표의 밤"
+  - Season Review → "시즌 리뷰"
+  - Vote Flow → "표의 이동"
+  - Active 30 → "주요 지역구 30곳"
+  - 단계 배지(B2·C1…)와 영어 eyebrow는 없앴다.
+- **스키마 15.** 저장되는 받은 편지 본문과 거부 사유 문구가 바뀌어, 같은 명령 기록이 다른 상태로 재생된다. 그래서 판별자를 올렸다. 실제 F2 엔진(main)으로 내보낸 `tests/fixtures/phase-f2-v14.json`을 한국어 보관 안내와 함께 거부한다.
+- **골든 old→new (seed42, 같은 명령열 재생).** 창당 전 `672339861edf06fa`→`a90da6cdf8b48b73`, 창당 후 `45550c7bcb97dbaf`→`4af446f5be302a22`, idle 종료 `707fcf0b91930680`→`eb75b6348b20f8a9`, 관리 `7c21fd54b11c51c9`→`e7995e2cbb179cb7`, 공천 `4c0eea175fde558b`→`78280593701082a5`, 선거 `b120098f299c2d4e`→`69f4ced760ef645f`.
+- **시험 변경.** 브라우저·단위 시험의 영어 문구 단언을 새 한국어 문구로 바꿨다. `data-testid`는 유지했다. 상단 날짜는 `topbar-date`로 확인한다.

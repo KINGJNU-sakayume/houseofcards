@@ -11,8 +11,8 @@ import { recruitExpertiseTargets } from './channels';
 
 export const INVESTMENT_LABELS: Record<InvestmentKind, string> = { member_drive: '당원모집', local_office: '지역사무소', candidate_scouting: '후보발굴', policy_forum: '정책간담회' };
 export const INVESTMENT_EFFECTS: Record<InvestmentKind, string> = {
-  member_drive: '완료 시 그 권역 당원과 조직 수준이 늘어납니다. 당원은 당비(Money)에만 쓰입니다.',
-  local_office: `완료 시 사무소가 생겨 매주 임대료 ${org.officeRent}만원이 들고, 월 Staff Capacity가 ${org.officeStaff} 늘며, 조직 감쇠가 줄어듭니다.`,
+  member_drive: '완료 시 그 권역 당원과 조직 수준이 늘어납니다. 당원은 당비(자금)에만 쓰입니다.',
+  local_office: `완료 시 사무소가 생겨 매주 임대료 ${org.officeRent}만원이 들고, 월 실무 인력이 ${org.officeStaff} 늘며, 조직 감쇠가 줄어듭니다.`,
   candidate_scouting: `완료 후 ${org.boostWeeks}주 동안 그 권역 출신 인재 후보가 나올 확률 가중치가 오릅니다(인원 상한은 그대로).`,
   policy_forum: `완료 후 ${org.boostWeeks}주 동안 그 권역 유권자에게 공약이 전달되는 노출이 늘어 인지도가 서서히 오릅니다.`,
 };

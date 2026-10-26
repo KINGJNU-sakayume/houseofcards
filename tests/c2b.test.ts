@@ -48,7 +48,7 @@ describe('C2b recruitment', () => {
   it('refusal is atomic: shortages and invalid choices leave state and command log untouched', () => {
     const s = createFoundedGame(5), id = s.politicians[0]!.id;
     const broke: GameState = { ...s, resources: { ...s.resources!, staffCapacity: 1 } };
-    expect(() => recruit(broke, id)).toThrow('Staff Capacity가 부족합니다');
+    expect(() => recruit(broke, id)).toThrow('실무 인력이 부족합니다');
     expect(() => recruit(s, id, 'member', ['policy_chair', 'policy_chair'])).toThrow('한 번만');
     expect(() => recruit(s, 'pol-999')).toThrow('찾을 수 없습니다');
     expect(() => dispatchCommand(s, { type: 'ASSIGN_ROLE', politicianId: id, role: 'policy_chair' })).toThrow('영입한 인재에게만');
@@ -121,6 +121,6 @@ describe('C2b recruitment', () => {
     expect(stateHash(replay(42, s.commandLog as Command[]))).toBe(stateHash(s));
     expect(s.promises.length).toBeGreaterThan(0);
     expect(legacyC2a.state.schemaVersion).toBe(4); expect(legacyC2a.checksum).toBe(stateHash(legacyC2a.state));
-    expect(() => deserializeSave(JSON.stringify(legacyC2a))).toThrow('C2a 세이브(스키마 4)는 현재 버전(스키마 14)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyC2a))).toThrow('C2a 세이브(스키마 4)는 현재 버전(스키마 15)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

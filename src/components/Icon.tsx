@@ -14,6 +14,15 @@ const paths: Record<string, string> = {
   inbox: 'M4 5h16l2 10v5H2v-5ZM2 15h6l2 3h4l2-3h6',
   lock: 'M6 10h12v11H6ZM8 10V6a4 4 0 0 1 8 0v4',
   close: 'm6 6 12 12M6 18 18 6',
+  party: 'M3 21h18M5 21V10m14 11V10M9 21v-7h6v7M2 10l10-6 10 6Z',
+  trophy: 'M8 21h8m-4-4v4M7 4h10v5a5 5 0 0 1-10 0ZM7 6H4a3 3 0 0 0 3 4m10-4h3a3 3 0 0 1-3 4',
+  bell: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4ZM10 20a2 2 0 0 0 4 0',
+  news: 'M4 5h13v14H6a2 2 0 0 1-2-2ZM17 9h3v8a2 2 0 0 1-2 2M7 9h7M7 13h7M7 16h4',
+  up: 'm6 15 6-6 6 6',
+  down: 'm6 9 6 6 6-6',
+  flat: 'M5 12h14',
+  coin: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9 9.5c0-1 1.3-1.8 3-1.8s3 .8 3 1.8-1.3 1.6-3 2-3 1-3 2 1.3 1.8 3 1.8 3-.8 3-1.8M12 6v1.7m0 8.6V18',
+  star: 'm12 3 2.7 5.6 6.1.8-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.8Z',
 };
 export function Icon({ name, size = 20 }: { name: string; size?: number }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name] ?? paths.policy} /></svg>;
