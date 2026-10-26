@@ -21,6 +21,8 @@ import { recruitmentCommand, weeklyPromises, monthlyReputation } from '../people
 import { monthlyOrganization, organizationCommand, recruitExpertise, weeklyOrganization } from '../organization';
 import { scoutingWeight } from '../organization/channels';
 import { emptyNominations, nominationCommand, weeklyNominations } from '../election/nominations';
+import { emptyFinalPush, finalPushCommand, weeklyFinalPush } from '../election/finalPush';
+import { holdElection } from '../election/election';
 
 export const REALITY_PACK_ID = realityPack.id;
 export const REALITY_PACK_AS_OF = realityPack.asOf;
@@ -32,7 +34,7 @@ export function createGame(seed: number, rulesetId: string = rulesets.defaultRul
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('시드는 0~4294967295의 정수여야 합니다.');
   const state = initializePolitics({
     ...initializeSimulation(seed, CALENDAR.startDate, calibration.seeds),
-    schemaVersion: 9, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, nominations: emptyNominations(), simulationStartDate: CALENDAR.startDate,
+    schemaVersion: 10, phase: 'C2', seed, playerParty: null, resources: null, finance: null, regionalOrganization: {}, research: [], internalSurveys: [], politicians: [], promises: [], recruitmentReputation: null, nominations: emptyNominations(), finalPush: emptyFinalPush(), election: null, simulationStartDate: CALENDAR.startDate,
     realityPackId: REALITY_PACK_ID, realityPackAsOf: REALITY_PACK_AS_OF,
     rulesetId: preset.rulesetId,
     // The opinion model reads only these ruleset values (viability knee and threshold).
@@ -75,6 +77,8 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
     if (invested) return finish(invested.state, invested.event, invested.detail);
     const nominated = nominationCommand(state, command);
     if (nominated) return finish(nominated.state, nominated.event, nominated.detail);
+    const pushed = finalPushCommand(state, command);
+    if (pushed) return finish(pushed.state, pushed.event, pushed.detail);
   } else if (!['ADVANCE_WEEK', 'RESPOND_INBOX'].includes(command.type)) throw new Error('완료된 프리뷰는 변경할 수 없습니다.');
   if (command.type === 'SET_PLATFORM_DRAFT' || command.type === 'PUBLISH_PLATFORM') {
     if (state.status !== 'active') throw new Error('완료된 프리뷰는 공약을 변경할 수 없습니다.');
@@ -114,11 +118,13 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
   const update = monthly ? monthlyUpdate(next) : null;
   if (update) next = update.state;
   // Own stream only: the pool never moves AI, voter or polling draws.
-  next = weeklyNominations(weeklyPromises(updatePoolStatus(next)));
+  next = weeklyFinalPush(weeklyNominations(weeklyPromises(updatePoolStatus(next))));
   if (monthly) next = monthlyOrganization(monthlyReputation(next));
   const pool = next;
   const supply = monthly ? monthlySupply(next, { regionWeight: id => scoutingWeight(pool, id) }) : null;
   if (supply) next = supply.state;
+  // The last weekly tick computes the scheduled election (Slice §6: 2028-04-12).
+  if (date === state.rulesetSnapshot.calendar.lastWeeklyDate) next = holdElection(next);
   const messages: InboxMessage[] = [];
   const events: GameEvent[] = [...next.events, { id: `event-${next.events.length}`, date, type: 'WEEK_ADVANCED', detail: `${tick}주차` }];
   const event = (type: GameEvent['type'], detail: string) => events.push({ id: `event-${events.length}`, date, type, detail });
@@ -139,7 +145,8 @@ export function dispatchCommand(state: GameState, command: Command): GameState {
     if (update.aiChanges.length) event('AI_PLATFORM_SHIFT', update.aiChanges.join('|'));
     if (update.governmentChanges.length) event('GOVERNMENT_ENACTED', update.governmentChanges.join('|'));
   }
-  if (date === '2028-01-17') next = postMessage(next, 'Final Push 일정 안내', '이 기능은 아직 구현되지 않았습니다. Final Push와 선거 실행은 D4에서 구현됩니다.', 'FYI');
+  if (date === '2028-01-17') next = postMessage(next, 'Final Push 시작', '선거 12주 전입니다. 선거 페이지에서 전국·보조 메시지, 지도부 집중 지역, 후보별 유세 강도를 정하세요. 배분은 매주 정산됩니다.', 'Action Required');
+
   return deepFreeze({ ...next, status: date === state.rulesetSnapshot.calendar.lastWeeklyDate ? 'phase_complete' : 'active',
     rngState: { ...next.rngState, [key]: draw.state }, inbox: [...messages, ...next.inbox].slice(0, 60), events, commandLog: [...state.commandLog, { ...command }],
   });

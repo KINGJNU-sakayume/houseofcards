@@ -11,7 +11,7 @@ import { VALUE_LABELS } from './Founding';
 
 const ATTRIBUTE_LABELS: Record<AttributeId, string> = { recognition: '인지도(Recognition)', localBase: '지역 기반(LocalBase)', campaigning: '선거운동(Campaigning)', organization: '조직력(Organization)', media: '미디어(Media)', negotiation: '협상(Negotiation)', broadAppeal: '대중 호감(BroadAppeal)' };
 // Honest usage notes per §16; Phase D-only attributes are stored and shown only.
-const ATTRIBUTE_USE: Record<AttributeId, string> = { recognition: '영입 시 인지도 노출(상한·체감)', media: '영입 시 인지도 노출(상한·체감)', localBase: '경선 점수, 출신 권역 지역구 후보 효과(D3)', campaigning: '경선 점수, 지역구 후보 효과(D3)', organization: '아직 효과 없음 — D4 캠페인에서 사용됩니다', negotiation: '영입 협상, 경선 점수, 전략공천 갈등 완화(D3)', broadAppeal: '경선 점수, 지역구 후보 효과(D3)' };
+const ATTRIBUTE_USE: Record<AttributeId, string> = { recognition: '영입 시 인지도 노출(상한·체감)', media: '영입 시 인지도 노출(상한·체감)', localBase: '경선 점수, 출신 권역 지역구 후보 효과(D3)', campaigning: '경선 점수, 지역구 후보 효과(D3)', organization: 'Final Push 유세 누적 효율(D4)', negotiation: '영입 협상, 경선 점수, 전략공천 갈등 완화(D3)', broadAppeal: '경선 점수, 지역구 후보 효과(D3)' };
 const STATUS_LABELS: Record<Politician['status'], string> = { prospect: '영입 대기', recruited: '영입됨', declined: '거절 · 재접촉 대기', unavailable: '접촉 불가' };
 const backgroundLabel = (id: string) => politicianModel.backgrounds.find(b => b.id === id)?.label ?? id;
 const topDomain = (p: Politician): DomainId => [...DOMAIN_IDS].sort((a, b) => p.policyExpertise[b] - p.policyExpertise[a] || (a < b ? -1 : 1))[0]!;

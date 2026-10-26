@@ -29,7 +29,7 @@ export function NominationPanel() {
   const move = (i: number, d: number) => { const next = [...list]; [next[i], next[i + d]] = [next[i + d]!, next[i]!]; setDraft(next); };
   return <section className="sim-card" data-testid="nomination-panel"><h2>공천과 비례명부 <span className="outline-badge">SAVE SIMULATION</span></h2>
     <p data-testid="nomination-stage"><strong>{STAGE_LABELS[stage]}</strong></p>
-    <p className="muted small">일정은 게임 단순화입니다(실제 후보 등록 기간과 다름). 공천 후보는 영입한 가상 인물입니다. 다른 정당의 후보는 정당 단위 가상 레코드이며 실존 후보가 아닙니다. 기탁금은 현행법 값(지역구 {districtDeposit(game).toLocaleString()}만원, 비례 1인 {listDeposit(game).toLocaleString()}만원)으로 공천 시 내고, 마감 전 철회하면 돌려받습니다. 득표에 따른 반환은 D4에서 계산합니다.</p>
+    <p className="muted small">일정은 게임 단순화입니다(실제 후보 등록 기간과 다름). 공천 후보는 영입한 가상 인물입니다. 다른 정당의 후보는 정당 단위 가상 레코드이며 실존 후보가 아닙니다. 기탁금은 현행법 값(지역구 {districtDeposit(game).toLocaleString()}만원, 비례 1인 {listDeposit(game).toLocaleString()}만원)으로 공천 시 내고, 마감 전 철회하면 돌려받습니다. 득표에 따른 반환은 선거 결과에서 계산합니다(지역구 15% 이상 전액, 10% 이상 반액; 비례는 당선인이 있으면 전액).</p>
     <h3>집중 지역 (Active 30 중 최대 {nm.targets.max}곳 · {n.targets.length}곳 선택)</h3>
     <div className="table-scroll"><table className="sim-table" data-testid="target-table"><thead><tr><th>지역구</th><th>집중</th><th>우리 후보</th></tr></thead><tbody>{active.map(d => {
       const on = n.targets.includes(d.id), nomination = n.districts[d.id], reason = targetRefusal(game, d.id, !on);
@@ -45,7 +45,7 @@ export function NominationPanel() {
     <button className="button primary" disabled={disabled || !!nominateReason} onClick={() => { void dispatch({ type: 'NOMINATE_DISTRICT', districtId: chosen, method, candidateIds: candidates }); setCandidates([]); }}>공천</button>
     {nominateReason && <p className="muted small" data-testid="nomination-refusal">{nominateReason}</p>}
     <h3>비례대표 명부 ({list.length}명 · {game.electionRuleset.listSizeUi.min}~{game.electionRuleset.listSizeUi.max}명)</h3>
-    <p className="muted small">홀수 순위 여성, 여성 50% 이상(공직선거법 §47③), 지역구와 중복입후보 불가(§52③). 명부의 득표·의석 효과는 D4 선거 계산에서 쓰입니다.</p>
+    <p className="muted small">홀수 순위 여성, 여성 50% 이상(공직선거법 §47③), 지역구와 중복입후보 불가(§52③). 명부가 있어야 정당투표에 우리 정당이 오르며, 비례 의석은 명부 순서대로 배정됩니다. 명부의 브랜딩 효과는 구현하지 않았습니다.</p>
     <ol data-testid="list-draft">{list.map((id, i) => <li key={id}>{name(id)} · {game.politicians.find(p => p.id === id)?.gender === 'female' ? '여' : '남'}
       <button className="link-button" disabled={i === 0} onClick={() => move(i, -1)}>위로</button><button className="link-button" disabled={i === list.length - 1} onClick={() => move(i, 1)}>아래로</button>
       <button className="link-button" onClick={() => setDraft(list.filter(x => x !== id))}>빼기</button></li>)}</ol>

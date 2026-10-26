@@ -17,6 +17,10 @@ import { REGION_IDS } from '../src/data/reality/schema';
 import { roundDiv } from '../src/engine/simulation/math';
 import type { Politician } from '../src/types/people';
 import type { CoreValue } from '../src/types/simulation';
+import { districtPack } from '../src/data/reality/districts';
+import { electionModel } from '../src/data/seeds/election';
+import { candidacyOf, candidateQuality, nominationStage } from '../src/engine/election/nominations';
+import { PLAYER_PARTY_ID } from '../src/types/party';
 const strategies = ['idle', 'balanced', 'housing-focused', 'regional', 'spender'] as const;
 let refused = 0;
 const refusals: Record<string, number> = {};
@@ -112,6 +116,39 @@ function play(state: GameState, strategy: Strategy, month: number, monthly: bool
   }
   return state;
 }
+// D3/D4 electoral play for every non-idle bot: target Active districts in recruits' regions,
+// nominate the best free recruit, register a list when the gender rule can be met, campaign in the Final Push.
+function electoralPlay(state: GameState, strategy: Strategy): GameState {
+  if (strategy === 'idle') return state;
+  const stage = nominationStage(state), n = state.nominations;
+  if (stage === 'closed' || stage === 'registered' && state.date < electionModel.finalPush.start) return state;
+  const active = districtPack.districts.filter(d => d.active);
+  const recruitRegions = new Set(state.politicians.filter(p => p.status === 'recruited').map(p => p.regionId));
+  if (stage !== 'registered' && n.targets.length < 10) {
+    const preferred = active.filter(d => strategy === 'regional' ? d.regionId === 'pk' : recruitRegions.has(d.regionId));
+    for (const d of [...preferred, ...active].slice(0, 30)) if (state.nominations.targets.length < 10) state = attempt(state, { type: 'SET_TARGET_DISTRICT', districtId: d.id, targeted: true });
+  }
+  if (stage === 'nominations' || stage === 'list') for (const id of state.nominations.targets) {
+    if (state.nominations.districts[id]) continue;
+    const d = active.find(x => x.id === id)!;
+    const best = state.politicians.filter(p => p.status === 'recruited' && !candidacyOf(state, p.id)).sort((a, b) => candidateQuality(b, d) - candidateQuality(a, d) || (a.id < b.id ? -1 : 1))[0];
+    if (best) state = attempt(state, { type: 'NOMINATE_DISTRICT', districtId: id, method: 'strategic', candidateIds: [best.id] });
+  }
+  if (stage === 'list' && !state.nominations.list.length) {
+    const free = state.politicians.filter(p => p.status === 'recruited' && !candidacyOf(state, p.id));
+    const women = free.filter(p => p.gender === 'female'), men = free.filter(p => p.gender === 'male');
+    // Women at odd positions; once men run out the remaining places go to women.
+    const size = Math.min(state.electionRuleset.listSizeUi.max, women.length + Math.min(men.length, women.length));
+    const list: string[] = [];
+    for (let i = 0, w = 0, m = 0; i < size; i++) list.push(i % 2 === 0 || m >= men.length ? women[w++]!.id : men[m++]!.id);
+    if (size >= state.electionRuleset.listSizeUi.min) state = attempt(state, { type: 'SET_LIST', politicianIds: list });
+  }
+  if (state.date >= electionModel.finalPush.start && !state.election) {
+    if (!state.finalPush.nationalMessage) state = attempt(state, { type: 'SET_MESSAGES', national: 'housing', secondary: [] });
+    for (const id of Object.keys(state.nominations.districts)) if (!state.finalPush.campaign[id]) state = attempt(state, { type: 'SET_CAMPAIGN', districtId: id, intensity: 2 });
+  }
+  return state;
+}
 const hashes: string[] = [];
 const metrics: Record<string, Record<string, number[]>> = {};
 const record = (strategy: string, key: string, value: number) => ((metrics[strategy] ??= {})[key] ??= []).push(value);
@@ -123,7 +160,7 @@ for (let seed = 0; seed < count; seed++) {
     if (strategy === 'balanced' || strategy === 'regional') state = attempt(state, { type: 'SET_STAFF_LEVEL', level: 1 });
     while (state.status === 'active') {
       const monthly = isMonthlyTick(addDays(state.date, 7));
-      state = play(state, strategy, month, monthly);
+      state = electoralPlay(play(state, strategy, month, monthly), strategy);
       const before = state.politics.analysis.currentSupport;
       state = dispatchCommand(state, { type: 'ADVANCE_WEEK' });
       if (monthly) {
@@ -143,6 +180,12 @@ for (let seed = 0; seed < count; seed++) {
     record(strategy, 'awareness', roundDiv(state.cohorts.reduce((sum, c) => sum + c.weight * state.politics.perceptions[c.id]!.player!.awareness, 0), SCALE));
     for (const domain of DOMAIN_IDS) record(strategy, `ownership:${domain}`, player.ownership[domain]);
     record(strategy, 'recruits', state.politicians.filter(p => p.status === 'recruited').length);
+    if (!state.election) throw new Error(`No election result at ${seed}/${strategy}`);
+    record(strategy, 'nominees', Object.keys(state.nominations.districts).length);
+    record(strategy, 'listSize', state.nominations.list.length);
+    record(strategy, 'seats', state.election.totalSeats[PLAYER_PARTY_ID] ?? 0);
+    const listTotal = Object.values(state.election.listVotes).reduce((a, b) => a + b, 0);
+    record(strategy, 'listVoteShareQ6', roundDiv((state.election.listVotes[PLAYER_PARTY_ID] ?? 0) * SCALE, listTotal));
     record(strategy, 'generated', state.politicians.length);
     record(strategy, 'money', state.resources!.money);
     record(strategy, 'arrears', state.finance!.arrears > 0 ? 1 : 0);
@@ -156,5 +199,5 @@ const supportBy = (strategy: string) => metrics[strategy]!.currentSupport!;
 const withinStrategy = strategies.reduce((sum, st) => sum + sd(supportBy(st)), 0) / strategies.length;
 const acrossStrategies = Array.from({ length: count }, (_, seed) => sd(strategies.map(st => supportBy(st)[seed]!))).reduce((a, b) => a + b, 0) / count;
 const ranges = Object.fromEntries(strategies.map(st => [st, Object.fromEntries(Object.entries(metrics[st]!).map(([key, values]) => [key, key === 'arrears' ? values.reduce((a, b) => a + b, 0) : [Math.min(...values), Math.max(...values)]]))]));
-console.log(JSON.stringify({ phase: 'C2', scope: 'national chain, resources, people and organization; development-seed model outputs, NOT election balance or prediction', seeds: count, strategies, advancesPerRun: 77, passed: true, refusedCommands: refused, refusals,
+console.log(JSON.stringify({ phase: 'D4', scope: 'national chain, resources, people, organization, nominations and the scheduled election under simple bots; development-seed model outputs, NOT election balance or prediction', seeds: count, strategies, advancesPerRun: 77, passed: true, refusedCommands: refused, refusals,
   ranges, supportSpreadQ6: { sameStrategyAcrossSeeds: Math.round(withinStrategy), sameSeedAcrossStrategies: Math.round(acrossStrategies) }, batchHash: stateHash(hashes) }, null, 2));

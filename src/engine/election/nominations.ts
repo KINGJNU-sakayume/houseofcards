@@ -8,6 +8,7 @@ import { postMessage, recordMoney, shortage, spend } from '../parties/management
 import { breakPromise, keepPromise } from '../people/recruitment';
 import { deriveStream, randomInt, streamKey } from '../simulation/rng';
 import { fixedMultiply, roundDiv, SCALE } from '../simulation/math';
+import { clearDistrict } from './finalPush';
 
 // D3 nominations and list (Slice §6, §17, §20.4, §26). Pure; every command is
 // atomic: a refusal throws before any state changes.
@@ -143,7 +144,7 @@ export function nominationCommand(state: GameState, command: Command): { state: 
     if (command.method === 'none') {
       const current = state.nominations.districts[command.districtId]!;
       const rest = Object.fromEntries(Object.entries(state.nominations.districts).filter(([id]) => id !== command.districtId));
-      let next = recordMoney(setNominations(state, n => ({ ...n, districts: rest })), 'deposit', districtDeposit(state), `${command.districtId}:refund`);
+      let next = recordMoney(clearDistrict(setNominations(state, n => ({ ...n, districts: rest })), command.districtId), 'deposit', districtDeposit(state), `${command.districtId}:refund`);
       next = postMessage(next, `${district.name} 공천을 철회했습니다`, `${state.politicians.find(p => p.id === current.politicianId)!.name}의 기탁금이 반환되었습니다. 이 지역구에는 우리 정당 후보가 없습니다.`, 'Report');
       return { state: next, event: 'NOMINATION_WITHDRAWN', detail: command.districtId };
     }
@@ -204,7 +205,7 @@ export function weeklyNominations(state: GameState): GameState {
       next = kept ? keepPromise(next, promise) : breakPromise(next, promise, promise.type === 'primary_guarantee' ? '경선 없이 등록이 마감되어 깨졌습니다' : `${REGION_LABELS[person.regionId]} 지역구 공천 없이 등록이 마감되어 깨졌습니다`);
     }
     const n = next.nominations;
-    next = postMessage(next, '후보 등록 마감', `지역구 후보 ${Object.keys(n.districts).length}명, 비례대표 명부 ${n.list.length}명으로 등록을 마쳤습니다. 이후 공천과 명부는 바꿀 수 없습니다. 선거 실행은 D4에서 구현됩니다.`, 'Important');
+    next = postMessage(next, '후보 등록 마감', `지역구 후보 ${Object.keys(n.districts).length}명, 비례대표 명부 ${n.list.length}명으로 등록을 마쳤습니다. 이후 공천과 명부는 바꿀 수 없습니다. 선거는 마지막 주(2028-04-10) 진행 시 2028-04-12 기준으로 계산됩니다.`, 'Important');
     next = event(next, 'REGISTRATION_CLOSED', `${Object.keys(n.districts).length}|${n.list.length}`);
   }
   return next;
