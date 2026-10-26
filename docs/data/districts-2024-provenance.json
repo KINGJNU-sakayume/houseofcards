@@ -1,0 +1,432 @@
+{
+ "id": "districts-2024-provenance",
+ "step": "DD2",
+ "retrievedAt": "2026-10-26",
+ "retrievedBy": "Claude Code session at the user's request (not user-supplied files)",
+ "sources": [
+  {
+   "file": "district.csv",
+   "bytes": 7588808,
+   "encoding": "cp949",
+   "sha256": "65632277f979c449038eaba79e21aef9ddd239be71cac4dcfdcd17b97c7de0e1",
+   "rows": 126901,
+   "dataset": "중앙선거관리위원회_국회의원선거 개표결과_20240410",
+   "url": "https://www.data.go.kr/data/15025527/fileData.do",
+   "download": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000003172714&fileDetailSn=1"
+  },
+  {
+   "file": "list.csv",
+   "bytes": 41971629,
+   "encoding": "cp949",
+   "sha256": "a5c69d5fc9d0d5ba2699af38f087cc0c8babca83b240715278b4eb810c282bb3",
+   "rows": 790524,
+   "dataset": "중앙선거관리위원회_비례대표국회의원선거 개표결과_20240410",
+   "url": "https://www.data.go.kr/data/15144273/fileData.do",
+   "download": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000003182982&fileDetailSn=1"
+  },
+  {
+   "file": "pop.csv",
+   "bytes": 2568111,
+   "encoding": "cp949",
+   "sha256": "23a269d2fd754f27bab32c9a26c711c3e49e65aee7169dc3184d8b5a548cd36d",
+   "rows": 3619,
+   "dataset": "행정안전부_지역별(행정동) 성별 연령별 주민등록 인구수_20260930",
+   "url": "https://www.data.go.kr/data/15097972/fileData.do",
+   "download": "https://www.data.go.kr/cmm/cmm/fileDownload.do?atchFileId=FILE_000000007706226&fileDetailSn=1"
+  }
+ ],
+ "reference": {
+  "title": "공직선거법 [별표 1] 국회의원지역선거구구역표 <개정 2026. 4. 22.>",
+  "sha256": "0825b5e46ce0b7bf8368ce3aaa52bd437c9784ed376e4b71f5f316391c66f7bf",
+  "use": "참고용. 2024 선거구 매핑은 개표 파일의 투표구에서 만들었으며 2024년판 별표 1은 확보하지 못함."
+ },
+ "method": {
+  "districtVotes": "투표구·특수투표 행을 선거구별로 합산. 후보자 문자열의 마지막 공백 앞부분을 정당명으로 사용(무소속 포함). 개표 파일의 법정읍면동명 열은 다시군 선거구에서 다른 읍면동 이름이 붙는 경우가 있어 매핑에 쓰지 않음.",
+  "listMapping": "비례 파일의 일반 투표구를 같은 시도의 같은 투표구명(지역구 파일)으로 연결하고, 동명이면 선거인수 ±2와 시·군 이름으로 구분. 한 읍면동의 투표구가 모두 같은 선거구로 연결되어야 함.",
+  "listSpecialBallots": "구시군 단위로만 보고되는 거소·선상, 관외사전, 재외, 잘못 투입 투표지는 그 구시군 안 각 선거구의 비례 투표수 비율로 정당별 최대잔여 배분(추정).",
+  "population": "2026-09 행정동 인구를 2024 선거구에 (시도, 시군구, 읍면동) 이름으로 대응(공백 제거, 점·가운뎃점 통일, 제N동=N동, 읍·면 출장소는 해당 읍·면). 시군구가 바뀐 경우 같은 시도 안에서 읍면동 이름이 유일하면 대응. 전남광주통합특별시는 2024 광주광역시·전라남도와 대조. 대응되지 않은 행정동(2024 이후 신설·분동 등)은 배분하지 않고 아래에 나열."
+ },
+ "results": {
+  "districts": 254,
+  "districtElectors": 44245552,
+  "districtValid": 29234129,
+  "districtWinnersByParty": {
+   "더불어민주당": 161,
+   "국민의힘": 90,
+   "개혁신당": 1,
+   "새로운미래": 1,
+   "진보당": 1
+  },
+  "listTallies": {
+   "선거인수": 44280011,
+   "투표수": 29654450,
+   "무효 투표수": 1309931,
+   "기권자수": 14625561
+  },
+  "listNationalPartyVotes": {
+   "국민의미래": 10395264,
+   "더불어민주연합": 7567459,
+   "조국혁신당": 6874278,
+   "개혁신당": 1025775,
+   "자유통일당": 642433,
+   "녹색정의당": 609313,
+   "새로운미래": 483827,
+   "소나무당": 124369,
+   "한나라당": 72925,
+   "국가혁명당": 67420,
+   "새누리당": 57210,
+   "자유민주당": 39977,
+   "기독당": 36117,
+   "국민대통합당": 30323,
+   "우리공화당": 29895,
+   "가가호호공명선거대한당": 29481,
+   "여성의당": 28942,
+   "히시태그국민정책당": 26906,
+   "노동당": 25937,
+   "금융개혁당": 20548,
+   "노인복지당": 15178,
+   "공화당": 14912,
+   "홍익당": 13326,
+   "한국농어민당": 13035,
+   "대한국민당": 11947,
+   "미래당": 11505,
+   "가가국민참여신당": 10242,
+   "내일로미래로": 9417,
+   "대한민국당": 8527,
+   "통일한국당": 8518,
+   "반공정당코리아": 7820,
+   "대중민주당": 7663,
+   "기후민생당": 6615,
+   "가락특권폐지당": 4707,
+   "한류연합당": 3894,
+   "대한상공인당": 3783,
+   "케이정치혁신연합당": 3451,
+   "신한반도당": 1580
+  },
+  "listSpecialBallotsEstimatedInSplit구시군": 1959911,
+  "split구시군": 70,
+  "emd2024": 3551,
+  "population18plusMatched": 43970542,
+  "population18plusUnmatched": 597480,
+  "unmatched행정동": [
+   {
+    "시도": "서울특별시",
+    "시군구": "동대문구",
+    "읍면동": "신설동",
+    "adults18plus": 15024,
+    "candidates": 0
+   },
+   {
+    "시도": "서울특별시",
+    "시군구": "동대문구",
+    "읍면동": "용두동",
+    "adults18plus": 20977,
+    "candidates": 0
+   },
+   {
+    "시도": "서울특별시",
+    "시군구": "강동구",
+    "읍면동": "둔촌제1동",
+    "adults18plus": 26692,
+    "candidates": 0
+   },
+   {
+    "시도": "부산광역시",
+    "시군구": "강서구",
+    "읍면동": "신호동",
+    "adults18plus": 12453,
+    "candidates": 0
+   },
+   {
+    "시도": "대구광역시",
+    "시군구": "달성군",
+    "읍면동": "구지읍",
+    "adults18plus": 14981,
+    "candidates": 0
+   },
+   {
+    "시도": "인천광역시",
+    "시군구": "영종구",
+    "읍면동": "운서1동",
+    "adults18plus": 15317,
+    "candidates": 0
+   },
+   {
+    "시도": "인천광역시",
+    "시군구": "영종구",
+    "읍면동": "운서2동",
+    "adults18plus": 21868,
+    "candidates": 0
+   },
+   {
+    "시도": "인천광역시",
+    "시군구": "검단구",
+    "읍면동": "아라1동",
+    "adults18plus": 35341,
+    "candidates": 0
+   },
+   {
+    "시도": "인천광역시",
+    "시군구": "검단구",
+    "읍면동": "아라2동",
+    "adults18plus": 24658,
+    "candidates": 0
+   },
+   {
+    "시도": "세종특별자치시",
+    "시군구": "",
+    "읍면동": "집현동",
+    "adults18plus": 9668,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "의정부시",
+    "읍면동": "고산동",
+    "adults18plus": 24062,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "안양시 만안구",
+    "읍면동": "명학동",
+    "adults18plus": 7255,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "안양시 만안구",
+    "읍면동": "병목안동",
+    "adults18plus": 14159,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "안양시 만안구",
+    "읍면동": "박달동",
+    "adults18plus": 12173,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "안양시 만안구",
+    "읍면동": "호현동",
+    "adults18plus": 16878,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "광명시",
+    "읍면동": "광명1동",
+    "adults18plus": 13662,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "안산시 단원구",
+    "읍면동": "중앙동",
+    "adults18plus": 21357,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "용인시 처인구",
+    "읍면동": "양지읍",
+    "adults18plus": 19744,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "용인시 처인구",
+    "읍면동": "유림1동",
+    "adults18plus": 12306,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "용인시 처인구",
+    "읍면동": "유림2동",
+    "adults18plus": 31167,
+    "candidates": 0
+   },
+   {
+    "시도": "경기도",
+    "시군구": "화성시 병점구",
+    "읍면동": "반월동",
+    "adults18plus": 29200,
+    "candidates": 0
+   },
+   {
+    "시도": "충청북도",
+    "시군구": "청주시 상당구",
+    "읍면동": "탑대성동",
+    "adults18plus": 9855,
+    "candidates": 0
+   },
+   {
+    "시도": "충청북도",
+    "시군구": "청주시 상당구",
+    "읍면동": "용담명암산성동",
+    "adults18plus": 9861,
+    "candidates": 0
+   },
+   {
+    "시도": "충청북도",
+    "시군구": "청주시 서원구",
+    "읍면동": "성화개신죽림동",
+    "adults18plus": 41635,
+    "candidates": 0
+   },
+   {
+    "시도": "충청북도",
+    "시군구": "청주시 흥덕구",
+    "읍면동": "운천신봉동",
+    "adults18plus": 12088,
+    "candidates": 0
+   },
+   {
+    "시도": "충청북도",
+    "시군구": "청주시 흥덕구",
+    "읍면동": "봉명2송정동",
+    "adults18plus": 21922,
+    "candidates": 0
+   },
+   {
+    "시도": "충청북도",
+    "시군구": "청주시 청원구",
+    "읍면동": "율량사천동",
+    "adults18plus": 39987,
+    "candidates": 0
+   },
+   {
+    "시도": "충청북도",
+    "시군구": "음성군",
+    "읍면동": "대소읍",
+    "adults18plus": 19035,
+    "candidates": 0
+   },
+   {
+    "시도": "충청남도",
+    "시군구": "보령시",
+    "읍면동": "원산출장소",
+    "adults18plus": 915,
+    "candidates": 0
+   },
+   {
+    "시도": "경상북도",
+    "시군구": "성주군",
+    "읍면동": "금수강산면",
+    "adults18plus": 1125,
+    "candidates": 0
+   },
+   {
+    "시도": "경상남도",
+    "시군구": "사천시",
+    "읍면동": "신수출장소",
+    "adults18plus": 203,
+    "candidates": 0
+   },
+   {
+    "시도": "경상남도",
+    "시군구": "밀양시",
+    "읍면동": "삼랑진임천출장소",
+    "adults18plus": 1365,
+    "candidates": 0
+   },
+   {
+    "시도": "전북특별자치도",
+    "시군구": "전주시 덕진구",
+    "읍면동": "금암동",
+    "adults18plus": 16787,
+    "candidates": 0
+   },
+   {
+    "시도": "전북특별자치도",
+    "시군구": "전주시 덕진구",
+    "읍면동": "송천3동",
+    "adults18plus": 23760,
+    "candidates": 0
+   }
+  ]
+ },
+ "checks": [
+  {
+   "check": "district.csv header",
+   "passed": true,
+   "detail": "['시도명', '선거구명', '법정읍면동명', '투표구명', '후보자', '득표수']"
+  },
+  {
+   "check": "list.csv header",
+   "passed": true,
+   "detail": "['시도명', '구시군명', '읍면동명', '투표구명', '정당', '득표수']"
+  },
+  {
+   "check": "unit arithmetic (18826 units): valid + invalid = turnout, turnout + abstain = electors",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "254 districts (시도, 선거구)",
+   "passed": true,
+   "detail": "254"
+  },
+  {
+   "check": "17 시도",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "one candidate per party per district (무소속 excepted)",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "unit arithmetic (18822 units): valid + invalid = turnout, turnout + abstain = electors",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "every list polling station resolves to exactly one district",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "no 읍면동 split across districts",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "every district has 읍면동",
+   "passed": true,
+   "detail": "254"
+  },
+  {
+   "check": "population age columns",
+   "passed": true,
+   "detail": "222"
+  },
+  {
+   "check": "population total equals the pack figure 51,082,431",
+   "passed": true,
+   "detail": "51082431"
+  },
+  {
+   "check": "18+ population equals the pack figure 44,568,022",
+   "passed": true,
+   "detail": "44568022"
+  },
+  {
+   "check": "list votes conserved nationally per party",
+   "passed": true,
+   "detail": ""
+  },
+  {
+   "check": "every district has a strict plurality winner (254)",
+   "passed": true,
+   "detail": ""
+  }
+ ],
+ "outputs": {
+  "districts-2024.json": "9e9afd608022fa71fbb1f2bb1ab6662eb5075de5f92b5e37dc61afa0c7fb6276"
+ }
+}
