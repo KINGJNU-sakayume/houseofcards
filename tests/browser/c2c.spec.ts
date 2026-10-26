@@ -14,7 +14,7 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await expect(page.getByRole('heading', { name: '지역에 뿌리내리다' })).toBeVisible();
   await expect(page.getByTestId('org-limits')).toContainText('투표율 동원은 구현하지 않았습니다');
   await page.getByRole('link', { name: '정책', exact: false }).click();
-  await expect(page.getByText('공표 비용: 실무 인력 1 · 의제 슬롯 1').first()).toBeVisible();
+  await expect(page.getByText('공표 비용: 실무 인력 1, 의제 슬롯 1').first()).toBeVisible();
   await page.getByRole('radio', { name: '임대지원 확대 4단계' }).click();
   await expect(page.getByRole('radio', { name: '임대지원 확대 4단계' })).toBeChecked();
   await page.getByRole('button', { name: '임대지원 확대 공표' }).click();
@@ -30,13 +30,13 @@ test('C2 full loop: found, publish with cost, survey, recruit, invest, refused r
   await page.getByTestId('recruit-result').getByRole('button', { name: '확인' }).click();
   await page.getByRole('link', { name: '지역조직', exact: false }).click();
   await page.getByLabel('종류', { exact: false }).selectOption('policy_forum');
-  await expect(page.getByText('비용: 3,000만원 · 실무 인력 2 · 3주 소요')).toBeVisible();
+  await expect(page.getByText('비용: 3,000만원, 실무 인력 2, 3주 소요')).toBeVisible();
   await page.getByRole('button', { name: '투자 시작', exact: true }).click();
   await expect(page.getByTestId('region-seoul')).toContainText('정책간담회 강도 1');
   await expect(page.getByTestId('invest-refusal')).toContainText('이미 진행 중');
   await expect(page.getByRole('button', { name: '투자 시작', exact: true })).toBeDisabled();
   for (let i = 0; i < 6; i++) { await page.getByRole('button', { name: '다음 주로' }).click(); await expect(page.getByRole('button', { name: '다음 주로' })).toBeEnabled(); }
-  await expect(page.getByTestId('region-seoul')).toContainText('정책간담회 ~');
+  await expect(page.getByTestId('region-seoul')).toContainText(/정책간담회 \d{4}-\d{2}-\d{2}까지/);
   const commands: Command[] = [{ type: 'SET_PLATFORM_DRAFT', leverId: 'housing.rent-support', value: 4 }, { type: 'PUBLISH_PLATFORM', leverId: 'housing.rent-support' }, { type: 'COMMISSION_INTERNAL_SURVEY' },
     { type: 'RECRUIT_POLITICIAN', politicianId: person.id, role: 'member', promises: [] }, { type: 'INVEST_REGION', regionId: 'seoul', kind: 'policy_forum', intensity: 1 },
     ...Array.from({ length: 6 }, (): Command => ({ type: 'ADVANCE_WEEK' }))];

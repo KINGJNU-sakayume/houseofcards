@@ -14,7 +14,7 @@ export const formatWon = (won: number) => formatMoney(Math.round(won / 10000));
 
 // Q6 shares (1,000,000 = 100%).
 export const percent = (value: number) => (value / 10000).toFixed(1);
-export const range = (low: number, high: number) => `${percent(low)}–${percent(high)}%`;
+export const range = (low: number, high: number) => `${percent(low)}~${percent(high)}%`;
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 export function weekdayOf(date: string): string {

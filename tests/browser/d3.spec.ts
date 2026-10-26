@@ -40,7 +40,7 @@ test('D3: target an Active district, nominate a recruit, see the nominee in the 
   await panel.getByLabel('지역구').selectOption(district.id);
   await panel.getByRole('group', { name: '공천 후보' }).getByRole('checkbox', { name: recruit.name, exact: false }).check();
   await panel.getByRole('button', { name: '공천', exact: true }).click();
-  await expect(row).toContainText(`${recruit.name} · 전략공천`);
+  await expect(row).toContainText(`${recruit.name} (전략공천)`);
   await expect(page.getByTestId('district-explorer')).toContainText(`후보 ${recruit.name}`);
   await expect(page.getByTestId('list-refusal')).toContainText(`${nm.gates.list}부터`);
   let expected = dispatchCommand(save, { type: 'SET_TARGET_DISTRICT', districtId: district.id, targeted: true });

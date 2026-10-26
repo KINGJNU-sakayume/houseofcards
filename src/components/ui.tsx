@@ -11,8 +11,8 @@ export function Panel({ title, sub, actions, children, flush, className = '', te
   </section>;
 }
 
-export function PageHeading({ eyebrow, title, sub, aside }: { eyebrow?: string; title: string; sub?: ReactNode; aside?: ReactNode }) {
-  return <div className="page-heading"><div>{eyebrow && <p className="eyebrow">{eyebrow}</p>}<h1>{title}</h1>{sub && <p>{sub}</p>}</div>{aside}</div>;
+export function PageHeading({ title, sub, aside }: { title: string; sub?: ReactNode; aside?: ReactNode }) {
+  return <div className="page-heading"><div><h1>{title}</h1>{sub && <p>{sub}</p>}</div>{aside}</div>;
 }
 
 export function Stat({ label, value, note, tone, children, testId }: { label: string; value: ReactNode; note?: ReactNode; tone?: 'gain' | 'loss'; children?: ReactNode; testId?: string }) {

@@ -1,0 +1,102 @@
+/* Almanac tokens, light colourway (paper raised from L84 to L93 by the "keep it light" decision), plus the shared scale. */
+:root {
+  color-scheme: light;
+
+  --color-paper: oklch(93% 0.010 245);
+  --color-paper-2: oklch(90% 0.011 245);
+  --color-paper-3: oklch(86% 0.012 245);
+  --color-sheet: oklch(98% 0.004 245);
+  --color-ink: oklch(19% 0.020 245);
+  --color-ink-2: oklch(30% 0.018 245);
+  --color-muted: oklch(43% 0.016 245);
+  --color-rule: oklch(84% 0.012 240);
+  --color-rule-strong: oklch(70% 0.014 240);
+  --color-rule-2: oklch(30% 0.018 240);
+  --color-accent: oklch(45% 0.180 350);
+  --color-accent-2: oklch(38% 0.160 350);
+  --color-accent-ink: oklch(98% 0.005 245);
+  --color-accent-soft: oklch(94% 0.025 350);
+  --color-focus: oklch(46% 0.190 350);
+
+  --color-gain: oklch(45% 0.120 150);
+  --color-gain-soft: oklch(94% 0.035 150);
+  --color-loss: oklch(48% 0.170 27);
+  --color-loss-soft: oklch(94.5% 0.025 27);
+  --color-warn: oklch(49% 0.110 65);
+  --color-warn-soft: oklch(94.5% 0.045 85);
+  --color-info: oklch(45% 0.120 250);
+  --color-info-soft: oklch(94% 0.025 250);
+
+  --color-grade-1: oklch(48% 0.170 27);
+  --color-grade-2: oklch(52% 0.140 55);
+  --color-grade-3: oklch(50% 0.100 95);
+  --color-grade-4: oklch(47% 0.120 150);
+  --color-grade-5: oklch(45% 0.090 200);
+
+  --color-band: oklch(19% 0.020 245);
+  --color-band-2: oklch(26% 0.022 245);
+  --color-band-ink: oklch(82% 0.014 245);
+  --color-band-muted: oklch(68% 0.016 245);
+  --color-scrim: oklch(19% 0.020 245 / 0.55);
+
+  /* Party display colours for charts and capsules (UI convention, not official branding). */
+  --party-dp: oklch(52% 0.150 258);
+  --party-ppp: oklch(54% 0.180 25);
+  --party-reform: oklch(64% 0.150 60);
+  --party-rkp: oklch(52% 0.090 190);
+  --party-minor-bloc: oklch(62% 0.012 245);
+  --party-none: oklch(82% 0.012 245);
+  --party-default: oklch(45% 0.180 350);
+
+  /* Sender and avatar hues (inbox and roster initials). */
+  --hue-1: oklch(45% 0.120 260);
+  --hue-2: oklch(46% 0.110 150);
+  --hue-3: oklch(50% 0.110 65);
+  --hue-4: oklch(46% 0.080 200);
+  --hue-5: oklch(46% 0.120 300);
+  --hue-6: oklch(48% 0.150 27);
+  --hue-7: oklch(45% 0.025 245);
+
+  --font-sans: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  --font-serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", "Batang", ui-serif, serif;
+
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-md: 16px;
+  --text-lg: 19px;
+  --text-xl: 23px;
+  --text-2xl: 28px;
+  --text-3xl: 34px;
+  --weight-regular: 400;
+  --weight-strong: 600;
+  --weight-heavy: 700;
+  --tracking-display: -0.02em;
+
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-ml: 20px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+
+  --rule-hair: 1px;
+  --rule-bar: 2px;
+  --radius-control: 2px;
+  --radius-capsule: 999px;
+  --radius-round: 50%;
+
+  --sidebar-w: 220px;
+  --sidebar-w-compact: 72px;
+  --topbar-h: 64px;
+  --control-h: 40px;
+
+  --dur-micro: 120ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --z-raised: 10;
+  --z-sticky-nav: 300;
+  --z-modal: 400;
+}
