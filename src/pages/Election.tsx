@@ -30,32 +30,32 @@ export function Election() {
   const byId = Object.fromEntries(projections.map(p => [p.id, p]));
   const winners = projections.reduce<Record<string, number>>((acc, p) => ({ ...acc, [p.winner]: (acc[p.winner] ?? 0) + 1 }), {});
   const rows = districtPack.districts.filter(d => (region === 'all' || d.regionId === region) && (!activeOnly || d.active));
-  const top2 = (v: Record<string, number>) => Object.entries(v).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([id, x]) => `${partyName(id)} ${percent(x)}%`).join(' · ');
-  const own = game.playerParty?.color ?? '#3550a8';
-  const color = (id: string) => id === PLAYER_PARTY_ID ? own : PARTY_COLORS[id] ?? '#8a8f98';
+  const top2 = (v: Record<string, number>) => Object.entries(v).sort((a, b) => b[1] - a[1]).slice(0, 2).map(([id, x]) => `${partyName(id)} ${percent(x)}%`).join(', ');
+  const own = game.playerParty?.color ?? 'var(--party-default)';
+  const color = (id: string) => id === PLAYER_PARTY_ID ? own : PARTY_COLORS[id] ?? 'var(--party-minor-bloc)';
   const seats = game.election ? game.election.totalSeats : Object.fromEntries([...new Set([...Object.keys(winners), ...Object.keys(example.list)])].map(id => [id, (winners[id] ?? 0) + (example.list[id] ?? 0)]));
   const parties = Object.entries(seats).filter(([, n]) => n > 0).sort((a, b) => b[1] - a[1]).map(([id, n]) => ({ id, label: partyName(id), color: color(id), seats: n }));
   const nextMilestone = MILESTONES.find(m => m.date > game.date);
   const close = (v: Record<string, number>) => { const [a, b] = Object.values(v).sort((x, y) => y - x); return a !== undefined && b !== undefined && a - b < 50000; };
   return <>
-    <PageHeading eyebrow="선거" title="이 세이브의 선거제도" sub={`${r.label} · 예정 선거일 ${formatDate(r.electionDate)} (예정)`} />
-    <ol className="stepper" aria-label="선거 준비 단계">{MILESTONES.map(m => <li key={m.date} className={game.date >= m.date ? 'done' : m === nextMilestone ? 'next' : ''}><strong>{m.label}</strong><span>{formatDate(m.date)}{m === nextMilestone && game.date < m.date ? ` · D-${daysBetween(game.date, m.date)}` : ''}</span></li>)}</ol>
+    <PageHeading title="이 세이브의 선거제도" sub={`${r.label}. 선거일은 ${formatDate(r.electionDate)}로 예정되어 있습니다.`} />
+    <ol className="stepper" aria-label="선거 준비 단계">{MILESTONES.map(m => <li key={m.date} className={game.date >= m.date ? 'done' : m === nextMilestone ? 'next' : ''}><strong>{m.label}</strong><span>{formatDate(m.date)}{m === nextMilestone && game.date < m.date ? `, D-${daysBetween(game.date, m.date)}` : ''}</span></li>)}</ol>
     <div className="grid side">
-      <Panel title={game.election ? '총선 결과 의석' : '현재 추정 의석'} sub={game.election ? '가상 시뮬레이션 결과' : '지역구 1위 추정 + 최근 가상 조사로 계산한 비례 예시 · 선거 결과나 예측 아님'}>
+      <Panel title={game.election ? '총선 결과 의석' : '현재 추정 의석'} sub={game.election ? '가상 시뮬레이션 결과' : '지역구 1위 추정과 최근 가상 조사로 계산한 비례 예시입니다. 선거 결과나 예측이 아닙니다.'}>
         <Hemicycle ariaLabel="정당별 의석" parties={parties} />
       </Panel>
       <div className="stack">
         <Stat label="총선까지" value={daysBetween(game.date, CALENDAR.electionDate) >= 0 ? `D-${daysBetween(game.date, CALENDAR.electionDate)}` : '선거 종료'} note={nextMilestone ? `다음: ${nextMilestone.label}` : '모든 일정이 끝났습니다'} />
-        <Stat label={`${game.playerParty?.shortName ?? '우리 정당'} 추정 의석`} value={`${seats[PLAYER_PARTY_ID] ?? 0}석`} note={`지역구 1위 ${winners[PLAYER_PARTY_ID] ?? 0}곳 · 비례 예시 ${example.list[PLAYER_PARTY_ID] ?? 0}석`} />
+        <Stat label={`${game.playerParty?.shortName ?? '우리 정당'} 추정 의석`} value={`${seats[PLAYER_PARTY_ID] ?? 0}석`} note={`지역구 1위 ${winners[PLAYER_PARTY_ID] ?? 0}곳, 비례 예시 ${example.list[PLAYER_PARTY_ID] ?? 0}석`} />
         <SimulationNotice>실제 2028년 선거제도와 선거구는 아직 확정되지 않았습니다. 이 규칙은 게임용 가정입니다. 개표의 밤과 시즌 리뷰는 시즌 결과 페이지에 있습니다.</SimulationNotice>
       </div>
     </div>
     <div className="sim-grid">
       <section className="sim-card" data-testid="ruleset-card"><h2>의석 배분 규칙 <span className="outline-badge">게임 가정</span></h2>
-        <ul><li>지역구 {r.districtSeats}석 · 비례 {r.listSeats}석 (현행 정수를 가정으로 사용)</li>
-          <li>비례 배분: {r.listMethod === 'parallel' ? '병립형 — 지역구와 따로, 정당득표로 헤어식 몫 + 최대잔여' : `준연동형 — 연동 상한 ${r.semiCompensatory!.cap}석, 나머지 병립`}</li>
-          <li>법정 문턱: {r.legalThreshold ? `정당득표 ${pct(r.legalThreshold.voteShare)} 이상 또는 지역구 ${r.legalThreshold.orDistrictSeats}석 이상 (입법 시나리오)` : '없음'}{r.listMethod === 'parallel' && !r.legalThreshold ? ` · 사실상 문턱은 약 1/${r.listSeats} ≈ ${(100 / r.listSeats).toFixed(1)}% 전후(잔여 배분에 따라 다름)` : ''}</li>
-          <li>0석 정당 등록취소: {r.partyRevocation ? '가상 입법 시나리오로 적용' : '없음 — 정당법 §44①3은 2014-01-28 위헌 결정 이후 대체 조항이 없습니다'}</li></ul>
+        <ul><li>지역구 {r.districtSeats}석, 비례 {r.listSeats}석 (현행 정수를 가정으로 사용)</li>
+          <li>비례 배분: {r.listMethod === 'parallel' ? '병립형: 지역구와 따로, 정당득표로 헤어식 몫과 최대잔여' : `준연동형: 연동 상한 ${r.semiCompensatory!.cap}석, 나머지 병립`}</li>
+          <li>법정 문턱: {r.legalThreshold ? `정당득표 ${pct(r.legalThreshold.voteShare)} 이상 또는 지역구 ${r.legalThreshold.orDistrictSeats}석 이상 (입법 시나리오)` : '없음'}{r.listMethod === 'parallel' && !r.legalThreshold ? `. 사실상 문턱은 약 1/${r.listSeats}, 곧 ${(100 / r.listSeats).toFixed(1)}% 전후입니다(잔여 배분에 따라 다름)` : ''}</li>
+          <li>0석 정당 등록취소: {r.partyRevocation ? '가상 입법 시나리오로 적용' : '없음. 정당법 §44①3은 2014-01-28 위헌 결정 이후 대체 조항이 없습니다'}</li></ul>
         <p className="muted small">{r.description}</p></section>
       <section className="sim-card" data-testid="law-card"><h2>현행법 값 <span className="outline-badge">확인된 사실</span></h2>
         <ul><li>지역구 단순 다수, 동수는 연장자 (§188①)</li><li>지역구·비례 중복입후보 불가 (§52③)</li>
@@ -68,14 +68,14 @@ export function Election() {
     <section className="sim-card" data-testid="district-explorer"><h2>지역구 탐색 <span className="outline-badge">가상 시뮬레이션</span></h2>
       <p data-testid="district-basis"><strong>{districtPack.label}</strong></p>
       <p className="muted small">지역구 추정 = 권역 코호트의 현재 선택 × 지역구 연령·생활조건 구성비 + 2024년 지역구 결과의 권역 대비 편차. 1·2위가 아닌 정당은 지역구 지지 15~30% 구간의 S자 곡선으로 생존가능성이 낮아지고, 코호트의 전략투표 성향만큼 1·2위로 이동합니다. {nominationsDecide(game) ? '공천 단계부터 우리 정당은 공천한 지역구에만 후보가 있습니다. 우리 후보의 지역 기반(출신 권역)·선거운동·대중성은 효용에, 인지도와 권역 조직은 그 지역구 인지 하한에 반영됩니다. 다른 정당은 모든 지역구에 정당 단위 가상 후보를 낸다고 가정합니다(게임 가정).' : '공천 단계 전에는 정당 기준 추정입니다.'} 막판 총력전 유세 효과도 우리 후보 지역구에 반영됩니다. 선거 결과나 예측이 아닙니다.</p>
-      <p className="row">현재 추정 1위 지역구 수(254곳): {Object.entries(winners).sort((a, b) => b[1] - a[1]).map(([id, n]) => <span key={id} className="chip"><i className="dot" style={{ background: color(id) }} />{partyName(id)} {n}</span>)}</p>
+      <p className="row">현재 추정 1위 지역구 수(254곳): {Object.entries(winners).sort((a, b) => b[1] - a[1]).map(([id, n]) => <span key={id} className="chip"><i className="swatch" aria-hidden="true" style={{ background: color(id) }} />{partyName(id)} {n}</span>)}</p>
       <div className="sim-toolbar"><Pills label="권역" value={region} onChange={setRegion} options={[{ id: 'all', label: '전체 권역' }, ...Object.entries(REGION_LABELS).map(([id, label]) => ({ id, label }))]} />
         <label className="check-row"><input type="checkbox" checked={activeOnly} onChange={e => setActiveOnly(e.target.checked)} />주요 30곳만 보기</label><span className="muted small">{rows.length}곳</span></div>
-      <div className="table-scroll people-list"><table className="sim-table people-table"><thead><tr><th>지역구</th><th>2024 결과 (실제)</th><th>현재 추정 · 전략투표 후</th><th>{game.playerParty ? `${game.playerParty.shortName} 추정` : '우리 정당'}</th></tr></thead><tbody>{rows.map(d => { const p = byId[d.id]!; return <tr key={d.id}>
-        <th>{d.name}{d.active && <span className="badge accent" style={{ marginLeft: 6 }}>주요</span>}{close(p.final) && <span className="badge warn" style={{ marginLeft: 6 }}>접전</span>}<br /><small className="muted">{d.sido} · {REGION_LABELS[d.regionId]}</small></th>
-        <td><span className="badge">현실 기준 자료</span> <span className="row" style={{ gap: 6, display: 'inline-flex' }}><i className="dot" style={{ background: color(d.baseline2024.winnerGameParty) }} />{partyName(d.baseline2024.winnerGameParty)} 당선</span><br /><small className="muted">{top2(d.baseline2024.districtShare)}</small></td>
-        <td><span className="row" style={{ gap: 6 }}><i className="dot" style={{ background: color(p.winner) }} />1위 {partyName(p.winner)}</span><small className="muted">{top2(p.final)}</small></td>
-        <td>{!game.playerParty ? '창당 전' : !p.playerStanding ? '후보 없음' : <>{percent(p.sincere[PLAYER_PARTY_ID] ?? 0)}% → {percent(p.final[PLAYER_PARTY_ID] ?? 0)}%<br /><small className="muted">생존가능성 {percent(p.viability[PLAYER_PARTY_ID] ?? 0)}%{p.candidate ? ` · 후보 ${game.politicians.find(x => x.id === p.candidate!.politicianId)!.name}` : ''}</small></>}</td></tr>; })}</tbody></table></div>
+      <div className="table-scroll people-list"><table className="sim-table people-table"><thead><tr><th>지역구</th><th>2024 결과 (실제)</th><th>현재 추정 (전략투표 후)</th><th>{game.playerParty ? `${game.playerParty.shortName} 추정` : '우리 정당'}</th></tr></thead><tbody>{rows.map(d => { const p = byId[d.id]!; return <tr key={d.id}>
+        <th>{d.name}{d.active && <span className="badge accent">주요</span>}{close(p.final) && <span className="badge warn">접전</span>}<br /><small className="muted">{d.sido}, {REGION_LABELS[d.regionId]}</small></th>
+        <td><span className="badge">현실 기준 자료</span> <span className="party-name"><i className="swatch" aria-hidden="true" style={{ background: color(d.baseline2024.winnerGameParty) }} />{partyName(d.baseline2024.winnerGameParty)} 당선</span><br /><small className="muted">{top2(d.baseline2024.districtShare)}</small></td>
+        <td><span className="party-name"><i className="swatch" aria-hidden="true" style={{ background: color(p.winner) }} />1위 {partyName(p.winner)}</span><small className="muted">{top2(p.final)}</small></td>
+        <td>{!game.playerParty ? '창당 전' : !p.playerStanding ? '후보 없음' : <>{percent(p.sincere[PLAYER_PARTY_ID] ?? 0)}% → {percent(p.final[PLAYER_PARTY_ID] ?? 0)}%<br /><small className="muted">생존가능성 {percent(p.viability[PLAYER_PARTY_ID] ?? 0)}%{p.candidate ? `, 후보 ${game.politicians.find(x => x.id === p.candidate!.politicianId)!.name}` : ''}</small></>}</td></tr>; })}</tbody></table></div>
     </section>
     <ElectionResults />
     <NominationPanel />

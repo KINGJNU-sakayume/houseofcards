@@ -34,9 +34,9 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
     setConfirm(null);
   }
   return <dialog ref={dialog} onCancel={onClose} className="save-dialog" aria-labelledby="save-title">
-    <div className="dialog-heading"><div><p className="eyebrow">저장과 불러오기</p><h2 id="save-title">세이브 관리</h2></div><button className="icon-button" onClick={onClose} aria-label="세이브 관리 닫기"><Icon name="close" /></button></div>
+    <div className="dialog-heading"><div><h2 id="save-title">세이브 관리</h2><p className="muted">저장과 불러오기</p></div><button className="icon-button" onClick={onClose} aria-label="세이브 관리 닫기"><Icon name="close" /></button></div>
     <p className="muted">진행 상황은 이 브라우저에 자동저장됩니다. 다른 기기에서도 이어가려면 JSON 파일로 내보내세요.</p>
-    <div className="save-summary"><span>{store.game.date} · {store.game.tick}주차</span><span>시드 {store.game.seed}</span></div>
+    <div className="save-summary"><span>{store.game.date}, {store.game.tick}주차</span><span>시드 {store.game.seed}</span></div>
     <div className="save-grid">
       <button className="button primary" disabled={store.busy} onClick={() => void store.saveManual()}>수동 저장</button>
       <button className="button" disabled={store.busy} onClick={() => setConfirm('load')}>수동 저장 불러오기</button>
@@ -54,6 +54,6 @@ export function SaveDialog({ onClose }: { onClose: () => void }) {
     {confirm && <div className="confirmation" role="group" aria-label="진행 상황 교체 확인"><p>현재 진행 상황과 자동저장을 교체합니다. 수동 저장 슬롯은 유지됩니다.</p><div className="input-row"><button className="button primary" disabled={store.busy} onClick={() => void confirmAction()}>교체하고 계속</button><button className="button" onClick={() => setConfirm(null)}>취소</button></div></div>}
     {(localError || store.error) && <p className="error" role="alert">{localError || store.error}</p>}
     <p className="dialog-status" role="status">{store.notice}</p>
-    <details className="diagnostics"><summary>저장 무결성 정보</summary><p>상태 해시 <code data-testid="state-hash">{stateHash(store.game)}</code></p><p>스키마 {store.game.schemaVersion} · 엔진 {store.engineMode === 'worker' ? 'Web Worker' : '메인 스레드'} · 명령 {store.game.commandLog.length}개</p><p>해시는 손상 확인용이며 암호학적 서명이 아닙니다.</p></details>
+    <details className="diagnostics"><summary>저장 무결성 정보</summary><p>상태 해시 <code data-testid="state-hash">{stateHash(store.game)}</code></p><p>스키마 {store.game.schemaVersion}, 엔진 {store.engineMode === 'worker' ? 'Web Worker' : '메인 스레드'}, 명령 {store.game.commandLog.length}개</p><p>해시는 손상 확인용이며 암호학적 서명이 아닙니다.</p></details>
   </dialog>;
 }

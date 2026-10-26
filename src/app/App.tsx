@@ -28,7 +28,7 @@ export function App() {
   const unread = game.inbox.filter(m => !m.read).length;
   const actionRequired = game.inbox.filter(m => !m.read && (m.priority === 'Action Required' || m.priority === 'Critical')).length;
   const dday = daysBetween(game.date, CALENDAR.electionDate);
-  const style = { '--party': party?.color ?? '#3550a8' } as CSSProperties;
+  const style = { '--party': party?.color ?? 'var(--party-default)' } as CSSProperties;
   return <HashRouter><a href="#main" className="skip-link" onClick={event => { event.preventDefault(); document.getElementById('main')?.focus(); }}>본문으로 건너뛰기</a><div className="app-shell" style={style}>
     <aside className="sidebar">
       <a className="brand" href="#/"><img src={`${import.meta.env.BASE_URL}mark.svg`} width="34" height="34" alt="" /><span><strong>하우스 오브 카드</strong><small>정당 경영 시뮬레이션</small></span></a>

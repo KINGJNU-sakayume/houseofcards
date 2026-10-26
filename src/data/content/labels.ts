@@ -10,6 +10,6 @@ export const DRIVER_LABELS: Record<string, string> = {
 export const PROFILE_LABELS: Record<string, string> = { 'housing-pressure': '주거 압박(Housing Pressure)', 'family-work': '가족·일(Family Work)', 'asset-retirement': '자산·노후(Asset Retirement)' };
 export const cohortLabel = (id: string) => { const [region, age, profile] = id.split('/'); return `${REGION_LABELS[region!] ?? region} ${age} ${PROFILE_LABELS[profile!] ?? profile}`; };
 // Display colours for charts and capsules only (UI convention, not official party branding).
-export const PARTY_COLORS: Record<string, string> = { dp: '#2f6fd1', ppp: '#d64545', reform: '#e08a1c', rkp: '#1f8f86', 'minor-bloc': '#8a8f98', none: '#c7d0db' };
+export const PARTY_COLORS: Record<string, string> = { dp: 'var(--party-dp)', ppp: 'var(--party-ppp)', reform: 'var(--party-reform)', rkp: 'var(--party-rkp)', 'minor-bloc': 'var(--party-minor-bloc)', none: 'var(--party-none)' };
 export const STEP_LABELS = ['축소', '일부 축소', '현행 유지', '확대', '대폭 확대'] as const;
 export const LEDGER_LABELS: Record<string, string> = { dues: '당비', donations: '후원금', payroll: '급여·임대료', hiring: '직원 채용', research: '정책 연구·공표', survey: '내부조사', recruitment: '인재 영입', organization: '지역조직', nomination: '공천', deposit: '기탁금', campaign: '유세', reimbursement: '선거비용 보전' };
