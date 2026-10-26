@@ -42,6 +42,6 @@ describe('F1 news exposure (awareness path only, same rule for every party)', ()
 describe('F1 saves', () => {
   it('rejects real E3 saves (schema 12) with Korean keep-JSON guidance', () => {
     expect(legacyE3.state.schemaVersion).toBe(12); expect(legacyE3.checksum).toBe(stateHash(legacyE3.state));
-    expect(() => deserializeSave(JSON.stringify(legacyE3))).toThrow('E3 세이브(스키마 12)는 언론 보도·선거운동 기간 인지도가 추가된 현재 버전(스키마 15)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyE3))).toThrow('E3 세이브(스키마 12)는 언론 보도·선거운동 기간 인지도가 추가된 현재 버전(스키마 16)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });

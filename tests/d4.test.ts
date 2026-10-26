@@ -123,7 +123,7 @@ describe('D4 election', () => {
   });
   it('rejects real D3 saves (schema 9) with Korean keep-JSON guidance', () => {
     expect(legacyD3.state.schemaVersion).toBe(9); expect(legacyD3.checksum).toBe(stateHash(legacyD3.state));
-    expect(() => deserializeSave(JSON.stringify(legacyD3))).toThrow('D3 세이브(스키마 9)는 Final Push와 선거 결과가 추가된 현재 버전(스키마 15)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyD3))).toThrow('D3 세이브(스키마 9)는 Final Push와 선거 결과가 추가된 현재 버전(스키마 16)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });
 

@@ -28,9 +28,10 @@ export function validatePartyName(name: string, min: number, max: number): strin
   if (forbiddenNamesIn(normalized).length) throw new Error('실제 조사기관·방송 이름은 사용할 수 없습니다.');
   return normalized;
 }
-export function postMessage(state: GameState, title: string, body: string, priority: InboxMessage['priority'] = 'Report', sender = '사무총장'): GameState {
+// `link` is the screen the message is about (U1); the UI renders it as an action button.
+export function postMessage(state: GameState, title: string, body: string, priority: InboxMessage['priority'] = 'Report', sender = '사무총장', link: InboxMessage['link'] = null): GameState {
   const id = `message-${state.date}-${state.commandLog.length}-${state.inbox.length}-${title}`;
-  return { ...state, inbox: [{ id, date: state.date, sender, title, body, priority, read: false }, ...state.inbox].slice(0, 60) };
+  return { ...state, inbox: [{ id, date: state.date, sender, title, body, priority, read: false, link }, ...state.inbox].slice(0, 60) };
 }
 export function recordMoney(state: GameState, kind: Finance['ledger'][number]['kind'], amount: number, ref: string): GameState {
   const resources = { ...state.resources!, money: state.resources!.money + amount };
@@ -91,9 +92,9 @@ export function foundParty(state: GameState, command: Extract<Command, { type: '
       viability: { ...state.politics.viability, [PLAYER_PARTY_ID]: data.newParty.viability } } };
   next = { ...next, politics: { ...next.politics, analysis: computeAnalysis(next) } };
   next = { ...generatePoliticians(next, politicianModel.generator.initial), recruitmentReputation: politicianModel.recruitment.reputationStart };
-  next = postMessage(next, `가상 인재 후보 ${next.politicians.length}명이 등장했습니다`, '가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 인재 페이지에서 영입과 약속을 검토하세요.', 'FYI', '영입 책임자');
-  next = postMessage(next, `${shortName} 창당을 환영합니다`, `선언한 핵심가치: ${command.values.join(', ')}. 핵심가치는 득표 보너스가 아니며 연구 우선순위와 정체성에 반영됩니다.`, 'Important', '정책위원장');
-  next = postMessage(next, '첫 공약과 내부조사를 준비하세요', '초안을 검토하고 자원을 확인해 공표하세요. 내부조사를 의뢰하면 잠재·현재 지지와 장벽의 시점별 추정을 확인할 수 있습니다.', 'Action Required', '데이터 책임자');
+  next = postMessage(next, `가상 인재 후보 ${next.politicians.length}명이 등장했습니다`, '가상 인물입니다. 실존 인물과 무관하며 이름이 우연히 같을 수 있습니다. 인재 페이지에서 영입과 약속을 검토하세요.', 'FYI', '영입 책임자', { route: '/politicians', label: '인재 명단 보기' });
+  next = postMessage(next, `${shortName} 창당을 환영합니다`, `선언한 핵심가치: ${command.values.join(', ')}. 핵심가치는 득표 보너스가 아니며 연구 우선순위와 정체성에 반영됩니다.`, 'Important', '정책위원장', { route: '/party', label: '우리 정당 보기' });
+  next = postMessage(next, '첫 공약과 내부조사를 준비하세요', '초안을 검토하고 자원을 확인해 공표하세요. 내부조사를 의뢰하면 잠재·현재 지지와 장벽의 시점별 추정을 확인할 수 있습니다.', 'Action Required', '데이터 책임자', { route: '/policy', label: '정책 화면으로' });
   return next;
 }
 export function publicationCost(state: GameState, leverId: string): Partial<Resources> {
@@ -143,12 +144,12 @@ export function settleWeek(state: GameState, monthly: boolean): GameState {
   const paid = Math.min(next.resources!.money, due);
   next = recordMoney(next, 'payroll', -paid, 'weekly-payroll-rent-and-arrears');
   next = { ...next, finance: { ...next.finance!, arrears: due - paid } };
-  if (due > paid) next = postMessage(next, '급여 미지급금이 발생했습니다', `미지급금 ${due - paid}만원. 잔액은 음수가 되지 않으며 미지급금이 남으면 다음 실무 인력 충전은 절반입니다.`, 'Critical');
+  if (due > paid) next = postMessage(next, '급여 미지급금이 발생했습니다', `미지급금 ${due - paid}만원. 잔액은 음수가 되지 않으며 미지급금이 남으면 다음 실무 인력 충전은 절반입니다.`, 'Critical', '사무총장', { route: '/party', label: '재정 확인' });
   if (monthly) next = { ...next, resources: { ...next.resources!, staffCapacity: staffCap(next), agendaSlots: data.finance.agendaCap } };
   const completed = next.research.filter(r => r.completesAt <= state.date);
   for (const r of completed) {
     next = growExpertise(next, r.domain, data.research.gain);
-    next = postMessage(next, `${DOMAIN_LABELS[r.domain]} 정책 연구 완료`, '정책 전문성이 성장했습니다. 전문성은 이슈 소유 인식에 서서히 전달되며 직접 지지를 더하지 않습니다.', 'Important', '정책위원장');
+    next = postMessage(next, `${DOMAIN_LABELS[r.domain]} 정책 연구 완료`, '정책 전문성이 성장했습니다. 전문성은 이슈 소유 인식에 서서히 전달되며 직접 지지를 더하지 않습니다.', 'Important', '정책위원장', { route: '/party', label: '전문성 보기' });
     next = { ...next, events: [...next.events, { id: `event-${next.events.length}`, date: next.date, type: 'RESEARCH_COMPLETED', detail: r.domain }] };
   }
   return { ...next, research: next.research.filter(r => r.completesAt > state.date) };
@@ -173,7 +174,7 @@ export function managementCommand(state: GameState, command: Command): { state: 
     // Separate frozen snapshot; never fed into public polling or AI.
     const analysis = computeAnalysis(state);
     next = { ...next, internalSurveys: [...state.internalSurveys, { date: state.date, margin: data.survey.margin, analysis, voteFlow: voteFlow(state) }].slice(-12) };
-    next = postMessage(next, '내부조사 결과 도착', '데이터 허브에서 조사일 기준 잠재·현재 지지와 장벽을 확인하세요. 표시 범위는 통계적 신뢰구간이 아닌 세이브 모형 추정입니다.', 'Report', '데이터 책임자');
+    next = postMessage(next, '내부조사 결과 도착', '데이터 허브에서 조사일 기준 잠재·현재 지지와 장벽을 확인하세요. 표시 범위는 통계적 신뢰구간이 아닌 세이브 모형 추정입니다.', 'Report', '데이터 책임자', { route: '/data', label: '조사 결과 보기' });
     return { state: next, event: 'SURVEY_COMMISSIONED' };
   }
   return null;

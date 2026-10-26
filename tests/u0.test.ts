@@ -31,6 +31,6 @@ describe('U0 Korean display formatting', () => {
 describe('U0 saves', () => {
   it('rejects real F2 saves (schema 14) with Korean keep-JSON guidance', () => {
     expect(legacyF2.state.schemaVersion).toBe(14); expect(legacyF2.checksum).toBe(stateHash(legacyF2.state));
-    expect(() => deserializeSave(JSON.stringify(legacyF2))).toThrow('F2 세이브(스키마 14)는 화면 문구가 한국어로 바뀐 현재 버전(스키마 15)과 호환되지 않습니다. 기존 JSON을 보관');
+    expect(() => deserializeSave(JSON.stringify(legacyF2))).toThrow('F2 세이브(스키마 14)는 화면 문구가 한국어로 바뀐 현재 버전(스키마 16)과 호환되지 않습니다. 기존 JSON을 보관');
   });
 });
