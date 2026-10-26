@@ -1,5 +1,5 @@
 {
-  "modelVersion": "D4.0",
+  "modelVersion": "D4.1",
   "label": "GAME_MODEL",
   "note": "Slice §26 Final Push and §27 results. All weights are GAME_MODEL values; statutory deposit and reimbursement thresholds come from the ruleset's currentLaw.",
   "finalPush": {
@@ -20,8 +20,8 @@
     "campaignAwareness": 300000
   },
   "electionDay": {
-    "note": "Bounded election-day variation from the named stream 'election' (2028-04-12): one national swing per party and one district swing per party and district, both uniform, added to the district and list masses before tactical voting.",
-    "nationalSwing": 15000,
+    "note": "Bounded election-day variation from the named stream 'election' (2028-04-12): one national swing per party, relative to its current support (uniform within ±nationalSwingRelative of that support, E3), and one district swing per party and district (uniform, absolute). Both are added to the district and list masses before tactical voting.",
+    "nationalSwingRelative": 100000,
     "districtSwing": 10000
   }
 }

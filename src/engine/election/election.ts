@@ -19,7 +19,10 @@ interface Draws { national: SupportVector; district: Record<string, SupportVecto
 function electionDraws(state: GameState, partyIds: readonly string[]): Draws {
   let rng = deriveStream(state.seed, ELECTION_STREAM, state.electionRuleset.electionDate);
   const draw = (bound: number) => { const r = randomInt(rng, 2 * bound + 1); rng = r.state; return r.value - bound; };
-  const national = Object.fromEntries(partyIds.map(id => [id, draw(em.electionDay.nationalSwing)]));
+  // National swing is relative to each party's current support (E3): large parties carry
+  // campaign-scale uncertainty, a small party's luck stays small next to its own choices.
+  const support = state.politics.analysis.currentSupport;
+  const national = Object.fromEntries(partyIds.map(id => [id, fixedMultiply(support[id] ?? 0, draw(em.electionDay.nationalSwingRelative))]));
   const district = Object.fromEntries(districtPack.districts.map(d => [d.id, Object.fromEntries(partyIds.map(id => [id, draw(em.electionDay.districtSwing)]))]));
   // Lottery order for equal list remainders (currentLaw.listRemainderTieBreak).
   const lottery = partyIds.map(id => ({ id, key: draw(SCALE) })).sort((a, b) => a.key - b.key || (a.id < b.id ? -1 : 1)).map(x => x.id);

@@ -55,7 +55,7 @@ Order, dependencies and the run protocol come from `docs/ROADMAP.md`; progress i
 - **Weekly.** Pays the allocation (atomic; a shortage skips the week with an Inbox notice) and accumulates effort = intensity × 0.03 × (0.5 + Organization × 0.005), capped at 1.
 - **Effects through the chain.** Messages add salience-weighted exposure to the player's monthly awareness update. Effort, as e(2 − e), adds to the nominee's district utility (× 0.3) and awareness floor (× 0.3).
 - **Election** (`src/engine/election/election.ts`, pure). On the 2028-04-10 tick, for the 2028-04-12 date:
-  1. swings come from the `election` stream (national ±1.5pp per party, district ±1pp per party and district);
+  1. swings come from the `election` stream (national ±1.5pp per party, district ±1pp per party and district); (E3 2026-10-26: the national swing is now relative, ±10% of each party's current support; see DECISIONS E3)
   2. district votes = projection with the swings × 2024 turnout, as integers;
   3. list votes = sincere list shares with the list residual, summed over the 254 districts (player only with a registered list);
   4. `allocateList`/`totalSeats` give the seats, with lottery order from the same stream for equal remainders;
