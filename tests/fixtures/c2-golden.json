@@ -1,7 +1,7 @@
 {
   "schemaVersion": 4,
   "phase": "C2",
-  "step": "CAL",
+  "step": "D2",
   "modelVersion": "C1.0",
   "peopleModelVersion": "C2.1",
   "organizationModelVersion": "C2.0",
@@ -9,10 +9,10 @@
   "rulesetId": "parallel_46_open",
   "politicalModelVersion": "B3",
   "seed": 42,
-  "initialHash": "fc5eeddef917b224",
-  "foundedHash": "9dbe0afc9b8b7e77",
-  "seasonEndHash": "0e8ada3dbf0910e4",
-  "managementHash": "10e1286f12bc0df5",
+  "initialHash": "7fac0edb13b7ef19",
+  "foundedHash": "35697dbd768bf566",
+  "seasonEndHash": "968d941c0e9c6ba5",
+  "managementHash": "044594234993c11c",
   "commands": [
     {
       "type": "CREATE_PARTY",

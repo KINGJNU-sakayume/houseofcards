@@ -2,7 +2,7 @@
 
 Repository: `KINGJNU-sakayume/houseofcards`
 
-> **Status (2026-10-25):** D1 is implemented (this document's §2). D2–D4 and CAL are outlined only (§3). Before starting a later step, expand its section here from the code as it then stands, and record decisions in `docs/DECISIONS.md`.
+> **Status (2026-10-26):** D1 (§2), CAL and D2 (§2a) are implemented. D3–D4 are outlined only (§3). Before starting a later step, expand its section here from the code as it then stands, and record decisions in `docs/DECISIONS.md`.
 
 Order, dependencies and the run protocol come from `docs/ROADMAP.md`; progress is in `docs/PROGRESS.md`. Precedence: explicit user decisions in `docs/DECISIONS.md` → Slice Spec (`docs/HOUSE_OF_CARDS_KOREA_v1.0_rev2_vertical_slice.md`, §7, §17–19, §26–27) → this document → `AGENTS.md` conventions. Each step is its own PR and is merged to main once CI passes (user decision 2026-10-25); state-shape changes bump `schemaVersion` and reject the previous schema with Korean keep-JSON guidance.
 
@@ -21,10 +21,20 @@ Order, dependencies and the run protocol come from `docs/ROADMAP.md`; progress i
 - **Schema 7**; real C2c saves rejected.
 - **Tests.** Hand-calculated parallel, threshold and semi-compensatory examples; lottery and older-candidate ties; over 300 seeded random elections per preset: list seats sum to the list size, total seats equal the house, non-negative, and more votes never mean fewer list seats; ruleset/law-review agreement; save/replay with a non-default ruleset.
 
+## 2a. CAL and D2 (implemented 2026-10-26)
+
+- **CAL.** Calibrated 50 pre-committed tunables (regional attachment weights, party awareness/viability) against the fixed 20 targets; political model B3, schema 8. See `docs/data/calibration-cal.json` and VALIDATION.
+- **D2 data.** `src/data/reality/districts-2024.json` (pack `kr-d2-2026-10-18-r4`): 254 Light records from DD2/DD3 (2024 districts, party-level baselines, 12-cell composition, Active 30). Validated by `validateDistricts` (count = default preset district seats, composition and shares sum to 1,000,000, Active quotas).
+- **D2 engine.** `src/engine/election/districts.ts`, pure and recomputed on demand, nothing stored in the save:
+  1. sincere share = Σ cells (regional cohort choice × composition × turnout), plus residual (district 2024 share − region's turnout-weighted 2024 mean), game parties only, clamped and renormalized excluding 'none';
+  2. district viability: top two = 1, others S-curve between 15% and 30% (`src/data/seeds/district-model.json`);
+  3. tactical voting: each non-viable party loses share × cohort tactical tendency × (1 − viability) to the top two in proportion to their shares.
+  No candidate or organization terms yet (D3/D4).
+- **UI.** Election page district explorer (Active 30 / all 254, region filter), labelled "2024년 기준" and "save-model estimate before nominations".
+- Old saves (pack r3) are rejected by the pack-id check with Korean keep-JSON guidance.
+
 ## 3. Later steps (outline; expand before starting)
 
-- **CAL (after D1, needs DD3 for held-out validation).** Deterministic offline coefficient search (`scripts/calibrate.ts`) over a committed list of tunable coefficients and ranges; targets and tolerances fixed; report before/after honestly in `docs/VALIDATION.md`; political model B3; goldens regenerated.
-- **D2 (after CAL).** Load DD3 districts into the Reality pack (new pack id); district vote = regional cohort preferences × district composition + 2024 baseline residual; district viability and S-curve tactical voting (Slice §17–19); Election page district explorer; no election run yet. Uses `districtWinner`.
 - **D3.** Nomination windows (2027-07/10/12), three nomination methods, list of 10–15 with the verified gender rule, no dual candidacy; resolves Phase C nomination promises; uses LocalBase/Campaigning/BroadAppeal/Negotiation where Slice §20.4 says so.
 - **D4.** Final Push from 2028-01-17, election on 2028-04-12 using `allocateList`/`totalSeats`, deposits and reimbursements from `currentLaw`, the 0-seat branch per the user's confirmed decision, results saved.
 
